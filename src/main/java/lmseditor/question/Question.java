@@ -6,7 +6,7 @@ import lmseditor.question.component.QuestionText;
 import lmseditor.question.component.TextWrapper;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({QuestionShortAnswer.class, QuestionChoice.class, QuestionMatching.class})
+@XmlSeeAlso({QuestionShortAnswer.class, QuestionChoice.class, QuestionMatching.class, QuestionNumerical.class})
 public abstract class Question {
 
     @XmlElement(name = "name")
