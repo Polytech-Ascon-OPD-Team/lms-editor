@@ -46,10 +46,13 @@ public class XmlTest {
 
         QuestionCollection questions = new QuestionCollection();
 
-        questions.addQuestion(questionShortAnswer);
-        questions.addQuestion(questionChoice);
-        questions.addQuestion(questionMatching);
-        questions.addQuestion(questionNumerical);
+        QuestionCategory category1 = new QuestionCategory("Category-1");
+
+        questions.addCategory(category1);
+        questions.addQuestionToCategory(category1, questionShortAnswer);
+        questions.addQuestionToCategory(category1, questionChoice);
+        questions.addQuestionToCategory(category1, questionMatching);
+        questions.addQuestionToCategory(category1, questionNumerical);
 
         try {
             JAXBContext context = JAXBContext.newInstance(QuestionCollection.class);
@@ -64,6 +67,7 @@ public class XmlTest {
 
             StringWriter stringWriter2 = new StringWriter();
             marshaller.marshal(questionsUnmarshall, stringWriter2);
+            System.out.println(stringWriter2);
 
             Assertions.assertEquals(stringWriter1.toString(), stringWriter2.toString());
 

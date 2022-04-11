@@ -9,14 +9,19 @@ import java.util.List;
 public class QuestionCollection {
 
     @XmlElement(name = "question")
-    private List<Question> questions;
+    private List<QuestionXml> questions;
 
     public QuestionCollection() {
         this.questions = new ArrayList<>();
     }
 
-    public void addQuestion(Question question) {
-        this.questions.add(question);
+    public void addCategory(QuestionCategory questionCategory) {
+        questions.add(questionCategory);
+    }
+
+    public void addQuestionToCategory(QuestionCategory questionCategory, Question question) {
+        int categoryIndex = questions.indexOf(questionCategory);
+        questions.add(categoryIndex + 1, question);
     }
 
 }
