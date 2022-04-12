@@ -24,8 +24,14 @@ public class XmlTest {
         answers.add(new Answer("Incorrect answer 1", 0));
         answers.add(new Answer("Incorrect answer 2", 0));
 
+        QuestionText questionShortAnswerText = new QuestionText("Question short answer 1 text");
+        questionShortAnswerText.getImages().add(new ImageBase64("img-1.png", "/", 100, 100));
+        questionShortAnswerText.getImages().get(0).setBase64("base64code-1");
+        questionShortAnswerText.getImages().add(new ImageBase64("img-2.png", "/", 200, 200));
+        questionShortAnswerText.getImages().get(1).setBase64("base64code-2");
+
         QuestionShortAnswer questionShortAnswer = new QuestionShortAnswer("questionShortAnswer-1",
-                new QuestionText("Question short answer 1 text"), answers);
+                questionShortAnswerText, answers);
 
         QuestionChoice questionChoice = new QuestionChoice("questionChoice-1",
                 new QuestionText("Question choice 1 text"),false, answers);
@@ -67,7 +73,6 @@ public class XmlTest {
 
             StringWriter stringWriter2 = new StringWriter();
             marshaller.marshal(questionsUnmarshall, stringWriter2);
-            System.out.println(stringWriter2);
 
             Assertions.assertEquals(stringWriter1.toString(), stringWriter2.toString());
 
