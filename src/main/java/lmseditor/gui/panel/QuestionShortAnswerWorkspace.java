@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class QuestionShortAnswerWorkspace extends JPanel {
-    private static final String QUESTION_TEXT_LABEL_TEXT = "Enter question text:";
 
     private QuestionName name;
     private TextWithImage questionText;
@@ -20,7 +19,7 @@ public class QuestionShortAnswerWorkspace extends JPanel {
         this.setLayout(new BorderLayout());
 
         name = new QuestionName();
-        questionText = new TextWithImage(QUESTION_TEXT_LABEL_TEXT);
+        questionText = new TextWithImage();
         properties = new QuestionShortAnswerProperties();
         answers = new ShortAnswers();
 

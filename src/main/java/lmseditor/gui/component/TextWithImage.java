@@ -6,6 +6,7 @@ import java.awt.*;
 
 
 public class TextWithImage extends JPanel {
+    private static final String QUESTION_TEXT_LABEL_TEXT = "Enter question text:";
     private static final int TEXT_AREA_ROWS = 5;
     private static final int TEXT_AREA_COLUMNS = 60;
 
@@ -15,10 +16,9 @@ public class TextWithImage extends JPanel {
     private JLabel label;
     private JTextArea textArea;
 
-
-    public TextWithImage(String labelText) {
+    public TextWithImage() {
         this.setLayout(new BorderLayout());
-        label = new JLabel(labelText);
+        label = new JLabel(QUESTION_TEXT_LABEL_TEXT);
 
         textArea = new JTextArea("", TEXT_AREA_ROWS, TEXT_AREA_COLUMNS);
         textScrollPane = new JScrollPane(textArea);
