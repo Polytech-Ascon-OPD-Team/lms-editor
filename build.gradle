@@ -12,6 +12,10 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
+    implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'
+
 }
 
 test {
