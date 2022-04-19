@@ -2,7 +2,7 @@ package lmseditor.question;
 
 import javax.xml.bind.annotation.*;
 
-import lmseditor.question.component.QuestionText;
+import lmseditor.question.component.TextWithImages;
 import lmseditor.question.component.TextWrapper;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -12,16 +12,16 @@ public abstract class Question extends QuestionXml {
     private TextWrapper name;
 
     @XmlElement(name = "questiontext")
-    private QuestionText questionText;
+    private TextWithImages textWithImages;
 
     public Question() {
         this.name = new TextWrapper();
-        this.questionText = new QuestionText();
+        this.textWithImages = new TextWithImages();
     }
 
-    public Question(String name, QuestionText questionText) {
+    public Question(String name, TextWithImages textWithImages) {
         this.name = new TextWrapper(name);
-        this.questionText = questionText;
+        this.textWithImages = textWithImages;
     }
 
     public String getName() {
@@ -32,12 +32,12 @@ public abstract class Question extends QuestionXml {
         this.name.setText(name);
     }
 
-    public QuestionText getQuestionText() {
-        return this.questionText;
+    public TextWithImages getTextWithImages() {
+        return textWithImages;
     }
 
-    public void setQuestionText(QuestionText questionText) {
-        this.questionText = questionText;
+    public void setTextWithImages(TextWithImages textWithImages) {
+        this.textWithImages = textWithImages;
     }
 
 }

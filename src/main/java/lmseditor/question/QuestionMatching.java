@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.question.component.QuestionText;
+import lmseditor.question.component.TextWithImages;
 import lmseditor.question.component.Subquestion;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -25,8 +25,8 @@ public class QuestionMatching extends Question {
         this.shuffleAnswers = true;
     }
 
-    public QuestionMatching(String name, QuestionText questionText, List<Subquestion> subquestions) {
-        super(name, questionText);
+    public QuestionMatching(String name, TextWithImages textWithImages, List<Subquestion> subquestions) {
+        super(name, textWithImages);
         this.subquestions = subquestions;
         this.shuffleAnswers = true;
     }

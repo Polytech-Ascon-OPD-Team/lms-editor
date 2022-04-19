@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QuestionText {
+public class TextWithImages {
 
     @XmlAttribute
     private String format;
@@ -27,7 +27,7 @@ public class QuestionText {
     @XmlTransient
     private Formatter formatter;
 
-    public QuestionText() {
+    public TextWithImages() {
         this.formatter = new HtmlFormatter();
         this.xmlText = "";
         this.text = "";
@@ -35,7 +35,7 @@ public class QuestionText {
         this.format = formatter.getFormatOption();
     }
 
-    public QuestionText(String text) {
+    public TextWithImages(String text) {
         this();
         this.text = text;
         this.formatter.setText(text);

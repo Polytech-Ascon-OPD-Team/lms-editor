@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lmseditor.question.component.Answer;
-import lmseditor.question.component.QuestionText;
+import lmseditor.question.component.TextWithImages;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QuestionShortAnswer extends Question{
@@ -21,8 +21,8 @@ public class QuestionShortAnswer extends Question{
         this.answers = new ArrayList<>();
     }
 
-    public QuestionShortAnswer(String name, QuestionText questionText, List<Answer> answers) {
-        super(name, questionText);
+    public QuestionShortAnswer(String name, TextWithImages textWithImages, List<Answer> answers) {
+        super(name, textWithImages);
         this.answers = answers;
     }
 

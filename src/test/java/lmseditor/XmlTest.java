@@ -25,7 +25,7 @@ public class XmlTest {
         answers.add(new Answer("Incorrect answer 1", 0));
         answers.add(new Answer("Incorrect answer 2", 0));
 
-        QuestionText questionShortAnswerText = new QuestionText("Question short answer 1 text");
+        TextWithImages questionShortAnswerText = new TextWithImages("Question short answer 1 text");
         questionShortAnswerText.addImage(new ImageBase64("img-1.png", "/", 100, 100));
         questionShortAnswerText.getImage(0).setBase64("base64code-1");
         questionShortAnswerText.addImage(new ImageBase64("img-2.png", "/", 200, 200));
@@ -35,21 +35,21 @@ public class XmlTest {
                 questionShortAnswerText, answers);
 
         QuestionChoice questionChoice = new QuestionChoice("questionChoice-1",
-                new QuestionText("Question choice 1 text"),false, answers);
+                new TextWithImages("Question choice 1 text"),false, answers);
 
         List<Subquestion> subquestions = new ArrayList<>();
         subquestions.add(new Subquestion("Subquestion 1 text", "Subquestion 1 answer"));
         subquestions.add(new Subquestion("Subquestion 2 text", "Subquestion 2 answer "));
 
         QuestionMatching questionMatching = new QuestionMatching("questionMatching-1",
-                new QuestionText("Question Matching 1 text"), subquestions);
+                new TextWithImages("Question Matching 1 text"), subquestions);
 
         List<NumericalAnswer> numericalAnswers = new ArrayList<>();
         numericalAnswers.add(new NumericalAnswer(15.0, 100, 0.0));
         numericalAnswers.add(new NumericalAnswer(-3.0, 100, 0.0));
 
         QuestionNumerical questionNumerical = new QuestionNumerical("questionNumerical-1",
-                new QuestionText("Question Numerical 1 text"), numericalAnswers);
+                new TextWithImages("Question Numerical 1 text"), numericalAnswers);
 
         QuestionCollection questions = new QuestionCollection();
 

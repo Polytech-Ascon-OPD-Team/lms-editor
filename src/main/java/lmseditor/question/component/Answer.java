@@ -1,32 +1,43 @@
 package lmseditor.question.component;
 
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Answer {
 
-    @XmlElement(name = "text")
-    private String text;
+    @XmlPath(".")
+    private TextWithImages textWithImages;
 
     @XmlAttribute(name = "fraction")
     private int fraction;
 
     public Answer() {
-        this.text = "";
+        this.textWithImages = new TextWithImages();
         this.fraction = 0;
     }
 
     public Answer(String text, int fraction) {
-        this.text = text;
+        this.textWithImages = new TextWithImages(text);
         this.fraction = fraction;
     }
 
     public String getText() {
-        return this.text;
+        return this.textWithImages.getText();
     }
 
     public void setText(String text) {
-        this.text = text;
+        //this.text = text;
+        this.textWithImages.setText(text);
+    }
+
+    public TextWithImages getTextWithImages() {
+        return textWithImages;
+    }
+
+    public void setTextWithImages(TextWithImages textWithImages) {
+        this.textWithImages = textWithImages;
     }
 
     public int getFraction() {
