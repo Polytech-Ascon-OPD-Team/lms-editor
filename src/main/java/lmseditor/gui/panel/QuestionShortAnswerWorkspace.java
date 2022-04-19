@@ -1,8 +1,8 @@
 package lmseditor.gui.panel;
 
-import lmseditor.gui.component.QuestionName;
-import lmseditor.gui.component.TextWithImage;
-import lmseditor.gui.component.answer.ShortAnswers;
+import lmseditor.gui.component.QuestionNamePanel;
+import lmseditor.gui.component.TextWithImagesPanel;
+import lmseditor.gui.component.answer.ShortAnswersPanel;
 import lmseditor.gui.panel.properties.QuestionShortAnswerProperties;
 
 import javax.swing.*;
@@ -10,18 +10,18 @@ import java.awt.*;
 
 public class QuestionShortAnswerWorkspace extends JPanel {
 
-    private QuestionName name;
-    private TextWithImage questionText;
+    private QuestionNamePanel name;
+    private TextWithImagesPanel questionText;
     private QuestionShortAnswerProperties properties;
-    private ShortAnswers answers;
+    private ShortAnswersPanel answers;
 
     public QuestionShortAnswerWorkspace() {
         this.setLayout(new BorderLayout());
 
-        name = new QuestionName();
-        questionText = new TextWithImage();
+        name = new QuestionNamePanel();
+        questionText = new TextWithImagesPanel();
         properties = new QuestionShortAnswerProperties();
-        answers = new ShortAnswers();
+        answers = new ShortAnswersPanel();
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
