@@ -1,6 +1,6 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
-import lmseditor.question.component.TextWrapper;
+import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import javax.xml.bind.annotation.*;
 
@@ -10,23 +10,23 @@ public class QuestionCategory extends QuestionXml {
     @XmlAttribute(name = "type")
     private static final String TYPE = "category";
 
-    @XmlElement(name = "category")
-    private TextWrapper name;
+    @XmlPath("category/text/text()")
+    private String name;
 
     public QuestionCategory() {
-        this.name = new TextWrapper();
+        this.name = "";
     }
 
     public QuestionCategory(String name) {
-        this.name = new TextWrapper(name);
+        this.name = name;
     }
 
     public String getName() {
-        return name.getText();
+        return name;
     }
 
     public void setName(String name) {
-        this.name.setText(name);
+        this.name = name;
     }
 
 }

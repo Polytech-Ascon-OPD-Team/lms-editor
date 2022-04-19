@@ -1,11 +1,11 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.question.component.Answer;
-import lmseditor.question.component.TextWithImages;
+import lmseditor.backend.question.component.Answer;
+import lmseditor.backend.question.component.TextWithImages;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QuestionShortAnswer extends Question{

@@ -1,8 +1,9 @@
-package lmseditor.question.component;
+package lmseditor.backend.question.component;
 
+import lmseditor.backend.image.ImageBase64;
 import org.eclipse.persistence.oxm.annotations.XmlCDATA;
-import lmseditor.question.component.format.Formatter;
-import lmseditor.question.component.format.HtmlFormatter;
+import lmseditor.backend.question.component.format.Formatter;
+import lmseditor.backend.question.component.format.HtmlFormatter;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

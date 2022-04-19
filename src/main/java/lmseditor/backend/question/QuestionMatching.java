@@ -1,11 +1,11 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.question.component.TextWithImages;
-import lmseditor.question.component.Subquestion;
+import lmseditor.backend.question.component.TextWithImages;
+import lmseditor.backend.question.component.Subquestion;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QuestionMatching extends Question {

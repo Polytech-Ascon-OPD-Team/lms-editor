@@ -1,6 +1,6 @@
-package lmseditor.question.component.format;
+package lmseditor.backend.question.component.format;
 
-import lmseditor.question.component.ImageBase64;
+import lmseditor.backend.image.ImageBase64;
 
 public abstract class Formatter {
 

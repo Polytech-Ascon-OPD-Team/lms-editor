@@ -1,7 +1,7 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
-import lmseditor.question.component.NumericalAnswer;
-import lmseditor.question.component.TextWithImages;
+import lmseditor.backend.question.component.NumericalAnswer;
+import lmseditor.backend.question.component.TextWithImages;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -1,35 +1,35 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.*;
 
-import lmseditor.question.component.TextWithImages;
-import lmseditor.question.component.TextWrapper;
+import lmseditor.backend.question.component.TextWithImages;
+import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Question extends QuestionXml {
 
-    @XmlElement(name = "name")
-    private TextWrapper name;
+    @XmlPath("name/text/text()")
+    private String name;
 
     @XmlElement(name = "questiontext")
     private TextWithImages textWithImages;
 
     public Question() {
-        this.name = new TextWrapper();
+        this.name = "";
         this.textWithImages = new TextWithImages();
     }
 
     public Question(String name, TextWithImages textWithImages) {
-        this.name = new TextWrapper(name);
+        this.name = name;
         this.textWithImages = textWithImages;
     }
 
     public String getName() {
-        return this.name.getText();
+        return this.name;
     }
 
     public void setName(String name) {
-        this.name.setText(name);
+        this.name = name;
     }
 
     public TextWithImages getTextWithImages() {

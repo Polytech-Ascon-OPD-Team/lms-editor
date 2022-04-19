@@ -1,5 +1,6 @@
 package lmseditor;
 
+import lmseditor.backend.image.ImageBase64;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.question.*;
-import lmseditor.question.component.*;
+import lmseditor.backend.question.*;
+import lmseditor.backend.question.component.*;
 
 public class XmlTest {
 

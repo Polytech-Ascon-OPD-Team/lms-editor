@@ -1,4 +1,4 @@
-package lmseditor.question.component;
+package lmseditor.backend.image;
 
 import javax.xml.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package lmseditor.question.component;
+package lmseditor.backend.question.component;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 

@@ -1,4 +1,4 @@
-package lmseditor.question.component;
+package lmseditor.backend.question.component;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
@@ -10,17 +10,17 @@ public class Subquestion {
     @XmlPath(".")
     private TextWithImages textWithImages;
 
-    @XmlElement(name = "answer")
-    private TextWrapper answer;
+    @XmlPath("answer/text/text()")
+    private String answerText;
 
     public Subquestion() {
         this.textWithImages = new TextWithImages();
-        this.answer = new TextWrapper();
+        this.answerText = "";
     }
 
     public Subquestion(String text, String answerText) {
         this.textWithImages = new TextWithImages(text);
-        this.answer = new TextWrapper(answerText);
+        this.answerText = answerText;
     }
 
     public String getText() {
@@ -40,12 +40,11 @@ public class Subquestion {
     }
 
     public String getAnswerText() {
-        return this.answer.getText();
+        return answerText;
     }
 
     public void setAnswerText(String answerText) {
-        this.answer.setText(answerText);
+        this.answerText = answerText;
     }
-
 }
 

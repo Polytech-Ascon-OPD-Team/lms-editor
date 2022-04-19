@@ -1,4 +1,4 @@
-package lmseditor.question;
+package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
