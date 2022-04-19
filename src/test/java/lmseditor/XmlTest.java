@@ -1,5 +1,6 @@
 package lmseditor;
 
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,10 +26,10 @@ public class XmlTest {
         answers.add(new Answer("Incorrect answer 2", 0));
 
         QuestionText questionShortAnswerText = new QuestionText("Question short answer 1 text");
-        questionShortAnswerText.getImages().add(new ImageBase64("img-1.png", "/", 100, 100));
-        questionShortAnswerText.getImages().get(0).setBase64("base64code-1");
-        questionShortAnswerText.getImages().add(new ImageBase64("img-2.png", "/", 200, 200));
-        questionShortAnswerText.getImages().get(1).setBase64("base64code-2");
+        questionShortAnswerText.addImage(new ImageBase64("img-1.png", "/", 100, 100));
+        questionShortAnswerText.getImage(0).setBase64("base64code-1");
+        questionShortAnswerText.addImage(new ImageBase64("img-2.png", "/", 200, 200));
+        questionShortAnswerText.getImage(1).setBase64("base64code-2");
 
         QuestionShortAnswer questionShortAnswer = new QuestionShortAnswer("questionShortAnswer-1",
                 questionShortAnswerText, answers);
@@ -61,7 +62,8 @@ public class XmlTest {
         questions.addQuestionToCategory(category1, questionNumerical);
 
         try {
-            JAXBContext context = JAXBContext.newInstance(QuestionCollection.class);
+            JAXBContext context = JAXBContextFactory.createContext(
+                    new Class[] {QuestionCollection.class}, null);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             StringWriter stringWriter1 = new StringWriter();

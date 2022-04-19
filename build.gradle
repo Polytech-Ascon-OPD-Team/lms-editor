@@ -16,6 +16,9 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
+    // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
+    implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'
+
 }
 
 test {
