@@ -1,5 +1,8 @@
 package lmseditor.gui.component;
 
+import lmseditor.backend.image.ImageBase64;
+import lmseditor.backend.image.ImageList;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,17 +19,23 @@ public class ImageFlow extends JPanel {
     private static final Dimension IMAGE_BUTTON_SIZE = new Dimension(120, 120);
     private static final int SCROLLBAR_WIDTH = 30;
 
-    private List<JButton> images;
+    private List<JButton> imageMiniatures;
+    private ImageList imageList;
 
     private JPanel imagePanel;
     private JButton addImageButton;
     private JScrollPane scrollPane;
 
-    public ImageFlow() {
-
+    public ImageFlow(ImageList imageList) {
         this.setLayout(new BorderLayout());
 
-        images = new ArrayList<>();
+        this.imageList = imageList;
+
+        for(ImageBase64 image : imageList.getImages()) {
+            // TODO доавить картинки на панель
+        }
+
+        imageMiniatures = new ArrayList<>();
         addImageButton = new JButton("+");
         addImageButton.addActionListener(new AddImageEvent());
         addImageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
@@ -50,7 +59,7 @@ public class ImageFlow extends JPanel {
         imageButton.setIcon(image);
         imageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
         imageButton.addActionListener(new RemoveImageEvent(imageButton));
-        images.add(imageButton);
+        imageMiniatures.add(imageButton);
         imagePanel.add(imageButton);
         this.updateUI();
     }
@@ -67,10 +76,13 @@ public class ImageFlow extends JPanel {
             int result = fileChooser.showOpenDialog(ImageFlow.this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 try {
-                    BufferedImage image = ImageIO.read(new File(fileChooser.getSelectedFile().getPath()));
+                    File file = new File(fileChooser.getSelectedFile().getPath());
+                    BufferedImage image = ImageIO.read(file);
                     Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
                     ImageIcon icon = new ImageIcon(scaleImage);
                     ImageFlow.this.addImage(icon);
+                    // TODO Добавить base64 картинку в imageList
+                    imageList.getImages().add(new ImageBase64("test", "/", 100, 100, "base64")); // test
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -103,8 +115,10 @@ public class ImageFlow extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ImageFlow.this.images.remove(imageButton);
-            ImageFlow.this.imagePanel.remove(imageButton);
+            int index = imageMiniatures.indexOf(imageButton);
+            imageList.getImages().remove(index);
+            imageMiniatures.remove(imageButton);
+            imagePanel.remove(imageButton);
             ImageFlow.this.updateUI();
         }
     }

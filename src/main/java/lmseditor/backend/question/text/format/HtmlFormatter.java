@@ -1,18 +1,16 @@
-package lmseditor.backend.question.component.format;
+package lmseditor.backend.question.text.format;
 
 import lmseditor.backend.image.ImageBase64;
-
-import java.util.ArrayList;
-import java.util.List;
+import lmseditor.backend.image.ImageList;
 
 public class HtmlFormatter extends Formatter {
 
     private String text;
-    private List<String> imageCodes;
+    private ImageList imageList;
 
     public HtmlFormatter() {
         text = "";
-        imageCodes = new ArrayList<>();
+        imageList = new ImageList();
     }
 
     @Override
@@ -26,20 +24,15 @@ public class HtmlFormatter extends Formatter {
     }
 
     @Override
-    public void addImage(ImageBase64 image) {
-        imageCodes.add("<p>" + this.getImageCode(image) + "</p>");
-    }
-
-    @Override
-    public void removeImageCode(int index) {
-        imageCodes.remove(index);
+    public void setImageList(ImageList imageList) {
+        this.imageList = imageList;
     }
 
     @Override
     public String getFormattedString() {
         StringBuilder formattedString = new StringBuilder(text);
-        for (String imageCode : imageCodes) {
-            formattedString.append(imageCode);
+        for (ImageBase64 image : imageList.getImages()) {
+            formattedString.append("<p>" + this.getImageCode(image) + "</p>");
         }
         return formattedString.toString();
     }

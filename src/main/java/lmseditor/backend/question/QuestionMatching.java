@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.backend.question.component.TextWithImages;
+import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.component.Subquestion;
 
 @XmlAccessorType(XmlAccessType.FIELD)
