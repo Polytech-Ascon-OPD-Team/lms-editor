@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class ImageFlow extends JPanel {
         this.imageList = imageList;
 
         for(ImageBase64 image : imageList.getImages()) {
-            // TODO доавить картинки на панель
+            // TODO добавить картинки на панель
+            System.out.println(image);
         }
 
         imageMiniatures = new ArrayList<>();
@@ -51,7 +53,6 @@ public class ImageFlow extends JPanel {
         scrollPanePanel.add(scrollPane, BorderLayout.CENTER);
 
         this.add(scrollPanePanel, BorderLayout.CENTER);
-
     }
 
     public void addImage(Icon image) {
@@ -81,8 +82,8 @@ public class ImageFlow extends JPanel {
                     Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
                     ImageIcon icon = new ImageIcon(scaleImage);
                     ImageFlow.this.addImage(icon);
-                    // TODO Добавить base64 картинку в imageList
-                    imageList.getImages().add(new ImageBase64("test", "/", 100, 100, "base64")); // test
+                    String base64 = ImageBase64.encodeFileToBase64(file);
+                    imageList.getImages().add(new ImageBase64("test", "/", 100, 100, base64)); // test
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
