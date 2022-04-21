@@ -1,21 +1,25 @@
 package lmseditor.gui.component.answer;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShortAnswersPanel extends JPanel {
+public class NumericalAnswersPanel extends JPanel {
 
-    private class ShortAnswer extends JPanel {
+    private class NumericalAnswer extends JPanel {
         private static final int TEXT_FIELD_COLUMNS = 60;
 
         private JTextField textField;
         private JButton removeButton;
 
-        public ShortAnswer() {
+        public NumericalAnswer() {
             this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
             textField = new JTextField(TEXT_FIELD_COLUMNS);
@@ -24,14 +28,16 @@ public class ShortAnswersPanel extends JPanel {
 
             this.add(textField);
             this.add(removeButton);
+
+            ((AbstractDocument) textField.getDocument()).setDocumentFilter(new MyDocumentFilter());
         }
 
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(ShortAnswer.this);
-                answersPanel.remove(ShortAnswer.this);
-                ShortAnswersPanel.this.updateUI();
+                answers.remove(NumericalAnswer.this);
+                answersPanel.remove(NumericalAnswer.this);
+                NumericalAnswersPanel.this.updateUI();
             }
         }
 
@@ -39,11 +45,11 @@ public class ShortAnswersPanel extends JPanel {
 
     private JLabel label;
     private JButton addButton;
-    private List<ShortAnswer> answers;
+    private List<NumericalAnswer> answers;
     private JPanel answersPanel;
     private JScrollPane answersScrollPane;
 
-    public ShortAnswersPanel() {
+    public NumericalAnswersPanel() {
         this.setLayout(new BorderLayout());
         answers = new ArrayList<>();
 
@@ -76,13 +82,27 @@ public class ShortAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShortAnswer shortAnswer = new ShortAnswer();
-            answers.add(shortAnswer);
-            answersPanel.add(shortAnswer);
-            ShortAnswersPanel.this.updateUI();
+            NumericalAnswer numericalAnswer = new NumericalAnswer();
+            answers.add(numericalAnswer);
+            answersPanel.add(numericalAnswer);
+            NumericalAnswersPanel.this.updateUI();
             if (answers.size() > 10) {
                 answersScrollPane.setPreferredSize(answersScrollPane.getSize());
             }
+        }
+    }
+
+    class MyDocumentFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            string = string.replaceAll("[^\\d\\.]", "");
+            super.insertString(fb, offset, string, attr);
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            text = text.replaceAll("[^\\d\\.]", "");
+            super.replace(fb, offset, length, text, attrs);
         }
     }
 
