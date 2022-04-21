@@ -30,10 +30,8 @@ public class XmlTest {
         TextWithImages questionShortAnswerText = new TextWithImages();
         questionShortAnswerText.setQuestionText(new QuestionText("Question short answer 1 text"));
         ImageList imageList = new ImageList();
-        imageList.getImages().add(new ImageBase64("img-1.png", "/", 100, 100));
-        imageList.getImages().get(0).setBase64("base64code-1");
-        imageList.getImages().add(new ImageBase64("img-2.png", "/", 200, 200));
-        imageList.getImages().get(1).setBase64("base64code-2");
+        imageList.getImages().add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
+        imageList.getImages().add(new ImageBase64("img-2.png", "/", 200, 200, "base64code-2"));
         questionShortAnswerText.setImageList(imageList);
         questionShortAnswerText.generateFormattedText();
         List<ShortAnswer> shortAnswers = new ArrayList<>();
