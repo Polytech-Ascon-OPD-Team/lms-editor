@@ -2,7 +2,7 @@ package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.*;
 
-import lmseditor.backend.question.component.TextWithImages;
+import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)

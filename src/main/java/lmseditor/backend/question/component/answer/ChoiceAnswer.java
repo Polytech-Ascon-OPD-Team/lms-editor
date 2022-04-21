@@ -1,4 +1,4 @@
-package lmseditor.backend.question.component;
+package lmseditor.backend.question.component.answer;
 
 import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
@@ -6,17 +6,14 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Subquestion {
+public class ChoiceAnswer extends Answer {
 
     @XmlPath(".")
     private TextWithImages textWithImages;
 
-    @XmlPath("answer/text/text()")
-    private String answerText;
-
-    public Subquestion() {
+    public ChoiceAnswer() {
+        super();
         this.textWithImages = new TextWithImages();
-        this.answerText = "";
     }
 
     public TextWithImages getTextWithImages() {
@@ -27,12 +24,4 @@ public class Subquestion {
         this.textWithImages = textWithImages;
     }
 
-    public String getAnswerText() {
-        return answerText;
-    }
-
-    public void setAnswerText(String answerText) {
-        this.answerText = answerText;
-    }
 }
-

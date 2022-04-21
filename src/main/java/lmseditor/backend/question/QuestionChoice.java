@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.backend.question.component.Answer;
-import lmseditor.backend.question.component.TextWithImages;
+import lmseditor.backend.question.component.answer.ChoiceAnswer;
+import lmseditor.backend.question.text.TextWithImages;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QuestionChoice extends Question {
@@ -17,18 +17,18 @@ public class QuestionChoice extends Question {
     private boolean isSingleChoice;
 
     @XmlElement(name = "answer")
-    private List<Answer> answers;
+    private List<ChoiceAnswer> choiceAnswers;
 
     public QuestionChoice() {
         super();
         this.isSingleChoice = true;
-        this.answers = new ArrayList<>();
+        this.choiceAnswers = new ArrayList<>();
     }
 
-    public QuestionChoice(String name, TextWithImages textWithImages, boolean isSingleChoice, List<Answer> answers) {
+    public QuestionChoice(String name, TextWithImages textWithImages, boolean isSingleChoice, List<ChoiceAnswer> choiceAnswers) {
         super(name, textWithImages);
         this.isSingleChoice = isSingleChoice;
-        this.answers = answers;
+        this.choiceAnswers = choiceAnswers;
     }
 
     public boolean isSingleChoice() {
@@ -39,12 +39,12 @@ public class QuestionChoice extends Question {
         this.isSingleChoice = singleChoice;
     }
 
-    public List<Answer> getAnswers() {
-        return this.answers;
+    public List<ChoiceAnswer> getAnswers() {
+        return this.choiceAnswers;
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
+    public void setAnswers(List<ChoiceAnswer> choiceAnswers) {
+        this.choiceAnswers = choiceAnswers;
     }
 
 }
