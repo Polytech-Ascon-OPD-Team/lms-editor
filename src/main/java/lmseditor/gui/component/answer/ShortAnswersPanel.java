@@ -30,7 +30,7 @@ public class ShortAnswersPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 answers.remove(ShortAnswer.this);
-                ShortAnswersPanel.this.remove(ShortAnswer.this);
+                answersPanel.remove(ShortAnswer.this);
                 ShortAnswersPanel.this.updateUI();
             }
         }
@@ -40,9 +40,11 @@ public class ShortAnswersPanel extends JPanel {
     private JLabel label;
     private JButton addButton;
     private List<ShortAnswer> answers;
+    private JPanel answersPanel;
+    private JScrollPane answersScrollPane;
 
     public ShortAnswersPanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
         answers = new ArrayList<>();
 
         label = new JLabel("Enter correct answers");
@@ -54,8 +56,20 @@ public class ShortAnswersPanel extends JPanel {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonsPanel.add(addButton);
 
-        this.add(labelPanel);
-        this.add(buttonsPanel);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.add(labelPanel);
+        header.add(buttonsPanel);
+
+        answersPanel = new JPanel();
+        answersPanel.setLayout(new BoxLayout(answersPanel, BoxLayout.Y_AXIS));
+
+        answersScrollPane = new JScrollPane(answersPanel);
+        JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
+        answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
+
+        this.add(header, BorderLayout.NORTH);
+        this.add(answersScrollPanePanel, BorderLayout.CENTER);
 
     }
 
@@ -64,8 +78,11 @@ public class ShortAnswersPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ShortAnswer shortAnswer = new ShortAnswer();
             answers.add(shortAnswer);
-            ShortAnswersPanel.this.add(shortAnswer);
+            answersPanel.add(shortAnswer);
             ShortAnswersPanel.this.updateUI();
+            if (answers.size() > 10) {
+                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
+            }
         }
     }
 

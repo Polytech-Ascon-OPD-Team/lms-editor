@@ -1,67 +1,111 @@
 package lmseditor.gui.component;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImageFlow extends JPanel {
-    private List<JLabel> images;
+    private static final Dimension IMAGE_BUTTON_SIZE = new Dimension(120, 120);
+    private static final int SCROLLBAR_WIDTH = 30;
+
+    private List<JButton> images;
 
     private JPanel imagePanel;
     private JButton addImageButton;
-    private JButton removeImageButton;
+    private JScrollPane scrollPane;
 
     public ImageFlow() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.setLayout(new BorderLayout());
 
         images = new ArrayList<>();
-        addImageButton = new JButton("Add image");
+        addImageButton = new JButton("+");
         addImageButton.addActionListener(new AddImageEvent());
-        removeImageButton = new JButton("Remove image");
-        removeImageButton.addActionListener(new RemoveImageEvent());
+        addImageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
+
         imagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonsPanel.add(addImageButton);
-        buttonsPanel.add(removeImageButton);
+        imagePanel.add(addImageButton);
 
-        this.add(buttonsPanel);
-        this.add(imagePanel);
+        scrollPane = new JScrollPane(imagePanel);
+        scrollPane.setPreferredSize(new Dimension(0, IMAGE_BUTTON_SIZE.height + SCROLLBAR_WIDTH));
+
+        JPanel scrollPanePanel = new JPanel(new BorderLayout());
+        scrollPanePanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.add(scrollPanePanel, BorderLayout.CENTER);
 
     }
 
-    public void push(Icon image) {
-        JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(image);
-        images.add(imageLabel);
-        imagePanel.add(imageLabel);
-        this.updateUI();
-    }
-
-    public void pop() {
-        if (images.size() == 0) {
-            return;
-        }
-        JLabel removeLabel = images.get(images.size() - 1);
-        images.remove(removeLabel);
-        imagePanel.remove(removeLabel);
+    public void addImage(Icon image) {
+        JButton imageButton = new JButton();
+        imageButton.setIcon(image);
+        imageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
+        imageButton.addActionListener(new RemoveImageEvent(imageButton));
+        images.add(imageButton);
+        imagePanel.add(imageButton);
         this.updateUI();
     }
 
     private class AddImageEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Choose image");
+            fileChooser.setPreferredSize(new Dimension(1000, 600));
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("png, jpg", "png", "jpg");
+            fileChooser.addChoosableFileFilter(filter);
+            int result = fileChooser.showOpenDialog(ImageFlow.this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                try {
+                    BufferedImage image = ImageIO.read(new File(fileChooser.getSelectedFile().getPath()));
+                    Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
+                    ImageIcon icon = new ImageIcon(scaleImage);
+                    ImageFlow.this.addImage(icon);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
 
+        private Image resizeImage(BufferedImage image, Dimension requiredSize) {
+            Image scaleImage = null;
+            if (image.getWidth() > getHeight()) {
+                double scaleRatio = ((double) requiredSize.width) / image.getWidth();
+                int width = requiredSize.width;
+                int height = (int) (scaleRatio * image.getHeight());
+                scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            } else {
+                double scaleRatio = ((double) requiredSize.height) / image.getHeight();
+                int height = requiredSize.height;
+                int width = (int) (scaleRatio * image.getWidth());
+                scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            }
+            return scaleImage;
         }
     }
 
     private class RemoveImageEvent implements ActionListener {
+        private JButton imageButton;
+
+        public RemoveImageEvent(JButton imageButton) {
+            this.imageButton = imageButton;
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            ImageFlow.this.pop();
+            ImageFlow.this.images.remove(imageButton);
+            ImageFlow.this.imagePanel.remove(imageButton);
+            ImageFlow.this.updateUI();
         }
     }
 

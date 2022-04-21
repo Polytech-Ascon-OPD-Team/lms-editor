@@ -3,6 +3,7 @@ package lmseditor.gui.frame;
 import lmseditor.gui.panel.MainPanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
     private MainPanel mainPanel;
@@ -15,6 +16,7 @@ public class MainFrame extends JFrame {
 
         this.add(mainPanel);
 
+        this.pack();
         this.setVisible(true);
     }
 
