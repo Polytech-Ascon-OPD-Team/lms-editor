@@ -31,13 +31,8 @@ public class ImageFlow extends JPanel {
         this.setLayout(new BorderLayout());
 
         this.imageList = imageList;
-
-        for(ImageBase64 image : imageList.getImages()) {
-            // TODO добавить картинки на панель
-            System.out.println(image);
-        }
-
         imageMiniatures = new ArrayList<>();
+
         addImageButton = new JButton("+");
         addImageButton.addActionListener(new AddImageEvent());
         addImageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
@@ -53,16 +48,39 @@ public class ImageFlow extends JPanel {
         scrollPanePanel.add(scrollPane, BorderLayout.CENTER);
 
         this.add(scrollPanePanel, BorderLayout.CENTER);
+
+        for(ImageBase64 imageBase64 : imageList.getImages()) {
+            BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
+            addImageToMiniatures(image);
+        }
     }
 
-    public void addImage(Icon image) {
+    public void addImageToMiniatures(BufferedImage image) {
+        Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
+        ImageIcon icon = new ImageIcon(scaleImage);
         JButton imageButton = new JButton();
-        imageButton.setIcon(image);
+        imageButton.setIcon(icon);
         imageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
         imageButton.addActionListener(new RemoveImageEvent(imageButton));
         imageMiniatures.add(imageButton);
         imagePanel.add(imageButton);
         this.updateUI();
+    }
+
+    private Image resizeImage(BufferedImage image, Dimension requiredSize) {
+        Image scaleImage = null;
+        if (image.getWidth() > getHeight()) {
+            double scaleRatio = ((double) requiredSize.width) / image.getWidth();
+            int width = requiredSize.width;
+            int height = (int) (scaleRatio * image.getHeight());
+            scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        } else {
+            double scaleRatio = ((double) requiredSize.height) / image.getHeight();
+            int height = requiredSize.height;
+            int width = (int) (scaleRatio * image.getWidth());
+            scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        }
+        return scaleImage;
     }
 
     private class AddImageEvent implements ActionListener {
@@ -79,31 +97,14 @@ public class ImageFlow extends JPanel {
                 try {
                     File file = new File(fileChooser.getSelectedFile().getPath());
                     BufferedImage image = ImageIO.read(file);
-                    Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
-                    ImageIcon icon = new ImageIcon(scaleImage);
-                    ImageFlow.this.addImage(icon);
+                    addImageToMiniatures(image);
                     String base64 = ImageBase64.encodeFileToBase64(file);
-                    imageList.getImages().add(new ImageBase64("test", "/", 100, 100, base64)); // test
+                    imageList.getImages().add(
+                            new ImageBase64(file.getName(), "/", image.getWidth(), image.getHeight(), base64));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
-        }
-
-        private Image resizeImage(BufferedImage image, Dimension requiredSize) {
-            Image scaleImage = null;
-            if (image.getWidth() > getHeight()) {
-                double scaleRatio = ((double) requiredSize.width) / image.getWidth();
-                int width = requiredSize.width;
-                int height = (int) (scaleRatio * image.getHeight());
-                scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            } else {
-                double scaleRatio = ((double) requiredSize.height) / image.getHeight();
-                int height = requiredSize.height;
-                int width = (int) (scaleRatio * image.getWidth());
-                scaleImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            }
-            return scaleImage;
         }
     }
 
