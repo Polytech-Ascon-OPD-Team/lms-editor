@@ -1,5 +1,8 @@
 package lmseditor.gui.component.answer;
 
+import lmseditor.backend.question.QuestionShortAnswer;
+import lmseditor.backend.question.component.answer.ShortAnswer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,18 +12,19 @@ import java.util.List;
 
 public class ShortAnswersPanel extends JPanel {
 
-    private class ShortAnswer extends JPanel {
+    private class ShortAnswerPanel extends JPanel {
         private static final int TEXT_FIELD_COLUMNS = 60;
 
         private JTextField textField;
         private JButton removeButton;
 
-        public ShortAnswer() {
+        public ShortAnswerPanel(String text) {
             this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
             textField = new JTextField(TEXT_FIELD_COLUMNS);
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
+            textField.setText(text);
 
             this.add(textField);
             this.add(removeButton);
@@ -29,8 +33,8 @@ public class ShortAnswersPanel extends JPanel {
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(ShortAnswer.this);
-                answersPanel.remove(ShortAnswer.this);
+                answers.remove(ShortAnswerPanel.this);
+                answersPanel.remove(ShortAnswerPanel.this);
                 ShortAnswersPanel.this.updateUI();
             }
         }
@@ -39,19 +43,38 @@ public class ShortAnswersPanel extends JPanel {
 
     private JLabel label;
     private JButton addButton;
-    private List<ShortAnswer> answers;
-    private JPanel answersPanel;
+    private List<ShortAnswerPanel> answers;
+    private JPanel answersPanel = new JPanel();
     private JScrollPane answersScrollPane;
+    private QuestionShortAnswer questionShortAnswer;
+    private ShortAnswer shortAnswer = new ShortAnswer();
+    ShortAnswerPanel shortAnswerPanel;
 
-    public ShortAnswersPanel() {
+    List<ShortAnswer> answersList;
+
+    public ShortAnswersPanel(List<ShortAnswer> answersList) {
+        this.answersList = answersList;
         this.setLayout(new BorderLayout());
         answers = new ArrayList<>();
+        questionShortAnswer = new QuestionShortAnswer();
+        answersList = questionShortAnswer.getAnswers();
+
+        for (int i = 0; i < answersList.size(); i++){
+            shortAnswer = answersList.get(i);
+            shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
+            answers.add(shortAnswerPanel);
+            answersPanel.add(shortAnswerPanel);
+            ShortAnswersPanel.this.updateUI();
+            if (answers.size() > 10) {
+                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
+            }
+        }
 
         label = new JLabel("Enter correct answers");
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelPanel.add(label);
 
-        addButton = new JButton("Add answer");
+        addButton = new JButton("Add");
         addButton.addActionListener(new AddButtonEvent());
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonsPanel.add(addButton);
@@ -76,14 +99,18 @@ public class ShortAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShortAnswer shortAnswer = new ShortAnswer();
-            answers.add(shortAnswer);
-            answersPanel.add(shortAnswer);
+            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel("");
+            answers.add(shortAnswerPanel);
+            answersPanel.add(shortAnswerPanel);
             ShortAnswersPanel.this.updateUI();
             if (answers.size() > 10) {
                 answersScrollPane.setPreferredSize(answersScrollPane.getSize());
             }
         }
+    }
+
+    public List<ShortAnswer> getAnswersList(){
+        return answersList;
     }
 
 }
