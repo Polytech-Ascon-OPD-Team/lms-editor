@@ -86,7 +86,7 @@ public class LeftPanel extends CPanel {
             JPanel workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
             public QuestionElement() {
                 this.setLayout(new BorderLayout());
-                questionButton.setText("< вопрос (" + String.valueOf(questionElements.size() + 1) + ") >");
+                questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
                 questionButton.addActionListener(e -> {
                     Main.mainFrame.workspacePanel.removeAll();
                     Main.mainFrame.workspacePanel.setLayout(new BorderLayout());
@@ -125,7 +125,7 @@ public class LeftPanel extends CPanel {
             upperPanel.setLayout(new BorderLayout());
             CPanel rightUpperPanel = new CPanel();
             rightUpperPanel.setLayout(new GridLayout(1, 4));
-            JTextField textField = new JTextField("< Категория (" + String.valueOf(categories.size() + 1) + ") >");
+            JTextField textField = new JTextField(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
             upperPanel.add(textField, BorderLayout.CENTER);
 
             /* TODO()
@@ -135,7 +135,7 @@ public class LeftPanel extends CPanel {
                     System.out.println(evt);
                 }
             });*/
-            questionCategory.setName("< Категория (" + String.valueOf(categories.size() + 1) + ") >");
+            questionCategory.setName(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
             openButton.setVisible(false);
             openButton.addActionListener(event -> {
                 if (isOpened) {
