@@ -20,6 +20,9 @@ public class QuestionShortAnswer extends Question{
     public QuestionShortAnswer() {
         super();
         this.answers = new ArrayList<>();
+        answers.add(new ShortAnswer("text1", 100));
+        answers.add(new ShortAnswer("text2", 100));
+        //TODO
     }
 
     public QuestionShortAnswer(String name, TextWithImages textWithImages, List<ShortAnswer> answers) {
