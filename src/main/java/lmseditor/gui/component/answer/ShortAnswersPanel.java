@@ -1,8 +1,5 @@
 package lmseditor.gui.component.answer;
 
-import lmseditor.backend.question.QuestionShortAnswer;
-import lmseditor.backend.question.component.answer.ShortAnswer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,20 +9,18 @@ import java.util.List;
 
 public class ShortAnswersPanel extends JPanel {
 
-    private class ShortAnswerPanel extends JPanel {
+    private class ShortAnswer extends JPanel {
         private static final int TEXT_FIELD_COLUMNS = 60;
 
         private JTextField textField;
         private JButton removeButton;
 
-        public ShortAnswerPanel(String text) {
+        public ShortAnswer() {
             this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
             textField = new JTextField(TEXT_FIELD_COLUMNS);
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
-            textField.setText(text);
-
 
             this.add(textField);
             this.add(removeButton);
@@ -34,37 +29,23 @@ public class ShortAnswersPanel extends JPanel {
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(ShortAnswerPanel.this);
-                answersPanel.remove(ShortAnswerPanel.this);
+                answers.remove(ShortAnswer.this);
+                answersPanel.remove(ShortAnswer.this);
                 ShortAnswersPanel.this.updateUI();
             }
-        }
-
-        public String getAnswerText(){
-            return textField.getText();
         }
 
     }
 
     private JLabel label;
     private JButton addButton;
-    private List<ShortAnswerPanel> answers;
-    private JPanel answersPanel = new JPanel();
+    private List<ShortAnswer> answers;
+    private JPanel answersPanel;
     private JScrollPane answersScrollPane;
-    private QuestionShortAnswer questionShortAnswer;
-    private ShortAnswer shortAnswer = new ShortAnswer();
-    ShortAnswerPanel shortAnswerPanel;
 
-    List<ShortAnswer> answersList;
-
-    public ShortAnswersPanel(List<ShortAnswer> answersList) {
-        this.answersList = answersList;
+    public ShortAnswersPanel() {
         this.setLayout(new BorderLayout());
         answers = new ArrayList<>();
-        questionShortAnswer = new QuestionShortAnswer();
-        answersList = questionShortAnswer.getAnswers();
-
-
 
         label = new JLabel("Enter correct answers");
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -87,17 +68,6 @@ public class ShortAnswersPanel extends JPanel {
         JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
         answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
 
-        for (int i = 0; i < answersList.size(); i++){
-            shortAnswer = answersList.get(i);
-            shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
-            answers.add(shortAnswerPanel);
-            answersPanel.add(shortAnswerPanel);
-            ShortAnswersPanel.this.updateUI();
-            if (answers.size() > 10) {
-                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
-            }
-        }
-
         this.add(header, BorderLayout.NORTH);
         this.add(answersScrollPanePanel, BorderLayout.CENTER);
 
@@ -106,16 +76,13 @@ public class ShortAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel("");
-            answers.add(shortAnswerPanel);
-            answersPanel.add(shortAnswerPanel);
+            ShortAnswer shortAnswer = new ShortAnswer();
+            answers.add(shortAnswer);
+            answersPanel.add(shortAnswer);
             ShortAnswersPanel.this.updateUI();
             if (answers.size() > 10) {
                 answersScrollPane.setPreferredSize(answersScrollPane.getSize());
             }
-            ShortAnswer shortAnswerText = new ShortAnswer();
-            shortAnswerText.setText(shortAnswerPanel.getAnswerText());
-            answersList.add(shortAnswerText);
         }
     }
 

@@ -1,7 +1,5 @@
 package lmseditor.backend.question.text;
 
-import lmseditor.gui.component.QuestionTextPanel;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;

@@ -1,7 +1,5 @@
 package lmseditor.gui.component;
 
-import lmseditor.backend.question.text.QuestionText;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,14 +12,11 @@ public class QuestionTextPanel extends JPanel {
     private JLabel label;
     private JTextArea textArea;
 
-    private QuestionText questionText;
-
-    public QuestionTextPanel(QuestionText question) {
+    public QuestionTextPanel() {
         this.setLayout(new BorderLayout());
-        this.questionText = question;
         label = new JLabel(QUESTION_TEXT_LABEL_TEXT);
 
-        textArea = new JTextArea(questionText.getText(), TEXT_AREA_ROWS, TEXT_AREA_COLUMNS);
+        textArea = new JTextArea(TEXT_AREA_ROWS, TEXT_AREA_COLUMNS);
         textScrollPane = new JScrollPane(textArea);
 
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -32,9 +27,7 @@ public class QuestionTextPanel extends JPanel {
 
         this.add(labelPanel, BorderLayout.NORTH);
         this.add(textScrollPanePanel, BorderLayout.CENTER);
+
     }
 
-    public QuestionText getQuestionText(){
-        return questionText;
-    }
 }
