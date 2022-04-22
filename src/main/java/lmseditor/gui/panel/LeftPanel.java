@@ -1,15 +1,25 @@
-package lmseditor.gui;
+package lmseditor.gui.panel;
 
+import lmseditor.Main;
+import lmseditor.StaticMethods;
+import lmseditor.backend.question.Question;
+import lmseditor.backend.question.QuestionCategory;
+import lmseditor.backend.question.QuestionCollection;
+import lmseditor.backend.question.QuestionShortAnswer;
 import lmseditor.gui.customComponents.*;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeftPanel extends CPanel {
-    public static int step = 5;
+    private QuestionCollection questionCollection = new QuestionCollection();
+    public static final int STEP = 5;
     List<CategoryPnl> categories = new ArrayList<>();
     static public Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
     JScrollPane scrollPane = new JScrollPane();
@@ -18,9 +28,11 @@ public class LeftPanel extends CPanel {
 
 
     public class CategoryPnl extends CPanel {
+        private QuestionCategory questionCategory = new QuestionCategory();
         List<QuestionElement> questionElements = new ArrayList<>();
         private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         private CategoryPnl categoryLink = this;
+
         private class XButton extends ClickableCPanel {
             private static final int step = 5;
 
@@ -64,11 +76,18 @@ public class LeftPanel extends CPanel {
         }
 
         class QuestionElement extends CPanel {
+            Question question = new QuestionShortAnswer();
             JButton questionButton = new JButton();
-
+            JPanel workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
             public QuestionElement() {
                 this.setLayout(new BorderLayout());
                 questionButton.setText("< вопрос (" + String.valueOf(questionElements.size() + 1) + ") >");
+                questionButton.addActionListener(e -> {
+                    Main.mainFrame.workspacePanel.removeAll();
+                    Main.mainFrame.workspacePanel.setLayout(new BorderLayout());
+                    Main.mainFrame.workspacePanel.add(workspace, BorderLayout.CENTER);
+                    Main.mainFrame.workspacePanel.updateUI();
+                });
                 questionButton.setFocusPainted(false);
                 this.add(questionButton, BorderLayout.CENTER);
                 XButton xButton = new XButton();
@@ -80,9 +99,11 @@ public class LeftPanel extends CPanel {
             void remove() {
                 questionElements.remove(this);
                 questionsPanel.remove(this);
-                if(questionElements.size() == 0) {
+                if (questionElements.size() == 0) {
                     categoryLink.openButton.setVisible(false);
                 }
+                workspace.removeAll();
+                workspace.updateUI();
                 updateGraphic();
             }
 
@@ -98,7 +119,17 @@ public class LeftPanel extends CPanel {
             upperPanel.setLayout(new BorderLayout());
             CPanel rightUpperPanel = new CPanel();
             rightUpperPanel.setLayout(new GridLayout(1, 4));
-            upperPanel.add(new JTextField("< Категория (" + String.valueOf(categories.size() + 1) + ") >"), BorderLayout.CENTER);
+            JTextField textField = new JTextField("< Категория (" + String.valueOf(categories.size() + 1) + ") >");
+            upperPanel.add(textField, BorderLayout.CENTER);
+
+            /* TODO()
+            textField.addVetoableChangeListener(new VetoableChangeListener() {
+                @Override
+                public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
+                    System.out.println(evt);
+                }
+            });*/
+            questionCategory.setName("< Категория (" + String.valueOf(categories.size() + 1) + ") >");
             openButton.setVisible(false);
             openButton.addActionListener(event -> {
                 if (isOpened) {
@@ -144,14 +175,14 @@ public class LeftPanel extends CPanel {
             questionElement.boundsSetter = () -> {
                 int y;
                 if (this.questionElements.indexOf(questionElement) == 0) {
-                    y = step;
+                    y = STEP;
                 } else {
                     QuestionElement prev = this.questionElements.get(
                             this.questionElements.indexOf(questionElement) - 1
                     );
-                    y = step + prev.getLocation().y + prev.getHeight();
+                    y = STEP + prev.getLocation().y + prev.getHeight();
                 }
-                return new Rectangle(step * 2, y, questionsPanel.getWidth() - 4 * step, 24);
+                return new Rectangle(STEP * 2, y, questionsPanel.getWidth() - 4 * STEP, 24);
             };
             questionsPanel.doLayout();
             updateGraphic();
@@ -185,18 +216,19 @@ public class LeftPanel extends CPanel {
     }
 
     public void addNewCategory() {
+
         CategoryPnl categoryPnl = new CategoryPnl();
         categories.add(categoryPnl);
         panel.addLayoutable(categoryPnl);
         categoryPnl.boundsSetter = () -> {
             int y;
             if (categories.indexOf(categoryPnl) == 0) {
-                y = step;
+                y = STEP;
             } else {
                 CategoryPnl prev = categories.get(categories.indexOf(categoryPnl) - 1);
-                y = step + prev.getLocation().y + prev.getHeight();
+                y = STEP + prev.getLocation().y + prev.getHeight();
             }
-            return new Rectangle(step, y, panel.getWidth() - 2 * step, categoryPnl.getPreferredSize().height);
+            return new Rectangle(STEP, y, panel.getWidth() - 2 * STEP, categoryPnl.getPreferredSize().height);
         };
         updateGraphic();
     }
