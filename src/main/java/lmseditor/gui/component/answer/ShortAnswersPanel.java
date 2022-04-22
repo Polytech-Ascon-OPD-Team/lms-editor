@@ -26,6 +26,7 @@ public class ShortAnswersPanel extends JPanel {
             removeButton.addActionListener(new RemoveButtonEvent());
             textField.setText(text);
 
+
             this.add(textField);
             this.add(removeButton);
         }
@@ -37,6 +38,10 @@ public class ShortAnswersPanel extends JPanel {
                 answersPanel.remove(ShortAnswerPanel.this);
                 ShortAnswersPanel.this.updateUI();
             }
+        }
+
+        public String getAnswerText(){
+            return textField.getText();
         }
 
     }
@@ -59,16 +64,7 @@ public class ShortAnswersPanel extends JPanel {
         questionShortAnswer = new QuestionShortAnswer();
         answersList = questionShortAnswer.getAnswers();
 
-        for (int i = 0; i < answersList.size(); i++){
-            shortAnswer = answersList.get(i);
-            shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
-            answers.add(shortAnswerPanel);
-            answersPanel.add(shortAnswerPanel);
-            ShortAnswersPanel.this.updateUI();
-            if (answers.size() > 10) {
-                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
-            }
-        }
+
 
         label = new JLabel("Enter correct answers");
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -91,6 +87,17 @@ public class ShortAnswersPanel extends JPanel {
         JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
         answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
 
+        for (int i = 0; i < answersList.size(); i++){
+            shortAnswer = answersList.get(i);
+            shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
+            answers.add(shortAnswerPanel);
+            answersPanel.add(shortAnswerPanel);
+            ShortAnswersPanel.this.updateUI();
+            if (answers.size() > 10) {
+                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
+            }
+        }
+
         this.add(header, BorderLayout.NORTH);
         this.add(answersScrollPanePanel, BorderLayout.CENTER);
 
@@ -106,11 +113,10 @@ public class ShortAnswersPanel extends JPanel {
             if (answers.size() > 10) {
                 answersScrollPane.setPreferredSize(answersScrollPane.getSize());
             }
+            ShortAnswer shortAnswerText = new ShortAnswer();
+            shortAnswerText.setText(shortAnswerPanel.getAnswerText());
+            answersList.add(shortAnswerText);
         }
-    }
-
-    public List<ShortAnswer> getAnswersList(){
-        return answersList;
     }
 
 }
