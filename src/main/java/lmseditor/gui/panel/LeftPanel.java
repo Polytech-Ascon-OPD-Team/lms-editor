@@ -19,6 +19,11 @@ import java.util.List;
 
 public class LeftPanel extends CPanel {
     private QuestionCollection questionCollection = new QuestionCollection();
+
+    public QuestionCollection getQuestionCollection() {
+        return questionCollection;
+    }
+
     public static final int STEP = 5;
     List<CategoryPnl> categories = new ArrayList<>();
     static public Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
@@ -97,6 +102,7 @@ public class LeftPanel extends CPanel {
             }
 
             void remove() {
+                //TODO(): Remove question from question category
                 questionElements.remove(this);
                 questionsPanel.remove(this);
                 if (questionElements.size() == 0) {
@@ -170,6 +176,7 @@ public class LeftPanel extends CPanel {
 
         public void addQuestion() {
             QuestionElement questionElement = new QuestionElement();
+            questionCollection.addQuestionToCategory(questionCategory, questionElement.question);
             this.questionElements.add(questionElement);
             questionsPanel.addLayoutable(questionElement);
             questionElement.boundsSetter = () -> {
@@ -189,6 +196,7 @@ public class LeftPanel extends CPanel {
         }
 
         void removeIt() {
+            //TODO: удаление категории из questionCollection
             categories.remove(this);
             this.getParent().remove(this);
             updateGraphic();
@@ -216,8 +224,8 @@ public class LeftPanel extends CPanel {
     }
 
     public void addNewCategory() {
-
         CategoryPnl categoryPnl = new CategoryPnl();
+        questionCollection.addCategory(categoryPnl.questionCategory);
         categories.add(categoryPnl);
         panel.addLayoutable(categoryPnl);
         categoryPnl.boundsSetter = () -> {

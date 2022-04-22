@@ -4,10 +4,15 @@ import lmseditor.backend.question.*;
 import lmseditor.gui.customComponents.AdvancedLayouter;
 import lmseditor.gui.customComponents.CPanel;
 import lmseditor.gui.frame.MainFrame;
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 
 import javax.swing.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.StringWriter;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StaticMethods {
@@ -31,7 +36,7 @@ public class StaticMethods {
         downPanel.add(okButton);
         downPanel.add(new JPanel());
         dialog.getContentPane().add(downPanel, BorderLayout.SOUTH);
-        dialog.setSize(400,100);
+        dialog.setSize(400, 100);
         dialog.setModal(true);
         //dialog.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         dialog.setResizable(false);
@@ -42,7 +47,7 @@ public class StaticMethods {
         }
         String str = (String) jComboBox.getSelectedItem();
         dialog.setVisible(false);
-        dialog.dispatchEvent(new WindowEvent(dialog,WindowEvent.WINDOW_CLOSING));
+        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
         System.out.println("132");
         switch (str) {
             case "C выбором":
@@ -55,5 +60,20 @@ public class StaticMethods {
                 return new QuestionMatching();
         }
         return null;
+    }
+
+    public static String parse(QuestionCollection questionCollection) {
+        try {
+            JAXBContext context = JAXBContextFactory.createContext(
+                    new Class[]{QuestionCollection.class}, null);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            StringWriter stringWriter1 = new StringWriter();
+            marshaller.marshal(questionCollection, stringWriter1);
+            return stringWriter1.toString();
+        } catch (JAXBException e){
+            e.printStackTrace();
+        }
+        return "ERROR!";
     }
 }
