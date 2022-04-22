@@ -1,4 +1,4 @@
-package customComponents;
+package lmseditor.gui.customComponents;
 
 import javax.swing.*;
 import java.awt.*;

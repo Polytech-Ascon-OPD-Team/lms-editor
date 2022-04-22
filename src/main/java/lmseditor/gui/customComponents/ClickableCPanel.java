@@ -1,4 +1,4 @@
-package customComponents;
+package lmseditor.gui.customComponents;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

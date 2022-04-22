@@ -1,4 +1,6 @@
-import customComponents.*;
+package lmseditor.gui;
+
+import lmseditor.gui.customComponents.*;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
