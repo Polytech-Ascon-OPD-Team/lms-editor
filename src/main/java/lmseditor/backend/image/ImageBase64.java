@@ -1,10 +1,9 @@
 package lmseditor.backend.image;
 
+import javax.imageio.ImageIO;
 import javax.xml.bind.annotation.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.Base64;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -89,11 +88,23 @@ public class ImageBase64 {
         this.base64 = base64;
     }
 
-    public static String encodeFileToBase64(File file) throws FileNotFoundException, IOException {
+    public static String encodeFileToBase64(File file) throws IOException {
         FileInputStream fileInputStreamReader = new FileInputStream(file);
         byte[] bytes = new byte[(int)file.length()];
         fileInputStreamReader.read(bytes);
-        return new String(Base64.getEncoder().encodeToString(bytes));
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public static BufferedImage decodeBase64ToImage(String base64) {
+        byte[] bytes = Base64.getDecoder().decode(base64);
+        ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(bin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     @Override
