@@ -49,11 +49,8 @@ public class ShortAnswersPanel extends JPanel {
     private JLabel label;
     private JButton addButton;
     private List<ShortAnswerPanel> answers;
-    private JPanel answersPanel = new JPanel();
+    private JPanel answersPanel;
     private JScrollPane answersScrollPane;
-    private QuestionShortAnswer questionShortAnswer;
-    private ShortAnswer shortAnswer = new ShortAnswer();
-    ShortAnswerPanel shortAnswerPanel;
 
     List<ShortAnswer> answersList;
 
@@ -61,10 +58,6 @@ public class ShortAnswersPanel extends JPanel {
         this.answersList = answersList;
         this.setLayout(new BorderLayout());
         answers = new ArrayList<>();
-        questionShortAnswer = new QuestionShortAnswer();
-        answersList = questionShortAnswer.getAnswers();
-
-
 
         label = new JLabel("Enter correct answers");
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -88,8 +81,8 @@ public class ShortAnswersPanel extends JPanel {
         answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
 
         for (int i = 0; i < answersList.size(); i++){
-            shortAnswer = answersList.get(i);
-            shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
+            ShortAnswer shortAnswer = answersList.get(i);
+            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
             answers.add(shortAnswerPanel);
             answersPanel.add(shortAnswerPanel);
             ShortAnswersPanel.this.updateUI();
@@ -103,6 +96,15 @@ public class ShortAnswersPanel extends JPanel {
 
     }
 
+    public void loadData() {
+        answersList.clear();
+        for(ShortAnswerPanel shortAnswerPanel : answers) {
+            ShortAnswer shortAnswer = new ShortAnswer();
+            shortAnswer.setText(shortAnswerPanel.getAnswerText());
+            answersList.add(shortAnswer);
+        }
+    }
+
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -113,9 +115,6 @@ public class ShortAnswersPanel extends JPanel {
             if (answers.size() > 10) {
                 answersScrollPane.setPreferredSize(answersScrollPane.getSize());
             }
-            ShortAnswer shortAnswerText = new ShortAnswer();
-            shortAnswerText.setText(shortAnswerPanel.getAnswerText());
-            answersList.add(shortAnswerText);
         }
     }
 

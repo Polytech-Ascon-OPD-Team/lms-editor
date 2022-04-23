@@ -1,36 +1,38 @@
-package lmseditor.gui.panel;
+package lmseditor.gui.panel.workspace;
 
-import lmseditor.backend.question.QuestionNumerical;
+import lmseditor.backend.question.QuestionShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.gui.component.ImageFlow;
 import lmseditor.gui.component.QuestionNamePanel;
 import lmseditor.gui.component.QuestionTextPanel;
-import lmseditor.gui.component.answer.NumericalAnswersPanel;
-import lmseditor.gui.panel.properties.QuestionNumericalAnswerProperties;
+import lmseditor.gui.component.answer.ShortAnswersPanel;
+import lmseditor.gui.panel.properties.QuestionShortAnswerProperties;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class QuestionNumericalAnswerWorkspace extends JPanel {
+public class QuestionShortAnswerWorkspace extends Workspace {
 
     private QuestionNamePanel name;
     private QuestionTextPanel questionText;
     private ImageFlow imageFlow;
-    private NumericalAnswersPanel answers;
+    private ShortAnswersPanel answers;
 
-    private QuestionNumericalAnswerProperties properties;
+    private QuestionShortAnswerProperties properties;
 
-    private QuestionNumerical question;
+    private QuestionShortAnswer question;
 
-    public QuestionNumericalAnswerWorkspace(QuestionNumerical question) {
+    public QuestionShortAnswerWorkspace(QuestionShortAnswer question) {
         this.setLayout(new BorderLayout());
 
         this.question = question;
 
         name = new QuestionNamePanel();
-        questionText = new QuestionTextPanel(new QuestionText());
-        properties = new QuestionNumericalAnswerProperties();
-        answers = new NumericalAnswersPanel();
+        questionText = new QuestionTextPanel(question.getTextWithImages().getQuestionText());
+        properties = new QuestionShortAnswerProperties();
+        answers = new ShortAnswersPanel(question.getAnswers());
         imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
 
         JPanel centerPanel = new JPanel();
@@ -44,6 +46,13 @@ public class QuestionNumericalAnswerWorkspace extends JPanel {
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(properties, BorderLayout.EAST);
 
+    }
+
+    @Override
+    public void loadData() {
+        questionText.loadData();
+        question.getTextWithImages().generateFormattedText();
+        answers.loadData();
     }
 
 }
