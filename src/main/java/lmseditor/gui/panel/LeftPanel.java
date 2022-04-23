@@ -85,6 +85,7 @@ public class LeftPanel extends CPanel {
                 this.setLayout(new BorderLayout());
                 questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
                 questionButton.addActionListener(e -> {
+                    Main.mainFrame.getWorkspace().loadData();
                     Main.mainFrame.setWorkspace(workspace);
                 });
                 questionButton.setFocusPainted(false);

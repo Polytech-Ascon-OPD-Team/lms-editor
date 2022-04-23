@@ -1,6 +1,8 @@
 package lmseditor.gui.frame;
 
+import lmseditor.Main;
 import lmseditor.StaticMethods;
+import lmseditor.backend.QuestionXmlParser;
 import lmseditor.gui.customComponents.StandardButton;
 import lmseditor.gui.panel.LeftPanel;
 import lmseditor.gui.panel.workspace.EmptyWorkspace;
@@ -14,10 +16,12 @@ public class MainFrame extends JFrame {
     private JPanel mainPanel;
     private LeftPanel leftPanel;
     private Workspace workspace;
+    private QuestionXmlParser parser;
 
     public MainFrame() {
         mainPanel = new JPanel();
         leftPanel = new LeftPanel();
+        parser = new QuestionXmlParser();
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(leftPanel, BorderLayout.WEST);
@@ -30,7 +34,9 @@ public class MainFrame extends JFrame {
         downPanel.setLayout(new GridLayout(1,3));
         StandardButton parseButton = new StandardButton("Parse...");
         parseButton.setAction(() -> {
-            System.out.println(StaticMethods.parse(leftPanel.getQuestionCollection()));
+            workspace.loadData();
+            String xml = parser.marshallToString(leftPanel.getQuestionCollection());
+            System.out.println(xml);
         });
         downPanel.add(new JPanel());
         downPanel.add(parseButton);
@@ -49,6 +55,10 @@ public class MainFrame extends JFrame {
         this.workspace = workspace;
         mainPanel.add(workspace, BorderLayout.CENTER);
         mainPanel.updateUI();
+    }
+
+    public Workspace getWorkspace() {
+        return workspace;
     }
 
 }

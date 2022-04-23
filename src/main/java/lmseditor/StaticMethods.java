@@ -61,18 +61,4 @@ public class StaticMethods {
         return null;
     }
 
-    public static String parse(QuestionCollection questionCollection) {
-        try {
-            JAXBContext context = JAXBContextFactory.createContext(
-                    new Class[]{QuestionCollection.class}, null);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            StringWriter stringWriter1 = new StringWriter();
-            marshaller.marshal(questionCollection, stringWriter1);
-            return stringWriter1.toString();
-        } catch (JAXBException e){
-            e.printStackTrace();
-        }
-        return "ERROR!";
-    }
 }
