@@ -1,40 +1,35 @@
 package lmseditor.gui.panel;
 
 import lmseditor.Main;
-import lmseditor.StaticMethods;
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
 import lmseditor.backend.question.QuestionShortAnswer;
 import lmseditor.gui.customComponents.*;
+import lmseditor.gui.panel.workspace.EmptyWorkspace;
+import lmseditor.gui.panel.workspace.QuestionShortAnswerWorkspace;
+import lmseditor.gui.panel.workspace.Workspace;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeftPanel extends CPanel {
+
+    private static final int STEP = 5;
+    private static final Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
+
     private QuestionCollection questionCollection = new QuestionCollection();
+    private List<CategoryPnl> categories = new ArrayList<>();
 
-    public QuestionCollection getQuestionCollection() {
-        return questionCollection;
-    }
-
-    public static final int STEP = 5;
-    List<CategoryPnl> categories = new ArrayList<>();
-    static public Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
-    JScrollPane scrollPane = new JScrollPane();
-
+    private JScrollPane scrollPane = new JScrollPane();
     private CPanel panel = new CPanel();
 
-
-    public class CategoryPnl extends CPanel {
+    private class CategoryPnl extends CPanel {
         private QuestionCategory questionCategory = new QuestionCategory();
-        List<QuestionElement> questionElements = new ArrayList<>();
+        private List<QuestionElement> questionElements = new ArrayList<>();
         private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         private CategoryPnl categoryLink = this;
 
@@ -80,18 +75,17 @@ public class LeftPanel extends CPanel {
             }
         }
 
-        class QuestionElement extends CPanel {
+        private class QuestionElement extends CPanel {
+            // test
             Question question = new QuestionShortAnswer();
+            Workspace workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
+
             JButton questionButton = new JButton();
-            JPanel workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
             public QuestionElement() {
                 this.setLayout(new BorderLayout());
                 questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
                 questionButton.addActionListener(e -> {
-                    Main.mainFrame.workspacePanel.removeAll();
-                    Main.mainFrame.workspacePanel.setLayout(new BorderLayout());
-                    Main.mainFrame.workspacePanel.add(workspace, BorderLayout.CENTER);
-                    Main.mainFrame.workspacePanel.updateUI();
+                    Main.mainFrame.setWorkspace(workspace);
                 });
                 questionButton.setFocusPainted(false);
                 this.add(questionButton, BorderLayout.CENTER);
@@ -108,17 +102,16 @@ public class LeftPanel extends CPanel {
                 if (questionElements.size() == 0) {
                     categoryLink.openButton.setVisible(false);
                 }
-                workspace.removeAll();
-                workspace.updateUI();
+                Main.mainFrame.setWorkspace(new EmptyWorkspace());
                 updateGraphic();
             }
 
         }
 
-        CPanel questionsPanel = new CPanel();
+        private CPanel questionsPanel = new CPanel();
         private boolean isOpened = false;
 
-        CategoryPnl() {
+        public CategoryPnl() {
             this.setLayout(new BorderLayout());
             questionsPanel.setLayout(new AdvancedLayouter());
             CPanel upperPanel = new CPanel();
@@ -195,7 +188,7 @@ public class LeftPanel extends CPanel {
             updateGraphic();
         }
 
-        void removeIt() {
+        public void removeIt() {
             //TODO: удаление категории из questionCollection
             categories.remove(this);
             this.getParent().remove(this);
@@ -221,6 +214,10 @@ public class LeftPanel extends CPanel {
         label1.setForeground(Color.white);
         this.add(label1, BorderLayout.NORTH);
         this.add(downPanel, BorderLayout.SOUTH);
+    }
+
+    public QuestionCollection getQuestionCollection() {
+        return questionCollection;
     }
 
     public void addNewCategory() {
