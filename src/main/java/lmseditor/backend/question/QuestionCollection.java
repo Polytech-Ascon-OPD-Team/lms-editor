@@ -24,4 +24,16 @@ public class QuestionCollection {
         questions.add(categoryIndex + 1, question);
     }
 
+    public void removeQuestion(Question question) {
+        questions.remove(question);
+    }
+
+    public void removeCategory(QuestionCategory category) {
+        int index = questions.indexOf(category);
+        questions.remove(index);
+        while (index < questions.size() && !(questions.get(index) instanceof QuestionCategory)) {
+            questions.remove(index);
+        }
+    }
+
 }
