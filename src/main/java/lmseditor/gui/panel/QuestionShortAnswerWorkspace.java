@@ -48,4 +48,10 @@ public class QuestionShortAnswerWorkspace extends JPanel {
 
     }
 
+    public void loadData() {
+        questionText.loadData();
+        question.getTextWithImages().generateFormattedText();
+        answers.loadData();
+    }
+
 }

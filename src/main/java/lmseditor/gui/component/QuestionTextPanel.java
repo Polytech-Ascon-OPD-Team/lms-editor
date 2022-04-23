@@ -16,9 +16,9 @@ public class QuestionTextPanel extends JPanel {
 
     private QuestionText questionText;
 
-    public QuestionTextPanel(QuestionText question) {
+    public QuestionTextPanel(QuestionText questionText) {
         this.setLayout(new BorderLayout());
-        this.questionText = question;
+        this.questionText = questionText;
         label = new JLabel(QUESTION_TEXT_LABEL_TEXT);
 
         textArea = new JTextArea(questionText.getText(), TEXT_AREA_ROWS, TEXT_AREA_COLUMNS);
@@ -34,7 +34,7 @@ public class QuestionTextPanel extends JPanel {
         this.add(textScrollPanePanel, BorderLayout.CENTER);
     }
 
-    public QuestionText getQuestionText(){
-        return questionText;
+    public void loadData() {
+        questionText.setText(textArea.getText());
     }
 }

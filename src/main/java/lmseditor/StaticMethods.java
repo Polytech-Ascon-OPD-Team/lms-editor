@@ -48,7 +48,6 @@ public class StaticMethods {
         String str = (String) jComboBox.getSelectedItem();
         dialog.setVisible(false);
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-        System.out.println("132");
         switch (str) {
             case "C выбором":
                 return new QuestionChoice();
