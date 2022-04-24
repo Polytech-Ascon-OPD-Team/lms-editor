@@ -1,7 +1,5 @@
 package lmseditor.gui.frame;
 
-import lmseditor.Main;
-import lmseditor.StaticMethods;
 import lmseditor.backend.QuestionXmlParser;
 import lmseditor.gui.customComponents.StandardButton;
 import lmseditor.gui.panel.LeftPanel;

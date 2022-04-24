@@ -4,10 +4,9 @@ import lmseditor.Main;
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
-import lmseditor.backend.question.QuestionShortAnswer;
 import lmseditor.gui.customComponents.*;
+import lmseditor.gui.dialog.QuestionTypeDialog;
 import lmseditor.gui.panel.workspace.EmptyWorkspace;
-import lmseditor.gui.panel.workspace.QuestionShortAnswerWorkspace;
 import lmseditor.gui.panel.workspace.Workspace;
 
 import javax.swing.*;
@@ -21,17 +20,7 @@ public class LeftPanel extends CPanel {
     private static final int STEP = 5;
     private static final Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
 
-    private QuestionCollection questionCollection = new QuestionCollection();
-    private List<CategoryPnl> categories = new ArrayList<>();
-
-    private JScrollPane scrollPane = new JScrollPane();
-    private CPanel panel = new CPanel();
-
     private class CategoryPnl extends CPanel {
-        private QuestionCategory questionCategory = new QuestionCategory();
-        private List<QuestionElement> questionElements = new ArrayList<>();
-        private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
-        private CategoryPnl categoryLink = this;
 
         private class XButton extends ClickableCPanel {
             private static final int step = 5;
@@ -76,12 +65,15 @@ public class LeftPanel extends CPanel {
         }
 
         private class QuestionElement extends CPanel {
-            // test
-            Question question = new QuestionShortAnswer();
-            Workspace workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
+            private Question question;
+            private Workspace workspace;
+            private JButton questionButton = new JButton();
 
-            JButton questionButton = new JButton();
             public QuestionElement() {
+                QuestionTypeDialog dialog = new QuestionTypeDialog();
+                question = dialog.getQuestion();
+                workspace = dialog.getWorkspace();
+
                 this.setLayout(new BorderLayout());
                 questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
                 questionButton.addActionListener(e -> {
@@ -96,7 +88,7 @@ public class LeftPanel extends CPanel {
                 setPreferredSize(new Dimension(12, 12));
             }
 
-            void remove() {
+            private void remove() {
                 //TODO(): Remove question from question category
                 questionElements.remove(this);
                 questionsPanel.remove(this);
@@ -109,6 +101,10 @@ public class LeftPanel extends CPanel {
 
         }
 
+        private QuestionCategory questionCategory = new QuestionCategory();
+        private List<QuestionElement> questionElements = new ArrayList<>();
+        private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+        private CategoryPnl categoryLink = this;
         private CPanel questionsPanel = new CPanel();
         private boolean isOpened = false;
 
@@ -171,14 +167,14 @@ public class LeftPanel extends CPanel {
         public void addQuestion() {
             QuestionElement questionElement = new QuestionElement();
             questionCollection.addQuestionToCategory(questionCategory, questionElement.question);
-            this.questionElements.add(questionElement);
+            questionElements.add(questionElement);
             questionsPanel.addLayoutable(questionElement);
             questionElement.boundsSetter = () -> {
                 int y;
                 if (this.questionElements.indexOf(questionElement) == 0) {
                     y = STEP;
                 } else {
-                    QuestionElement prev = this.questionElements.get(
+                    QuestionElement prev = questionElements.get(
                             this.questionElements.indexOf(questionElement) - 1
                     );
                     y = STEP + prev.getLocation().y + prev.getHeight();
@@ -197,6 +193,12 @@ public class LeftPanel extends CPanel {
         }
 
     }
+
+    private QuestionCollection questionCollection = new QuestionCollection();
+    private List<CategoryPnl> categories = new ArrayList<>();
+
+    private JScrollPane scrollPane = new JScrollPane();
+    private CPanel panel = new CPanel();
 
     public LeftPanel() {
         setBackground(LEFT_PANEL_COLOR);
