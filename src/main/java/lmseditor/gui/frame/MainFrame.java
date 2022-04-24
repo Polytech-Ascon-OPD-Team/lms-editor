@@ -1,7 +1,5 @@
 package lmseditor.gui.frame;
 
-import lmseditor.Main;
-import lmseditor.StaticMethods;
 import lmseditor.backend.QuestionXmlParser;
 import lmseditor.gui.customComponents.StandardButton;
 import lmseditor.gui.panel.LeftPanel;
@@ -19,15 +17,13 @@ public class MainFrame extends JFrame {
     private QuestionXmlParser parser;
 
     public MainFrame() {
-        mainPanel = new JPanel();
+        mainPanel = new JPanel(new BorderLayout());
         leftPanel = new LeftPanel();
-        parser = new QuestionXmlParser();
-
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(leftPanel, BorderLayout.WEST);
         leftPanel.setPreferredSize(new Dimension(300, 0));
-
+        parser = new QuestionXmlParser();
         workspace = new EmptyWorkspace();
+
+        mainPanel.add(leftPanel, BorderLayout.WEST);
 
         // parse test
         JPanel downPanel = new JPanel();

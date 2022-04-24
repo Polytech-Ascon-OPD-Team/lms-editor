@@ -69,7 +69,7 @@ public class ImageFlow extends JPanel {
 
     private Image resizeImage(BufferedImage image, Dimension requiredSize) {
         Image scaleImage = null;
-        if (image.getWidth() > getHeight()) {
+        if (image.getWidth() > image.getHeight()) {
             double scaleRatio = ((double) requiredSize.width) / image.getWidth();
             int width = requiredSize.width;
             int height = (int) (scaleRatio * image.getHeight());

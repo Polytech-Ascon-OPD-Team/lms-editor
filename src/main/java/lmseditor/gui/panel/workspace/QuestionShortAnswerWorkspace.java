@@ -35,17 +35,17 @@ public class QuestionShortAnswerWorkspace extends Workspace {
         answers = new ShortAnswersPanel(question.getAnswers());
         imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.add(name);
-        centerPanel.add(questionText);
-        centerPanel.add(imageFlow);
-        centerPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        centerPanel.add(answers);
+        Box box = Box.createVerticalBox();
+        box.add(name);
+        box.add(questionText);
+        box.add(imageFlow);
+        box.add(new JSeparator(SwingConstants.HORIZONTAL));
+        box.add(answers);
+
+        JPanel centerPanel = new JPanel(new FlowLayout());
+        centerPanel.add(box);
 
         this.add(centerPanel, BorderLayout.CENTER);
-        this.add(properties, BorderLayout.EAST);
-
     }
 
     @Override
