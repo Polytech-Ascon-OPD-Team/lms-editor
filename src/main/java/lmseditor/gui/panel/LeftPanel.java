@@ -4,10 +4,12 @@ import lmseditor.Main;
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
+import lmseditor.backend.question.QuestionType;
 import lmseditor.gui.customComponents.*;
 import lmseditor.gui.dialog.QuestionTypeDialog;
 import lmseditor.gui.panel.workspace.EmptyWorkspace;
 import lmseditor.gui.panel.workspace.Workspace;
+import lmseditor.gui.util.Util;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -71,8 +73,9 @@ public class LeftPanel extends CPanel {
 
             public QuestionElement() {
                 QuestionTypeDialog dialog = new QuestionTypeDialog();
-                question = dialog.getQuestion();
-                workspace = dialog.getWorkspace();
+                QuestionType type = dialog.getSelectedType();
+                question = Util.getQuestionForType(type);
+                workspace = Util.getWorkspaceForQuestionAndType(question, type);
 
                 this.setLayout(new BorderLayout());
                 questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
