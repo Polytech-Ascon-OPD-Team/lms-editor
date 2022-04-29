@@ -1,29 +1,29 @@
 package lmseditor.backend.question.text;
 
+import lmseditor.backend.question.component.QuestionName;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QuestionText {
+public class QuestionText extends TextWithImages {
 
     @XmlTransient
-    private String text;
+    private final QuestionName name;
 
-    public QuestionText() {
-        this.text = "";
+    private QuestionText() {
+        name = new QuestionName();
     }
 
-    public QuestionText(String text) {
-        this.text = text;
+    public QuestionText(QuestionName name) {
+        this.name = name;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    @Override
+    public void generateFormattedText() {
+        super.generateFormattedText();
+        xmlText = name.getFullName() + "<br/>" + xmlText;
     }
 
 }

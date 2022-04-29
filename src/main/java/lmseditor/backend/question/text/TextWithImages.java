@@ -16,13 +16,13 @@ public class TextWithImages {
 
     @XmlElement(name = "text")
     @XmlCDATA
-    private String xmlText;
+    protected String xmlText;
 
     @XmlPath(".")
     private ImageList imageList;
 
-    @XmlTransient
-    private QuestionText questionText;
+    @XmlPath(".")
+    private Text text;
 
     @XmlTransient
     private Formatter formatter;
@@ -31,7 +31,7 @@ public class TextWithImages {
         this.formatter = new HtmlFormatter();
         this.xmlText = "";
         this.imageList = new ImageList();
-        this.questionText = new QuestionText();
+        this.text = new Text();
         this.format = formatter.getFormatOption();
     }
 
@@ -43,16 +43,16 @@ public class TextWithImages {
         this.imageList = imageList;
     }
 
-    public QuestionText getQuestionText() {
-        return questionText;
+    public Text getText() {
+        return text;
     }
 
-    public void setQuestionText(QuestionText questionText) {
-        this.questionText = questionText;
+    public void setText(Text text) {
+        this.text = text;
     }
 
     public void generateFormattedText() {
-        formatter.setText(questionText.getText());
+        formatter.setText(text.getText());
         formatter.setImageList(imageList);
         xmlText = formatter.getFormattedString();
     }

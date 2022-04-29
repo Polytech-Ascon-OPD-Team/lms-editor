@@ -6,6 +6,7 @@ import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.component.answer.NumericalAnswer;
 import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
+import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.jupiter.api.Assertions;
@@ -27,8 +28,9 @@ public class XmlTest {
 
     @Test
     public void marshalAndUnmarshal() {
-        TextWithImages questionShortAnswerText = new TextWithImages();
-        questionShortAnswerText.setQuestionText(new QuestionText("Question short answer 1 text"));
+        QuestionName shortAnswerName = new QuestionName("shortAnswer-1", "name");
+        QuestionText questionShortAnswerText = new QuestionText(shortAnswerName);
+        questionShortAnswerText.setText(new Text("Question short answer 1 text"));
         ImageList imageList = new ImageList();
         imageList.getImages().add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
         imageList.getImages().add(new ImageBase64("img-2.png", "/", 200, 200, "base64code-2"));
@@ -39,55 +41,59 @@ public class XmlTest {
         shortAnswers.add(new ShortAnswer("Incorrect answer 1", 0));
         shortAnswers.add(new ShortAnswer("Incorrect answer 2", 0));
 
-        QuestionShortAnswer questionShortAnswer = new QuestionShortAnswer("questionShortAnswer-1",
+        QuestionShortAnswer questionShortAnswer = new QuestionShortAnswer(shortAnswerName,
                 questionShortAnswerText, shortAnswers);
 
-        TextWithImages questionChoiceText = new TextWithImages();
-        questionChoiceText.setQuestionText(new QuestionText("Question choice 1 text"));
+        QuestionName choiceName = new QuestionName("choice-1", "name");
+        QuestionText questionChoiceText = new QuestionText(choiceName);
+        questionChoiceText.setText(new Text("Question choice 1 text"));
         questionChoiceText.generateFormattedText();
         List<ChoiceAnswer> choiceAnswers = new ArrayList<>();
         ChoiceAnswer choiceAnswer1 = new ChoiceAnswer();
-        choiceAnswer1.getTextWithImages().setQuestionText(new QuestionText("Correct answer 1"));
+        choiceAnswer1.getTextWithImages().setText(new Text("Correct answer 1"));
         choiceAnswer1.setFraction(100);
         choiceAnswer1.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer1);
         ChoiceAnswer choiceAnswer2 = new ChoiceAnswer();
-        choiceAnswer2.getTextWithImages().setQuestionText(new QuestionText("Incorrect answer 1"));
+        choiceAnswer2.getTextWithImages().setText(new Text("Incorrect answer 1"));
         choiceAnswer2.setFraction(0);
         choiceAnswer2.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer2);
         ChoiceAnswer choiceAnswer3 = new ChoiceAnswer();
-        choiceAnswer3.getTextWithImages().setQuestionText(new QuestionText("Incorrect answer 2"));
+        choiceAnswer3.getTextWithImages().setText(new Text("Incorrect answer 2"));
         choiceAnswer3.setFraction(0);
         choiceAnswer3.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer3);
-        QuestionChoice questionChoice = new QuestionChoice("questionChoice-1",
+        QuestionChoice questionChoice = new QuestionChoice(choiceName,
                 questionChoiceText,false, choiceAnswers);
 
         List<Subquestion> subquestions = new ArrayList<>();
         Subquestion subquestion1 = new Subquestion();
-        subquestion1.getTextWithImages().setQuestionText(new QuestionText("Subquestion 1 text"));
+        subquestion1.getTextWithImages().setText(new Text("Subquestion 1 text"));
         subquestion1.setAnswerText("Subquestion 1 answer");
         subquestion1.getTextWithImages().generateFormattedText();
         subquestions.add(subquestion1);
         Subquestion subquestion2 = new Subquestion();
-        subquestion2.getTextWithImages().setQuestionText(new QuestionText("Subquestion 2 text"));
+        subquestion2.getTextWithImages().setText(new Text("Subquestion 2 text"));
         subquestion2.setAnswerText("Subquestion 2 answer");
         subquestion2.getTextWithImages().generateFormattedText();
         subquestions.add(subquestion2);
-        TextWithImages questionMatchingText = new TextWithImages();
-        questionMatchingText.setQuestionText(new QuestionText("Question Matching 1 text"));
+        QuestionName matchingName = new QuestionName("matching-1", "name");
+        QuestionText questionMatchingText = new QuestionText(matchingName);
+        questionMatchingText.setText(new Text("Question Matching 1 text"));
         questionMatchingText.generateFormattedText();
-        QuestionMatching questionMatching = new QuestionMatching("questionMatching-1",
+        QuestionMatching questionMatching = new QuestionMatching(matchingName,
                 questionMatchingText, subquestions);
 
         List<NumericalAnswer> numericalAnswers = new ArrayList<>();
         numericalAnswers.add(new NumericalAnswer(15.0, 100, 0.0));
         numericalAnswers.add(new NumericalAnswer(-3.0, 100, 0.0));
-        TextWithImages questionNumericalText = new TextWithImages();
-        questionNumericalText.setQuestionText(new QuestionText("Question Numerical 1 text"));
+        QuestionName numericalName = new QuestionName("numerical-1", "name");
+        QuestionText questionNumericalText = new QuestionText(numericalName);
+        questionNumericalText.setText(new Text("Question Numerical 1 text"));
         questionNumericalText.generateFormattedText();
-        QuestionNumerical questionNumerical = new QuestionNumerical("questionNumerical-1",
+
+        QuestionNumerical questionNumerical = new QuestionNumerical(numericalName,
                 questionNumericalText, numericalAnswers);
 
         QuestionCollection questions = new QuestionCollection();

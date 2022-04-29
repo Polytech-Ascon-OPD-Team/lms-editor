@@ -8,6 +8,7 @@ import lmseditor.gui.panel.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class MainFrame extends JFrame {
 
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame {
             workspace.loadData();
             String xml = parser.marshallToString(leftPanel.getQuestionCollection());
             System.out.println(xml);
+            parser.marshallToFile(leftPanel.getQuestionCollection(), new File("D:\\file.xml"));
         });
         downPanel.add(new JPanel());
         downPanel.add(parseButton);

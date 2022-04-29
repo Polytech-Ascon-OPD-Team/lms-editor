@@ -1,6 +1,8 @@
 package lmseditor.backend.question;
 
+import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.NumericalAnswer;
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -24,7 +26,7 @@ public class QuestionNumerical extends Question {
         this.answers = new ArrayList<>();
     }
 
-    public QuestionNumerical(String name, TextWithImages textWithImages, List<NumericalAnswer> answers) {
+    public QuestionNumerical(QuestionName name, QuestionText textWithImages, List<NumericalAnswer> answers) {
         super(name, textWithImages);
         this.answers = answers;
     }
