@@ -6,6 +6,7 @@ import java.util.List;
 
 import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -26,8 +27,8 @@ public class QuestionChoice extends Question {
         this.choiceAnswers = new ArrayList<>();
     }
 
-    public QuestionChoice(QuestionName name, TextWithImages textWithImages, boolean isSingleChoice, List<ChoiceAnswer> choiceAnswers) {
-        super(name, textWithImages);
+    public QuestionChoice(QuestionName name, QuestionText questionText, boolean isSingleChoice, List<ChoiceAnswer> choiceAnswers) {
+        super(name, questionText);
         this.isSingleChoice = isSingleChoice;
         this.choiceAnswers = choiceAnswers;
     }

@@ -27,10 +27,10 @@ public class QuestionShortAnswerWorkspace extends Workspace {
         this.question = question;
 
         name = new QuestionNamePanel(question.getName());
-        questionText = new QuestionTextPanel(question.getTextWithImages().getText());
+        questionText = new QuestionTextPanel(question.getQuestionText().getText());
         properties = new QuestionShortAnswerProperties();
         answers = new ShortAnswersPanel(question.getAnswers());
-        imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
+        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
 
         Box box = Box.createVerticalBox();
         box.add(name);
@@ -47,10 +47,11 @@ public class QuestionShortAnswerWorkspace extends Workspace {
 
     @Override
     public void loadData() {
-        questionText.loadData();
-        question.getTextWithImages().generateFormattedText();
-        answers.loadData();
         name.loadData();
+        questionText.loadData();
+        question.getQuestionText().generateFormattedText();
+        answers.loadData();
+
     }
 
 }

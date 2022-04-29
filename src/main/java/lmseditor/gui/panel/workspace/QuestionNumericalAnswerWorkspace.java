@@ -31,7 +31,7 @@ public class QuestionNumericalAnswerWorkspace extends Workspace {
         questionText = new QuestionTextPanel(new Text());
         properties = new QuestionNumericalAnswerProperties();
         answers = new NumericalAnswersPanel();
-        imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
+        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));

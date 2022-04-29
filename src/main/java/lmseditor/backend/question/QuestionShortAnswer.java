@@ -6,6 +6,7 @@ import java.util.List;
 
 import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ShortAnswer;
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
@@ -23,7 +24,7 @@ public class QuestionShortAnswer extends Question{
         this.answers = new ArrayList<>();
     }
 
-    public QuestionShortAnswer(QuestionName name, TextWithImages textWithImages, List<ShortAnswer> answers) {
+    public QuestionShortAnswer(QuestionName name, QuestionText textWithImages, List<ShortAnswer> answers) {
         super(name, textWithImages);
         this.answers = answers;
     }

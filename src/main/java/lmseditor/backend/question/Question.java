@@ -3,6 +3,7 @@ package lmseditor.backend.question;
 import javax.xml.bind.annotation.*;
 
 import lmseditor.backend.question.component.QuestionName;
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -12,16 +13,16 @@ public abstract class Question extends QuestionXml {
     private QuestionName name;
 
     @XmlElement(name = "questiontext")
-    private TextWithImages textWithImages;
+    private QuestionText questionText;
 
     public Question() {
         this.name = new QuestionName();
-        this.textWithImages = new TextWithImages();
+        this.questionText = new QuestionText(name);
     }
 
-    public Question(QuestionName name, TextWithImages textWithImages) {
+    public Question(QuestionName name, QuestionText questionText) {
         this.name = name;
-        this.textWithImages = textWithImages;
+        this.questionText = questionText;
     }
 
     public QuestionName getName() {
@@ -32,12 +33,8 @@ public abstract class Question extends QuestionXml {
         this.name = name;
     }
 
-    public TextWithImages getTextWithImages() {
-        return textWithImages;
-    }
-
-    public void setTextWithImages(TextWithImages textWithImages) {
-        this.textWithImages = textWithImages;
+    public QuestionText getQuestionText() {
+        return questionText;
     }
 
 }

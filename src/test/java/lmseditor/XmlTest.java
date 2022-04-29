@@ -5,6 +5,7 @@ import lmseditor.backend.image.ImageList;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.component.answer.NumericalAnswer;
 import lmseditor.backend.question.component.answer.ShortAnswer;
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
@@ -27,7 +28,8 @@ public class XmlTest {
 
     @Test
     public void marshalAndUnmarshal() {
-        TextWithImages questionShortAnswerText = new TextWithImages();
+        QuestionName shortAnswerName = new QuestionName("shortAnswer-1", "name");
+        QuestionText questionShortAnswerText = new QuestionText(shortAnswerName);
         questionShortAnswerText.setText(new Text("Question short answer 1 text"));
         ImageList imageList = new ImageList();
         imageList.getImages().add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
@@ -38,11 +40,12 @@ public class XmlTest {
         shortAnswers.add(new ShortAnswer("Correct answer 1", 100));
         shortAnswers.add(new ShortAnswer("Incorrect answer 1", 0));
         shortAnswers.add(new ShortAnswer("Incorrect answer 2", 0));
-        QuestionName shortAnswerName = new QuestionName("shortAnswer-1", "name");
+
         QuestionShortAnswer questionShortAnswer = new QuestionShortAnswer(shortAnswerName,
                 questionShortAnswerText, shortAnswers);
 
-        TextWithImages questionChoiceText = new TextWithImages();
+        QuestionName choiceName = new QuestionName("choice-1", "name");
+        QuestionText questionChoiceText = new QuestionText(choiceName);
         questionChoiceText.setText(new Text("Question choice 1 text"));
         questionChoiceText.generateFormattedText();
         List<ChoiceAnswer> choiceAnswers = new ArrayList<>();
@@ -61,7 +64,6 @@ public class XmlTest {
         choiceAnswer3.setFraction(0);
         choiceAnswer3.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer3);
-        QuestionName choiceName = new QuestionName("choice-1", "name");
         QuestionChoice questionChoice = new QuestionChoice(choiceName,
                 questionChoiceText,false, choiceAnswers);
 
@@ -76,20 +78,21 @@ public class XmlTest {
         subquestion2.setAnswerText("Subquestion 2 answer");
         subquestion2.getTextWithImages().generateFormattedText();
         subquestions.add(subquestion2);
-        TextWithImages questionMatchingText = new TextWithImages();
+        QuestionName matchingName = new QuestionName("matching-1", "name");
+        QuestionText questionMatchingText = new QuestionText(matchingName);
         questionMatchingText.setText(new Text("Question Matching 1 text"));
         questionMatchingText.generateFormattedText();
-        QuestionName matchingName = new QuestionName("matching-1", "name");
         QuestionMatching questionMatching = new QuestionMatching(matchingName,
                 questionMatchingText, subquestions);
 
         List<NumericalAnswer> numericalAnswers = new ArrayList<>();
         numericalAnswers.add(new NumericalAnswer(15.0, 100, 0.0));
         numericalAnswers.add(new NumericalAnswer(-3.0, 100, 0.0));
-        TextWithImages questionNumericalText = new TextWithImages();
+        QuestionName numericalName = new QuestionName("numerical-1", "name");
+        QuestionText questionNumericalText = new QuestionText(numericalName);
         questionNumericalText.setText(new Text("Question Numerical 1 text"));
         questionNumericalText.generateFormattedText();
-        QuestionName numericalName = new QuestionName("numerical-1", "name");
+
         QuestionNumerical questionNumerical = new QuestionNumerical(numericalName,
                 questionNumericalText, numericalAnswers);
 
@@ -117,8 +120,6 @@ public class XmlTest {
             marshaller.marshal(questionsUnmarshall, stringWriter2);
 
             Assertions.assertEquals(stringWriter1.toString(), stringWriter2.toString());
-
-            System.out.println(stringWriter1);
 
         } catch (JAXBException e) {
             e.printStackTrace();

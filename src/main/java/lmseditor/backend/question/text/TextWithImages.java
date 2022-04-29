@@ -16,12 +16,12 @@ public class TextWithImages {
 
     @XmlElement(name = "text")
     @XmlCDATA
-    private String xmlText;
+    protected String xmlText;
 
     @XmlPath(".")
     private ImageList imageList;
 
-    @XmlTransient
+    @XmlPath(".")
     private Text text;
 
     @XmlTransient
