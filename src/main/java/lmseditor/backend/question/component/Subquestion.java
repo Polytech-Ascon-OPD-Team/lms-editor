@@ -1,5 +1,6 @@
 package lmseditor.backend.question.component;
 
+import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
