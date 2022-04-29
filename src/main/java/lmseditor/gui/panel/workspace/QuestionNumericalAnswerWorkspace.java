@@ -1,7 +1,7 @@
 package lmseditor.gui.panel.workspace;
 
 import lmseditor.backend.question.QuestionNumerical;
-import lmseditor.backend.question.text.QuestionText;
+import lmseditor.backend.question.text.Text;
 import lmseditor.gui.component.ImageFlow;
 import lmseditor.gui.component.QuestionNamePanel;
 import lmseditor.gui.component.QuestionTextPanel;
@@ -27,8 +27,8 @@ public class QuestionNumericalAnswerWorkspace extends Workspace {
 
         this.question = question;
 
-        name = new QuestionNamePanel();
-        questionText = new QuestionTextPanel(new QuestionText());
+        name = new QuestionNamePanel(question.getName());
+        questionText = new QuestionTextPanel(new Text());
         properties = new QuestionNumericalAnswerProperties();
         answers = new NumericalAnswersPanel();
         imageFlow = new ImageFlow(question.getTextWithImages().getImageList());

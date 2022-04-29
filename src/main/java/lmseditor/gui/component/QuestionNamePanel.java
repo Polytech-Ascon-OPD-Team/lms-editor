@@ -1,23 +1,36 @@
 package lmseditor.gui.component;
 
+import lmseditor.backend.question.component.QuestionName;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class QuestionNamePanel extends JPanel {
-    private static final String NAME_LABEL = "Enter question name:";
-    private static final int NAME_TEXT_FIELD_COLUMNS = 60;
+    private static final String NAME_LABEL = "Название вопроса: ";
+    private static final int NAME_TEXT_FIELD_COLUMNS = 50;
 
     private JLabel nameLabel;
+    private JLabel idLabel;
     private JTextField nameTextField;
 
-    public QuestionNamePanel() {
+    private QuestionName name;
+
+    public QuestionNamePanel(QuestionName name) {
+        this.name = name;
+
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         nameLabel = new JLabel(NAME_LABEL);
-        nameTextField = new JTextField(NAME_TEXT_FIELD_COLUMNS);
+        idLabel = new JLabel(name.getId());
+        nameTextField = new JTextField(name.getName(), NAME_TEXT_FIELD_COLUMNS);
 
         this.add(nameLabel);
+        this.add(idLabel);
         this.add(nameTextField);
 
+    }
+
+    public void loadData() {
+        name.setName(nameTextField.getText());
     }
 
 }

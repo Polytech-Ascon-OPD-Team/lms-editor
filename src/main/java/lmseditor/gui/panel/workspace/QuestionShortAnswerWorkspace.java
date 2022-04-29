@@ -1,7 +1,6 @@
 package lmseditor.gui.panel.workspace;
 
 import lmseditor.backend.question.QuestionShortAnswer;
-import lmseditor.backend.question.text.QuestionText;
 import lmseditor.gui.component.ImageFlow;
 import lmseditor.gui.component.QuestionNamePanel;
 import lmseditor.gui.component.QuestionTextPanel;
@@ -10,8 +9,6 @@ import lmseditor.gui.panel.properties.QuestionShortAnswerProperties;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class QuestionShortAnswerWorkspace extends Workspace {
 
@@ -29,8 +26,8 @@ public class QuestionShortAnswerWorkspace extends Workspace {
 
         this.question = question;
 
-        name = new QuestionNamePanel();
-        questionText = new QuestionTextPanel(question.getTextWithImages().getQuestionText());
+        name = new QuestionNamePanel(question.getName());
+        questionText = new QuestionTextPanel(question.getTextWithImages().getText());
         properties = new QuestionShortAnswerProperties();
         answers = new ShortAnswersPanel(question.getAnswers());
         imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
@@ -53,6 +50,7 @@ public class QuestionShortAnswerWorkspace extends Workspace {
         questionText.loadData();
         question.getTextWithImages().generateFormattedText();
         answers.loadData();
+        name.loadData();
     }
 
 }

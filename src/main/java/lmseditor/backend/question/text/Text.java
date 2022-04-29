@@ -5,16 +5,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QuestionText {
+public class Text {
 
     @XmlTransient
     private String text;
 
-    public QuestionText() {
+    public Text() {
         this.text = "";
     }
 
-    public QuestionText(String text) {
+    public Text(String text) {
         this.text = text;
     }
 

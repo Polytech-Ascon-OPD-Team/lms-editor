@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.text.TextWithImages;
 
@@ -25,7 +26,7 @@ public class QuestionChoice extends Question {
         this.choiceAnswers = new ArrayList<>();
     }
 
-    public QuestionChoice(String name, TextWithImages textWithImages, boolean isSingleChoice, List<ChoiceAnswer> choiceAnswers) {
+    public QuestionChoice(QuestionName name, TextWithImages textWithImages, boolean isSingleChoice, List<ChoiceAnswer> choiceAnswers) {
         super(name, textWithImages);
         this.isSingleChoice = isSingleChoice;
         this.choiceAnswers = choiceAnswers;
