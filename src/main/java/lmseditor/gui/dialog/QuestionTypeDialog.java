@@ -2,6 +2,10 @@ package lmseditor.gui.dialog;
 
 import lmseditor.Main;
 import lmseditor.backend.question.*;
+import lmseditor.gui.panel.workspace.EmptyWorkspace;
+import lmseditor.gui.panel.workspace.QuestionMatchingWorkspace;
+import lmseditor.gui.panel.workspace.QuestionShortAnswerWorkspace;
+import lmseditor.gui.panel.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,5 +51,7 @@ public class QuestionTypeDialog extends JDialog {
     private void okButtonEvent(ActionEvent actionEvent) {
         this.setVisible(false);
     }
+
+
 
 }
