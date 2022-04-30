@@ -49,6 +49,7 @@ public class QuestionMatchingWorkspace extends Workspace {
 
     @Override
     public void loadData() {
+        name.loadData();
         questionText.loadData();
         question.getQuestionText().generateFormattedText();
         answers.loadData();
