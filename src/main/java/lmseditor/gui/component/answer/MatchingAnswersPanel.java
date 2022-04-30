@@ -2,10 +2,12 @@ package lmseditor.gui.component.answer;
 
 import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.image.ImageList;
+import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.Subquestion;
 //import lmseditor.backend.question.component.answer.MatchingAnswer;
 import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
+import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.gui.component.ImageFlow;
 
@@ -35,7 +37,7 @@ public class MatchingAnswersPanel extends JPanel {
             imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList());
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
-            textFieldQuestion.setText(subquestion.getTextWithImages().getQuestionText().getText());
+            textFieldQuestion.setText(subquestion.getTextWithImages().getText().getText());
             textFieldAnswer.setText(subquestion.getAnswerText());
 
             imageList = subquestion.getTextWithImages().getImageList();
@@ -68,9 +70,12 @@ public class MatchingAnswersPanel extends JPanel {
 
         public TextWithImages getQuestionText(){
             TextWithImages textWithImages = new TextWithImages();
-            QuestionText questionText = new QuestionText();
-            questionText.setText(textFieldQuestion.getText());
-            textWithImages.setQuestionText(questionText);
+            QuestionName name = new QuestionName();
+            QuestionText questionText = new QuestionText(name);
+            Text text = new Text();
+            text.setText(textFieldQuestion.getText());
+            questionText.setText(text);
+            textWithImages.setText(text);
             textWithImages.setImageList(imageList);
             return textWithImages;
         }

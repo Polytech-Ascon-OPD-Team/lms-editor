@@ -28,11 +28,11 @@ public class QuestionMatchingWorkspace extends Workspace {
 
         this.question = question;
 
-        name = new QuestionNamePanel();
-        questionText = new QuestionTextPanel(question.getTextWithImages().getQuestionText());
+        name = new QuestionNamePanel(question.getName());
+        questionText = new QuestionTextPanel(question.getQuestionText().getText());
         //properties = new QuestionShortAnswerProperties();
         answers = new MatchingAnswersPanel(question.getSubquestions());
-        imageFlow = new ImageFlow(question.getTextWithImages().getImageList());
+        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
 
         Box box = Box.createVerticalBox();
         box.add(name);
@@ -50,7 +50,7 @@ public class QuestionMatchingWorkspace extends Workspace {
     @Override
     public void loadData() {
         questionText.loadData();
-        question.getTextWithImages().generateFormattedText();
+        question.getQuestionText().generateFormattedText();
         answers.loadData();
     }
 

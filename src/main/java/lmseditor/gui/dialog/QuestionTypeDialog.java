@@ -17,9 +17,6 @@ public class QuestionTypeDialog extends JDialog {
 
     private JComboBox<String> comboBox;
 
-    private Question question;
-    private Workspace workspace;
-
     public QuestionTypeDialog() {
         super(Main.mainFrame, TITLE, true);
 
@@ -41,37 +38,17 @@ public class QuestionTypeDialog extends JDialog {
         this.setVisible(true);
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public Workspace getWorkspace() {
-        return workspace;
+    public QuestionType getSelectedType() {
+        switch (comboBox.getSelectedIndex()) {
+            case 0: return QuestionType.CHOICE;
+            case 1: return QuestionType.SHORT_ANSWER;
+            case 2: return QuestionType.NUMERICAL;
+            case 3: return QuestionType.MATCHING;
+            default: return null;
+        }
     }
 
     private void okButtonEvent(ActionEvent actionEvent) {
-        switch (comboBox.getSelectedIndex()) {
-            case 0: {
-                question = new QuestionChoice();
-                workspace = new EmptyWorkspace();
-                break;
-            }
-            case 1: {
-                question = new QuestionShortAnswer();
-                workspace = new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
-                break;
-            }
-            case 2: {
-                question = new QuestionNumerical();
-                workspace = new EmptyWorkspace();
-                break;
-            }
-            case 3: {
-                question = new QuestionMatching();
-                workspace = new QuestionMatchingWorkspace((QuestionMatching) question);
-                break;
-            }
-        }
         this.setVisible(false);
     }
 
