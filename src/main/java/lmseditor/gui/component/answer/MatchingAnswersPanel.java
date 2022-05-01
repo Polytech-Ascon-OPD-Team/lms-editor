@@ -34,7 +34,7 @@ public class MatchingAnswersPanel extends JPanel {
 
             textFieldQuestion = new JTextField(TEXT_FIELD_COLUMNS);
             textFieldAnswer = new JTextField(TEXT_FIELD_COLUMNS);
-            imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList());
+            imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
             textFieldQuestion.setText(subquestion.getTextWithImages().getText().getText());
