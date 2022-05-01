@@ -30,7 +30,10 @@ public class HtmlFormatter extends Formatter {
 
     @Override
     public String getFormattedString() {
-        StringBuilder formattedString = new StringBuilder(text);
+        StringBuilder formattedString = new StringBuilder();
+        formattedString.append("<!-- text begin -->");
+        formattedString.append(text);
+        formattedString.append("<!-- text end -->");
         for (ImageBase64 image : imageList.getImages()) {
             formattedString.append("<p>" + this.getImageCode(image) + "</p>");
         }

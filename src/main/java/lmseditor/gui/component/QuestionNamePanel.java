@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class QuestionNamePanel extends JPanel {
     private static final String NAME_LABEL = "Название вопроса: ";
-    private static final int NAME_TEXT_FIELD_COLUMNS = 50;
 
     private JLabel nameLabel;
     private JLabel idLabel;
@@ -18,14 +17,23 @@ public class QuestionNamePanel extends JPanel {
     public QuestionNamePanel(QuestionName name) {
         this.name = name;
 
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setLayout(new GridBagLayout());
         nameLabel = new JLabel(NAME_LABEL);
         idLabel = new JLabel(name.getId());
-        nameTextField = new JTextField(name.getName(), NAME_TEXT_FIELD_COLUMNS);
+        nameTextField = new JTextField(name.getName());
 
-        this.add(nameLabel);
-        this.add(idLabel);
-        this.add(nameTextField);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridy = 0; gbc.gridx = 0;
+        this.add(nameLabel, gbc);
+
+        gbc.gridy = 0; gbc.gridx = 1;
+        this.add(idLabel, gbc);
+
+        gbc.gridy = 0; gbc.gridx = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        this.add(nameTextField, gbc);
 
     }
 

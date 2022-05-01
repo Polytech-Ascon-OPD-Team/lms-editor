@@ -12,13 +12,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImageFlow extends JPanel {
-    private static final Dimension IMAGE_BUTTON_SIZE = new Dimension(120, 120);
     private static final int SCROLLBAR_WIDTH = 30;
+
+    private Dimension miniatureSize;
 
     private List<JButton> imageMiniatures;
     private ImageList imageList;
@@ -27,22 +27,23 @@ public class ImageFlow extends JPanel {
     private JButton addImageButton;
     private JScrollPane scrollPane;
 
-    public ImageFlow(ImageList imageList) {
+    public ImageFlow(ImageList imageList, Dimension miniatureSize) {
         this.setLayout(new BorderLayout());
 
+        this.miniatureSize = miniatureSize;
         this.imageList = imageList;
         imageMiniatures = new ArrayList<>();
 
         addImageButton = new JButton("+");
         addImageButton.addActionListener(new AddImageEvent());
-        addImageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
+        addImageButton.setPreferredSize(this.miniatureSize);
 
         imagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         imagePanel.add(addImageButton);
 
         scrollPane = new JScrollPane(imagePanel);
-        scrollPane.setPreferredSize(new Dimension(0, IMAGE_BUTTON_SIZE.height + SCROLLBAR_WIDTH));
+        scrollPane.setPreferredSize(new Dimension(0, this.miniatureSize.height + SCROLLBAR_WIDTH));
 
         JPanel scrollPanePanel = new JPanel(new BorderLayout());
         scrollPanePanel.add(scrollPane, BorderLayout.CENTER);
@@ -55,12 +56,16 @@ public class ImageFlow extends JPanel {
         }
     }
 
+    public ImageFlow(ImageList imageList) {
+        this(imageList, new Dimension(120, 120));
+    }
+
     public void addImageToMiniatures(BufferedImage image) {
-        Image scaleImage = this.resizeImage(image, IMAGE_BUTTON_SIZE);
+        Image scaleImage = this.resizeImage(image, miniatureSize);
         ImageIcon icon = new ImageIcon(scaleImage);
         JButton imageButton = new JButton();
         imageButton.setIcon(icon);
-        imageButton.setPreferredSize(IMAGE_BUTTON_SIZE);
+        imageButton.setPreferredSize(miniatureSize);
         imageButton.addActionListener(new RemoveImageEvent(imageButton));
         imageMiniatures.add(imageButton);
         imagePanel.add(imageButton);
