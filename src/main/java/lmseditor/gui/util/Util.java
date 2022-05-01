@@ -1,10 +1,7 @@
 package lmseditor.gui.util;
 
 import lmseditor.backend.question.*;
-import lmseditor.gui.panel.workspace.EmptyWorkspace;
-import lmseditor.gui.panel.workspace.QuestionNumericalAnswerWorkspace;
-import lmseditor.gui.panel.workspace.QuestionShortAnswerWorkspace;
-import lmseditor.gui.panel.workspace.Workspace;
+import lmseditor.gui.panel.workspace.*;
 
 public class Util {
 
@@ -21,7 +18,7 @@ public class Util {
     public static Workspace getWorkspaceForQuestionAndType(Question question, QuestionType type) {
         switch (type) {
             case CHOICE: return new EmptyWorkspace(); // TODO
-            case MATCHING: return new EmptyWorkspace(); // TODO
+            case MATCHING: return new QuestionMatchingWorkspace((QuestionMatching) question);
             case NUMERICAL: return new QuestionNumericalAnswerWorkspace((QuestionNumerical) question);
             case SHORT_ANSWER: return new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);
             default: return null;
