@@ -2,6 +2,7 @@ package lmseditor.gui.panel.workspace;
 
 import lmseditor.backend.question.QuestionMatching;
 import lmseditor.backend.question.QuestionShortAnswer;
+import lmseditor.gui.component.Header;
 import lmseditor.gui.component.ImageFlow;
 import lmseditor.gui.component.QuestionNamePanel;
 import lmseditor.gui.component.QuestionTextPanel;
@@ -14,12 +15,8 @@ import java.awt.*;
 
 public class QuestionMatchingWorkspace extends Workspace {
 
-    private QuestionNamePanel name;
-    private QuestionTextPanel questionText;
-    private ImageFlow imageFlow;
+    private Header header;
     private MatchingAnswersPanel answers;
-
-    //private QuestionShortAnswerProperties properties;
 
     private QuestionMatching question;
 
@@ -28,29 +25,16 @@ public class QuestionMatchingWorkspace extends Workspace {
 
         this.question = question;
 
-        name = new QuestionNamePanel(question.getName());
-        questionText = new QuestionTextPanel(question.getQuestionText().getText());
-        //properties = new QuestionShortAnswerProperties();
+        header = new Header(question);
         answers = new MatchingAnswersPanel(question.getSubquestions());
-        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
 
-        Box box = Box.createVerticalBox();
-        box.add(name);
-        box.add(questionText);
-        box.add(imageFlow);
-        box.add(new JSeparator(SwingConstants.HORIZONTAL));
-        box.add(answers);
-
-        JPanel centerPanel = new JPanel(new FlowLayout());
-        centerPanel.add(box);
-
-        this.add(centerPanel, BorderLayout.CENTER);
+        this.add(header, BorderLayout.NORTH);
+        this.add(answers, BorderLayout.CENTER);
     }
 
     @Override
     public void loadData() {
-        name.loadData();
-        questionText.loadData();
+        header.loadData();
         question.getQuestionText().generateFormattedText();
         answers.loadData();
     }

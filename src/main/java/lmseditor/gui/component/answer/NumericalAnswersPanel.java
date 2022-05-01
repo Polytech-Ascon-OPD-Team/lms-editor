@@ -1,5 +1,8 @@
 package lmseditor.gui.component.answer;
 
+import lmseditor.backend.question.component.answer.NumericalAnswer;
+import lmseditor.backend.question.component.answer.ShortAnswer;
+
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -13,30 +16,60 @@ import java.util.List;
 
 public class NumericalAnswersPanel extends JPanel {
 
-    private class NumericalAnswer extends JPanel {
-        private static final int TEXT_FIELD_COLUMNS = 60;
+    private class NumericalAnswerPanel extends JPanel {
 
         private JTextField textField;
+        private JLabel label;
+        private JTextField toleranceField;
         private JButton removeButton;
 
-        public NumericalAnswer() {
-            this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        public NumericalAnswerPanel() {
+            this.setLayout(new GridBagLayout());
 
-            textField = new JTextField(TEXT_FIELD_COLUMNS);
+            label = new JLabel("+-");
+            textField = new JTextField();
+            toleranceField = new JTextField();
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
 
-            this.add(textField);
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            gbc.gridy = 0; gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(textField, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 1;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.weightx = 0;
+            this.add(label, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 2;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(toleranceField, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 3;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.weightx = 0;
             this.add(removeButton);
 
             ((AbstractDocument) textField.getDocument()).setDocumentFilter(new MyDocumentFilter());
+            ((AbstractDocument) toleranceField.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        }
+
+        public double getAnswer() {
+            return Double.parseDouble(textField.getText());
+        }
+
+        public double getTolerance() {
+            return Double.parseDouble(toleranceField.getText());
         }
 
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(NumericalAnswer.this);
-                answersPanel.remove(NumericalAnswer.this);
+                answers.remove(NumericalAnswerPanel.this);
                 NumericalAnswersPanel.this.updateUI();
             }
         }
@@ -45,50 +78,52 @@ public class NumericalAnswersPanel extends JPanel {
 
     private JLabel label;
     private JButton addButton;
-    private List<NumericalAnswer> answers;
-    private JPanel answersPanel;
+    private List<NumericalAnswer> answerList;
+    private Box answers;
     private JScrollPane answersScrollPane;
 
-    public NumericalAnswersPanel() {
+    public NumericalAnswersPanel(List<NumericalAnswer> answerList) {
         this.setLayout(new BorderLayout());
-        answers = new ArrayList<>();
+
+        this.answerList = answerList;
 
         label = new JLabel("Enter correct answers");
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        labelPanel.add(label);
 
         addButton = new JButton("Add");
         addButton.addActionListener(new AddButtonEvent());
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonsPanel.add(addButton);
 
-        JPanel header = new JPanel();
-        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.add(labelPanel);
-        header.add(buttonsPanel);
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        header.add(label);
+        header.add(addButton);
 
-        answersPanel = new JPanel();
-        answersPanel.setLayout(new BoxLayout(answersPanel, BoxLayout.Y_AXIS));
+        answers = Box.createVerticalBox();
 
-        answersScrollPane = new JScrollPane(answersPanel);
-        JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
-        answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
+        JPanel northAlignPanel = new JPanel(new BorderLayout());
+        northAlignPanel.add(answers, BorderLayout.NORTH);
+        answersScrollPane = new JScrollPane(northAlignPanel);
 
         this.add(header, BorderLayout.NORTH);
-        this.add(answersScrollPanePanel, BorderLayout.CENTER);
+        this.add(answersScrollPane, BorderLayout.CENTER);
 
+    }
+
+    public void loadData() {
+        answerList.clear();
+        for(int i = 0; i < answers.getComponentCount(); i++) {
+            NumericalAnswerPanel numericalAnswerPanel = (NumericalAnswerPanel) answers.getComponent(i);
+            NumericalAnswer numericalAnswer = new NumericalAnswer();
+            numericalAnswer.setAnswer(numericalAnswerPanel.getAnswer());
+            numericalAnswer.setTolerance(numericalAnswerPanel.getTolerance());
+            answerList.add(numericalAnswer);
+        }
     }
 
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            NumericalAnswer numericalAnswer = new NumericalAnswer();
-            answers.add(numericalAnswer);
-            answersPanel.add(numericalAnswer);
+            NumericalAnswerPanel numericalAnswerPanel = new NumericalAnswerPanel();
+            answers.add(numericalAnswerPanel);
             NumericalAnswersPanel.this.updateUI();
-            if (answers.size() > 10) {
-                answersScrollPane.setPreferredSize(answersScrollPane.getSize());
-            }
         }
     }
 

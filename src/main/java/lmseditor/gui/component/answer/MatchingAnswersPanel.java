@@ -30,10 +30,10 @@ public class MatchingAnswersPanel extends JPanel {
         private ImageList imageList;
 
         public MatchingAnswerPanel(Subquestion subquestion) {
-            this.setLayout(new FlowLayout(FlowLayout.LEFT));
+            this.setLayout(new GridBagLayout());
 
-            textFieldQuestion = new JTextField(TEXT_FIELD_COLUMNS);
-            textFieldAnswer = new JTextField(TEXT_FIELD_COLUMNS);
+            textFieldQuestion = new JTextField();
+            textFieldAnswer = new JTextField();
             imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
@@ -46,17 +46,29 @@ public class MatchingAnswersPanel extends JPanel {
                 imageFlow.addImageToMiniatures(image);
             }
 
-            Box horizontalbox = Box.createHorizontalBox();
-            horizontalbox.add(textFieldQuestion);
-            horizontalbox.add(textFieldAnswer);
-            horizontalbox.add(removeButton);
+            GridBagConstraints gbc = new GridBagConstraints();
 
-            Box box = Box.createVerticalBox();
-            box.add(horizontalbox);
-            box.add(imageFlow);
-            box.add(new JSeparator(SwingConstants.HORIZONTAL));
+            gbc.gridy = 0; gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(textFieldQuestion, gbc);
 
-            this.add(box);
+            gbc.gridy = 0; gbc.gridx = 1;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(textFieldAnswer, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 2;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.weightx = 0;
+            this.add(removeButton, gbc);
+
+            gbc.gridy = 1; gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            gbc.gridwidth = 2;
+            this.add(imageFlow, gbc);
+
         }
 
         private class RemoveButtonEvent implements ActionListener {
@@ -66,7 +78,6 @@ public class MatchingAnswersPanel extends JPanel {
                 MatchingAnswersPanel.this.updateUI();
             }
         }
-
 
         public TextWithImages getQuestionText(){
             TextWithImages textWithImages = new TextWithImages();
@@ -111,10 +122,10 @@ public class MatchingAnswersPanel extends JPanel {
         header.add(buttonsPanel);
 
         answers = new Box(BoxLayout.Y_AXIS);
-        JPanel answersAlign = new JPanel();
-        answersAlign.add(answers);
-        answersScrollPane = new JScrollPane(answersAlign);
-        answersScrollPane.setPreferredSize(new Dimension(0, 500));
+        JPanel northAlignPanel = new JPanel(new BorderLayout());
+        northAlignPanel.add(answers, BorderLayout.NORTH);
+        answersScrollPane = new JScrollPane(northAlignPanel);
+
         JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
         answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
 
