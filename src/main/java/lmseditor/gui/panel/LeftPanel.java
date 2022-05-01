@@ -18,6 +18,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LeftPanel extends CPanel {
+    static class LoadPanel extends JPanel {
+        public LoadPanel() {
+            this.setLayout(new GridLayout(2,1));
+            JPanel upperPanel = new JPanel();
+            upperPanel.setLayout(new BorderLayout());
+            JPanel downPanel = new JPanel();
+            upperPanel.add(new JTextField(), BorderLayout.CENTER);
+            StandardButton chooseButton = new StandardButton("...");
+            chooseButton.setAction( () -> {System.out.println(Util.chooseXMLPathFilePath());});
+            upperPanel.add(chooseButton, BorderLayout.EAST);
+            downPanel.setLayout(new GridLayout(1,3));
+            downPanel.add(new StandardButton("Новый"));
+            downPanel.add(new StandardButton("Загрузить"));
+            downPanel.add(new StandardButton("Сохр."));
+            this.add(upperPanel);
+            this.add(downPanel);
+        }
+    }
 
     private static final int STEP = 5;
     private static final Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
@@ -230,7 +248,12 @@ public class LeftPanel extends CPanel {
         addCategoryButton.setAction(this::addNewCategory);
         JLabel label1 = new JLabel("Список вопросов: ");
         label1.setForeground(Color.white);
-        this.add(label1, BorderLayout.NORTH);
+        JPanel upperPanel = new JPanel();
+        upperPanel.setLayout(new BorderLayout());
+        upperPanel.add(new LoadPanel(), BorderLayout.CENTER);
+        label1.setForeground(Color.BLACK);
+        upperPanel.add(label1, BorderLayout.SOUTH);
+        this.add(upperPanel, BorderLayout.NORTH);
         this.add(downPanel, BorderLayout.SOUTH);
     }
 

@@ -1,7 +1,12 @@
 package lmseditor.gui.util;
 
+import lmseditor.Main;
 import lmseditor.backend.question.*;
 import lmseditor.gui.panel.workspace.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 
 public class Util {
 
@@ -25,4 +30,11 @@ public class Util {
         }
     }
 
+
+    public static String chooseXMLPathFilePath() {
+        FileDialog chooser = new FileDialog(Main.mainFrame, "selectXML");
+        chooser.setVisible(true);
+        File result = new File(chooser.getDirectory() + chooser.getFile());
+        return result.getPath();
+    }
 }
