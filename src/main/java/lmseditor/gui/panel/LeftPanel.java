@@ -67,22 +67,33 @@ public class LeftPanel extends CPanel {
         }
 
         private class QuestionElement extends CPanel {
+            public final int NUMBER;
             private Question question;
             private Workspace workspace;
             private JButton questionButton = new JButton();
 
             public QuestionElement() {
+                if (questionElements.size() > 0) {
+                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
+                } else {
+                    this.NUMBER = 1;
+                }
+                /*неплохо*/
                 QuestionTypeDialog dialog = new QuestionTypeDialog();
                 QuestionType type = dialog.getSelectedType();
+                System.out.println(type);
                 question = Util.getQuestionForType(type);
                 workspace = Util.getWorkspaceForQuestionAndType(question, type);
-
+                System.out.println(question.getClass().getName());
                 this.setLayout(new BorderLayout());
-                questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
+                questionButton.setText(questionCategory.getName() + " " + NUMBER);
+
+                //меняем workspace вопрос
                 questionButton.addActionListener(e -> {
                     Main.mainFrame.getWorkspace().loadData();
                     Main.mainFrame.setWorkspace(workspace);
                 });
+
                 questionButton.setFocusPainted(false);
                 this.add(questionButton, BorderLayout.CENTER);
                 XButton xButton = new XButton();
@@ -92,7 +103,7 @@ public class LeftPanel extends CPanel {
             }
 
             private void remove() {
-                //TODO(): Remove question from question category
+                questionCollection.removeQuestion(this.question);
                 questionElements.remove(this);
                 questionsPanel.remove(this);
                 if (questionElements.size() == 0) {
@@ -110,6 +121,7 @@ public class LeftPanel extends CPanel {
         private CategoryPnl categoryLink = this;
         private CPanel questionsPanel = new CPanel();
         private boolean isOpened = false;
+        public final int NUMBER;
 
         public CategoryPnl() {
             this.setLayout(new BorderLayout());
@@ -118,17 +130,17 @@ public class LeftPanel extends CPanel {
             upperPanel.setLayout(new BorderLayout());
             CPanel rightUpperPanel = new CPanel();
             rightUpperPanel.setLayout(new GridLayout(1, 4));
-            JTextField textField = new JTextField(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
+            if (categories.size() > 0) {
+                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
+            } else {
+                this.NUMBER = 1;
+            }
+
+            JTextField textField = new JTextField(" Категория (" + NUMBER + ") ");
             upperPanel.add(textField, BorderLayout.CENTER);
 
-            /* TODO()
-            textField.addVetoableChangeListener(new VetoableChangeListener() {
-                @Override
-                public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-                    System.out.println(evt);
-                }
-            });*/
-            questionCategory.setName(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
+
+            questionCategory.setName(" Категория (" + NUMBER + ") ");
             openButton.setVisible(false);
             openButton.addActionListener(event -> {
                 if (isOpened) {
@@ -189,7 +201,7 @@ public class LeftPanel extends CPanel {
         }
 
         public void removeIt() {
-            //TODO: удаление категории из questionCollection
+            questionCollection.removeCategory(this.questionCategory);
             categories.remove(this);
             this.getParent().remove(this);
             updateGraphic();

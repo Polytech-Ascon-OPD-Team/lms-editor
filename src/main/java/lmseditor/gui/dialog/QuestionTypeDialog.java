@@ -10,6 +10,7 @@ import lmseditor.gui.panel.workspace.Workspace;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowListener;
 
 public class QuestionTypeDialog extends JDialog {
     private static final String TITLE = "Выберите тип вопроса";
@@ -30,7 +31,7 @@ public class QuestionTypeDialog extends JDialog {
 
         contentPane.add(comboBox);
         contentPane.add(okButton);
-
+        this.setModal(true);
         this.setLocationRelativeTo(Main.mainFrame);
         this.setUndecorated(true);
         this.setResizable(false);

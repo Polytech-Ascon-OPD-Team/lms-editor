@@ -17,6 +17,8 @@ public class MainFrame extends JFrame {
     private Workspace workspace;
     private QuestionXmlParser parser;
 
+    private JPanel workspaceContainer = new JPanel();
+
     public MainFrame() {
         mainPanel = new JPanel(new BorderLayout());
         leftPanel = new LeftPanel();
@@ -40,7 +42,9 @@ public class MainFrame extends JFrame {
         downPanel.add(parseButton);
         downPanel.add(new JPanel());
         mainPanel.add(downPanel, BorderLayout.SOUTH);
-
+        workspaceContainer.setBackground(Color.BLACK);
+        mainPanel.add(workspaceContainer, BorderLayout.CENTER);
+        workspaceContainer.setLayout(new BorderLayout());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
@@ -49,10 +53,12 @@ public class MainFrame extends JFrame {
     }
 
     public void setWorkspace(Workspace workspace) {
-        mainPanel.remove(this.workspace);
+
         this.workspace = workspace;
-        mainPanel.add(workspace, BorderLayout.CENTER);
+        workspaceContainer.removeAll();
+        workspaceContainer.add(workspace, BorderLayout.CENTER);
         mainPanel.updateUI();
+
     }
 
     public Workspace getWorkspace() {
