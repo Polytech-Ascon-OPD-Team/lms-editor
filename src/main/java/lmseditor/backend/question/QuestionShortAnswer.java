@@ -8,13 +8,12 @@ import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
+import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlDiscriminatorValue("shortanswer")
 public class QuestionShortAnswer extends Question{
-
-    @XmlAttribute(name = "type")
-    public static final String TYPE = "shortanswer";
 
     @XmlPath("answer")
     private List<ShortAnswer> answers;

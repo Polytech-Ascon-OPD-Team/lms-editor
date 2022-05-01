@@ -1,14 +1,13 @@
 package lmseditor.backend.question;
 
+import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlDiscriminatorValue("category")
 public class QuestionCategory extends QuestionXml {
-
-    @XmlAttribute(name = "type")
-    private static final String TYPE = "category";
 
     @XmlPath("category/text/text()")
     private String name;

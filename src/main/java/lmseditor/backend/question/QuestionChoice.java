@@ -8,12 +8,11 @@ import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
+import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlDiscriminatorValue("multichoice")
 public class QuestionChoice extends Question {
-
-    @XmlAttribute(name = "type")
-    private static final String TYPE = "multichoice";
 
     @XmlElement(name = "single")
     private boolean isSingleChoice;

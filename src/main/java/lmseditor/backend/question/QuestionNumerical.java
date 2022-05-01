@@ -4,6 +4,7 @@ import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.NumericalAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
+import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlDiscriminatorValue("numerical")
 public class QuestionNumerical extends Question {
-
-    @XmlAttribute(name = "type")
-    private static final String TYPE = "numerical";
 
     @XmlElement(name = "answer")
     private List<NumericalAnswer> answers;
