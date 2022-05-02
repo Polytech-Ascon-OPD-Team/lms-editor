@@ -42,7 +42,6 @@ public class MainFrame extends JFrame {
         downPanel.add(parseButton);
         downPanel.add(new JPanel());
         mainPanel.add(downPanel, BorderLayout.SOUTH);
-        workspaceContainer.setBackground(Color.BLACK);
         mainPanel.add(workspaceContainer, BorderLayout.CENTER);
         workspaceContainer.setLayout(new BorderLayout());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);

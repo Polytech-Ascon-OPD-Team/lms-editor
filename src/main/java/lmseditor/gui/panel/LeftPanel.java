@@ -1,10 +1,12 @@
 package lmseditor.gui.panel;
 
 import lmseditor.Main;
+import lmseditor.backend.QuestionXmlParser;
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
 import lmseditor.backend.question.QuestionType;
+import lmseditor.backend.question.component.QuestionName;
 import lmseditor.gui.customComponents.*;
 import lmseditor.gui.dialog.QuestionTypeDialog;
 import lmseditor.gui.panel.workspace.EmptyWorkspace;
@@ -12,28 +14,51 @@ import lmseditor.gui.panel.workspace.Workspace;
 import lmseditor.gui.util.Util;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeftPanel extends CPanel {
-    static class LoadPanel extends JPanel {
+    private QuestionXmlParser parser = new QuestionXmlParser();
+    public void saveToFile(String filePath){
+        parser.marshallToFile(questionCollection, new File(filePath));
+    }
+
+    public QuestionCollection load(String filePath) {
+        return parser.unmarshallFromFile(new File(filePath));
+    }
+
+    private void clear(){
+        while (categories.size() > 0){
+            categories.get(0).removeIt();
+        }
+    }
+
+    public void loadFromFile(String filePath){
+        clear();
+        questionCollection = load(filePath);
+    }
+
+    class LoadPanel extends JPanel {
+
         public LoadPanel() {
-            this.setLayout(new GridLayout(2,1));
-            JPanel upperPanel = new JPanel();
-            upperPanel.setLayout(new BorderLayout());
-            JPanel downPanel = new JPanel();
-            upperPanel.add(new JTextField(), BorderLayout.CENTER);
             StandardButton chooseButton = new StandardButton("...");
-            chooseButton.setAction( () -> {System.out.println(Util.chooseXMLPathFilePath());});
-            upperPanel.add(chooseButton, BorderLayout.EAST);
-            downPanel.setLayout(new GridLayout(1,3));
-            downPanel.add(new StandardButton("Новый"));
-            downPanel.add(new StandardButton("Загрузить"));
-            downPanel.add(new StandardButton("Сохр."));
-            this.add(upperPanel);
-            this.add(downPanel);
+            chooseButton.setAction(() -> {
+                System.out.println(Util.chooseXMLPathFilePath());
+            });
+            this.setLayout(new GridLayout(1, 3));
+            StandardButton newButton = new StandardButton("Новый");
+            StandardButton load = new StandardButton("Загрузить");
+            StandardButton save = new StandardButton("Сохр.");
+            this.add(newButton);
+            newButton.setAction(LeftPanel.this::clear);
+            this.add(load);
+            this.add(save);
+            save.setAction(() -> saveToFile(Util.saveXMLPathFilePath()));
         }
     }
 
@@ -90,13 +115,17 @@ public class LeftPanel extends CPanel {
             private Workspace workspace;
             private JButton questionButton = new JButton();
 
+            public void setName(String name) {
+                questionButton.setText(name);
+                question.getName().setId(name);
+            }
+
             public QuestionElement() {
                 if (questionElements.size() > 0) {
                     this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
                 } else {
                     this.NUMBER = 1;
                 }
-                /*неплохо*/
                 QuestionTypeDialog dialog = new QuestionTypeDialog();
                 QuestionType type = dialog.getSelectedType();
                 System.out.println(type);
@@ -106,7 +135,6 @@ public class LeftPanel extends CPanel {
                 this.setLayout(new BorderLayout());
                 questionButton.setText(questionCategory.getName() + " " + NUMBER);
 
-                //меняем workspace вопрос
                 questionButton.addActionListener(e -> {
                     Main.mainFrame.getWorkspace().loadData();
                     Main.mainFrame.setWorkspace(workspace);
@@ -140,6 +168,15 @@ public class LeftPanel extends CPanel {
         private CPanel questionsPanel = new CPanel();
         private boolean isOpened = false;
         public final int NUMBER;
+        private JTextField textField;
+
+
+        private void updateName() {
+            String text = textField.getText();
+            questionCategory.setName(text);
+            questionElements.forEach(it -> it.setName(text + " " + it.NUMBER));
+            updateUI();
+        }
 
         public CategoryPnl() {
             this.setLayout(new BorderLayout());
@@ -154,9 +191,24 @@ public class LeftPanel extends CPanel {
                 this.NUMBER = 1;
             }
 
-            JTextField textField = new JTextField(" Категория (" + NUMBER + ") ");
+            textField = new JTextField(" Категория (" + NUMBER + ") ");
             upperPanel.add(textField, BorderLayout.CENTER);
+            textField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    updateName();
+                }
 
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    updateName();
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    updateName();
+                }
+            });
 
             questionCategory.setName(" Категория (" + NUMBER + ") ");
             openButton.setVisible(false);
