@@ -23,7 +23,7 @@ public class QuestionText extends TextWithImages {
     @Override
     public void generateFormattedText() {
         super.generateFormattedText();
-        xmlText = name.getFullName() + "<br/>" + xmlText;
+        xmlText = name.getFullName() + "<br>" + xmlText;
     }
 
 }

@@ -8,12 +8,11 @@ import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.component.Subquestion;
+import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlDiscriminatorValue("matching")
 public class QuestionMatching extends Question {
-
-    @XmlAttribute(name = "type")
-    private static final String TYPE = "matching";
 
     @XmlElement(name = "subquestion")
     private List<Subquestion> subquestions;

@@ -2,6 +2,7 @@ package lmseditor.gui.panel.workspace;
 
 import lmseditor.backend.question.QuestionNumerical;
 import lmseditor.backend.question.text.Text;
+import lmseditor.gui.component.Header;
 import lmseditor.gui.component.ImageFlow;
 import lmseditor.gui.component.QuestionNamePanel;
 import lmseditor.gui.component.QuestionTextPanel;
@@ -13,12 +14,8 @@ import java.awt.*;
 
 public class QuestionNumericalAnswerWorkspace extends Workspace {
 
-    private QuestionNamePanel name;
-    private QuestionTextPanel questionText;
-    private ImageFlow imageFlow;
+    private Header header;
     private NumericalAnswersPanel answers;
-
-    private QuestionNumericalAnswerProperties properties;
 
     private QuestionNumerical question;
 
@@ -27,27 +24,18 @@ public class QuestionNumericalAnswerWorkspace extends Workspace {
 
         this.question = question;
 
-        name = new QuestionNamePanel(question.getName());
-        questionText = new QuestionTextPanel(new Text());
-        properties = new QuestionNumericalAnswerProperties();
-        answers = new NumericalAnswersPanel();
-        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
+        header = new Header(question);
+        answers = new NumericalAnswersPanel(question.getAnswers());
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.add(name);
-        centerPanel.add(questionText);
-        centerPanel.add(imageFlow);
-        centerPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        centerPanel.add(answers);
-
-        this.add(centerPanel, BorderLayout.CENTER);
-        this.add(properties, BorderLayout.EAST);
+        this.add(header, BorderLayout.NORTH);
+        this.add(answers, BorderLayout.CENTER);
 
     }
 
     @Override
     public void loadData() {
-
+        header.loadData();
+        question.getQuestionText().generateFormattedText();
+        answers.loadData();
     }
 }

@@ -7,8 +7,10 @@ import lmseditor.backend.question.text.format.HtmlFormatter;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlJavaTypeAdapter(TextWithImagesAdapter.class)
 public class TextWithImages {
 
     @XmlAttribute
@@ -21,7 +23,7 @@ public class TextWithImages {
     @XmlPath(".")
     private ImageList imageList;
 
-    @XmlPath(".")
+    @XmlTransient
     private Text text;
 
     @XmlTransient
@@ -49,6 +51,10 @@ public class TextWithImages {
 
     public void setText(Text text) {
         this.text = text;
+    }
+
+    public String getXmlText() {
+        return xmlText;
     }
 
     public void generateFormattedText() {

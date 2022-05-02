@@ -17,14 +17,23 @@ public class ShortAnswersPanel extends JPanel {
         private JButton removeButton;
 
         public ShortAnswerPanel(String text) {
-            this.setLayout(new FlowLayout(FlowLayout.LEFT));
+            this.setLayout(new GridBagLayout());
 
-            textField = new JTextField(TEXT_FIELD_COLUMNS);
+            textField = new JTextField();
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
             textField.setText(text);
 
-            this.add(textField);
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            gbc.gridy = 0; gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(textField, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 1;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.weightx = 0;
             this.add(removeButton);
         }
 
@@ -47,32 +56,22 @@ public class ShortAnswersPanel extends JPanel {
     private Box answers;
     private JScrollPane answersScrollPane;
 
-    List<ShortAnswer> answersList;
+    private List<ShortAnswer> answersList;
 
     public ShortAnswersPanel(List<ShortAnswer> answersList) {
         this.answersList = answersList;
         this.setLayout(new BorderLayout());
 
-        label = new JLabel("Enter correct answers");
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        labelPanel.add(label);
+        label = new JLabel("Правильные ответы:");
 
-        addButton = new JButton("Add");
+        addButton = new JButton("+");
         addButton.addActionListener(new AddButtonEvent());
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonsPanel.add(addButton);
 
-        Box header = new Box(BoxLayout.Y_AXIS);
-        header.add(labelPanel);
-        header.add(buttonsPanel);
+        answers = Box.createVerticalBox();
 
-        answers = new Box(BoxLayout.Y_AXIS);
-        JPanel answersAlign = new JPanel();
-        answersAlign.add(answers);
-        answersScrollPane = new JScrollPane(answersAlign);
-        answersScrollPane.setPreferredSize(new Dimension(0, 500));
-        JPanel answersScrollPanePanel = new JPanel(new BorderLayout());
-        answersScrollPanePanel.add(answersScrollPane, BorderLayout.CENTER);
+        JPanel northAlignPanel = new JPanel(new BorderLayout());
+        northAlignPanel.add(answers, BorderLayout.NORTH);
+        answersScrollPane = new JScrollPane(northAlignPanel);
 
         for (int i = 0; i < answersList.size(); i++){
             ShortAnswer shortAnswer = answersList.get(i);
@@ -81,8 +80,13 @@ public class ShortAnswersPanel extends JPanel {
             ShortAnswersPanel.this.updateUI();
         }
 
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        header.add(label);
+        header.add(addButton);
+
         this.add(header, BorderLayout.NORTH);
-        this.add(answersScrollPanePanel, BorderLayout.CENTER);
+        this.add(answersScrollPane, BorderLayout.CENTER);
+
     }
 
     public void loadData() {
