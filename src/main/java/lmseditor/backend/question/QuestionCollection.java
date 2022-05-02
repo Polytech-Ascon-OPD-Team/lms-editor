@@ -36,4 +36,28 @@ public class QuestionCollection {
         }
     }
 
+    public List<QuestionCategory> getCategoriesList() {
+        List<QuestionCategory> categoryList = new ArrayList<>();
+        for (QuestionXml questionXml : questions) {
+            if (questionXml instanceof QuestionCategory) {
+                categoryList.add((QuestionCategory) questionXml);
+            }
+        }
+        return categoryList;
+    }
+
+    public List<Question> getQuestionsFromCategory(QuestionCategory category) {
+        List<Question> questionList = new ArrayList<>();
+        int index = questions.indexOf(category);
+        if (index == -1) {
+            return null;
+        }
+        index++;
+        while ((index < questions.size()) && (questions.get(index) instanceof Question)) {
+            questionList.add((Question) questions.get(index));
+            index++;
+        }
+        return questionList;
+    }
+
 }

@@ -1,5 +1,6 @@
 package lmseditor.gui.component;
 
+import lmseditor.Main;
 import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.image.ImageList;
 
@@ -91,16 +92,13 @@ public class ImageFlow extends JPanel {
     private class AddImageEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Choose image");
-            fileChooser.setPreferredSize(new Dimension(1000, 600));
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("png, jpg", "png", "jpg");
-            fileChooser.addChoosableFileFilter(filter);
-            int result = fileChooser.showOpenDialog(ImageFlow.this);
-            if (result == JFileChooser.APPROVE_OPTION) {
+            FileDialog fileDialog = new FileDialog(Main.mainFrame, "Выберите изображение", FileDialog.LOAD);
+            fileDialog.setFile("*.jpg;*.png");
+            fileDialog.setVisible(true);
+            String fileName = fileDialog.getDirectory() + fileDialog.getFile();
+            if (fileDialog.getFile() != null) {
                 try {
-                    File file = new File(fileChooser.getSelectedFile().getPath());
+                    File file = new File(fileName);
                     BufferedImage image = ImageIO.read(file);
                     addImageToMiniatures(image);
                     String base64 = ImageBase64.encodeFileToBase64(file);
