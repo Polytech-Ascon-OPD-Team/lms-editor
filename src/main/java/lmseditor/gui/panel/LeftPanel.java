@@ -24,7 +24,8 @@ import java.util.List;
 
 public class LeftPanel extends CPanel {
     private QuestionXmlParser parser = new QuestionXmlParser();
-    public void saveToFile(String filePath){
+
+    public void saveToFile(String filePath) {
         parser.marshallToFile(questionCollection, new File(filePath));
     }
 
@@ -32,15 +33,18 @@ public class LeftPanel extends CPanel {
         return parser.unmarshallFromFile(new File(filePath));
     }
 
-    private void clear(){
-        while (categories.size() > 0){
+    private void clear() {
+        while (categories.size() > 0) {
             categories.get(0).removeIt();
         }
+
     }
 
-    public void loadFromFile(String filePath){
+    public void loadFromFile(String filePath) {
         clear();
         questionCollection = load(filePath);
+        List<QuestionCategory> newCategories = questionCollection.getCategoriesList();
+        newCategories.forEach(this::addCategory);
     }
 
     class LoadPanel extends JPanel {
@@ -58,6 +62,7 @@ public class LeftPanel extends CPanel {
             newButton.setAction(LeftPanel.this::clear);
             this.add(load);
             this.add(save);
+            load.setAction(() -> loadFromFile(Util.chooseXMLPathFilePath()));
             save.setAction(() -> saveToFile(Util.saveXMLPathFilePath()));
         }
     }
@@ -170,6 +175,11 @@ public class LeftPanel extends CPanel {
         public final int NUMBER;
         private JTextField textField;
 
+        private void setNewName(String name) {
+            questionCategory.setName(name);
+            questionElements.forEach(it -> it.setName(name + " " + it.NUMBER));
+            updateUI();
+        }
 
         private void updateName() {
             String text = textField.getText();
@@ -313,7 +323,7 @@ public class LeftPanel extends CPanel {
         return questionCollection;
     }
 
-    public void addNewCategory() {
+    public CategoryPnl addNewCategory() {
         CategoryPnl categoryPnl = new CategoryPnl();
         questionCollection.addCategory(categoryPnl.questionCategory);
         categories.add(categoryPnl);
@@ -329,6 +339,13 @@ public class LeftPanel extends CPanel {
             return new Rectangle(STEP, y, panel.getWidth() - 2 * STEP, categoryPnl.getPreferredSize().height);
         };
         updateGraphic();
+        return categoryPnl;
+    }
+
+    public CategoryPnl addCategory(QuestionCategory category) {
+        CategoryPnl categoryPnl = addNewCategory();
+        categoryPnl.setNewName(category.getName());
+        return categoryPnl;
     }
 
     private void updateGraphic() {
