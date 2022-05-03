@@ -157,8 +157,10 @@ public class LeftPanel extends CPanel {
                 QuestionTypeDialog dialog = new QuestionTypeDialog();
                 QuestionType type = dialog.getSelectedType();
                 question = Util.getQuestionForType(type);
+                assert question != null;
+                question.getName().setId(name);
                 workspace = Util.getWorkspaceForQuestionAndType(question, type);
-                setName(name);
+                questionButton.setText(name);
                 init();
             }
 
