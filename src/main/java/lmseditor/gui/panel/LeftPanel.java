@@ -6,7 +6,6 @@ import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
 import lmseditor.backend.question.QuestionType;
-import lmseditor.backend.question.component.QuestionName;
 import lmseditor.gui.customComponents.*;
 import lmseditor.gui.dialog.QuestionTypeDialog;
 import lmseditor.gui.panel.workspace.EmptyWorkspace;
@@ -44,7 +43,10 @@ public class LeftPanel extends CPanel {
         clear();
         questionCollection = load(filePath);
         List<QuestionCategory> newCategories = questionCollection.getCategoriesList();
-        newCategories.forEach(this::addCategory);
+        newCategories.forEach(category -> {
+            CategoryPnl currCategoryPnl = addCategory(category);
+            questionCollection.getQuestionsFromCategory(category).forEach(currCategoryPnl::addQuestion);
+        });
     }
 
     class LoadPanel extends JPanel {
@@ -125,18 +127,7 @@ public class LeftPanel extends CPanel {
                 question.getName().setId(name);
             }
 
-            public QuestionElement() {
-                if (questionElements.size() > 0) {
-                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
-                } else {
-                    this.NUMBER = 1;
-                }
-                QuestionTypeDialog dialog = new QuestionTypeDialog();
-                QuestionType type = dialog.getSelectedType();
-                System.out.println(type);
-                question = Util.getQuestionForType(type);
-                workspace = Util.getWorkspaceForQuestionAndType(question, type);
-                System.out.println(question.getClass().getName());
+            private void init() {
                 this.setLayout(new BorderLayout());
                 questionButton.setText(questionCategory.getName() + " " + NUMBER);
 
@@ -153,6 +144,31 @@ public class LeftPanel extends CPanel {
                 setPreferredSize(new Dimension(12, 12));
             }
 
+            public QuestionElement() {
+                if (questionElements.size() > 0) {
+                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
+                } else {
+                    this.NUMBER = 1;
+                }
+                QuestionTypeDialog dialog = new QuestionTypeDialog();
+                QuestionType type = dialog.getSelectedType();
+                question = Util.getQuestionForType(type);
+                workspace = Util.getWorkspaceForQuestionAndType(question, type);
+                init();
+            }
+
+            public QuestionElement(Question question) {
+                if (questionElements.size() > 0) {
+                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
+                } else {
+                    this.NUMBER = 1;
+                }
+
+                this.question = question;
+                workspace = Util.getWorkspaceForQuestionAndType(question, question.getType());
+                init();
+            }
+
             private void remove() {
                 questionCollection.removeQuestion(this.question);
                 questionElements.remove(this);
@@ -166,7 +182,7 @@ public class LeftPanel extends CPanel {
 
         }
 
-        private QuestionCategory questionCategory = new QuestionCategory();
+        private QuestionCategory questionCategory;
         private List<QuestionElement> questionElements = new ArrayList<>();
         private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         private CategoryPnl categoryLink = this;
@@ -175,11 +191,6 @@ public class LeftPanel extends CPanel {
         public final int NUMBER;
         private JTextField textField;
 
-        private void setNewName(String name) {
-            questionCategory.setName(name);
-            questionElements.forEach(it -> it.setName(name + " " + it.NUMBER));
-            updateUI();
-        }
 
         private void updateName() {
             String text = textField.getText();
@@ -188,20 +199,16 @@ public class LeftPanel extends CPanel {
             updateUI();
         }
 
-        public CategoryPnl() {
+        private void init(String name) {
             this.setLayout(new BorderLayout());
             questionsPanel.setLayout(new AdvancedLayouter());
             CPanel upperPanel = new CPanel();
             upperPanel.setLayout(new BorderLayout());
             CPanel rightUpperPanel = new CPanel();
             rightUpperPanel.setLayout(new GridLayout(1, 4));
-            if (categories.size() > 0) {
-                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
-            } else {
-                this.NUMBER = 1;
-            }
 
-            textField = new JTextField(" Категория (" + NUMBER + ") ");
+            textField = new JTextField();
+            textField.setText(name);
             upperPanel.add(textField, BorderLayout.CENTER);
             textField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
@@ -220,7 +227,7 @@ public class LeftPanel extends CPanel {
                 }
             });
 
-            questionCategory.setName(" Категория (" + NUMBER + ") ");
+
             openButton.setVisible(false);
             openButton.addActionListener(event -> {
                 if (isOpened) {
@@ -247,7 +254,7 @@ public class LeftPanel extends CPanel {
                 if (!openButton.isVisible()) {
                     openButton.setVisible(true);
                 }
-                addQuestion();
+                addNewQuestion();
                 // updateUI();
             });
             rightUpperPanel.add(plusButton);
@@ -259,8 +266,29 @@ public class LeftPanel extends CPanel {
             this.add(questionsPanel, BorderLayout.SOUTH);
         }
 
-        public void addQuestion() {
-            QuestionElement questionElement = new QuestionElement();
+        public CategoryPnl() {
+            questionCategory = new QuestionCategory();
+            if (categories.size() > 0) {
+                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
+            } else {
+                this.NUMBER = 1;
+            }
+            String name = "Категория (" + NUMBER + ")";
+            questionCategory.setName(name);
+            init(name);
+        }
+
+        public CategoryPnl(QuestionCategory category) {
+            questionCategory = category;
+            if (categories.size() > 0) {
+                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
+            } else {
+                this.NUMBER = 1;
+            }
+            init(category.getName());
+        }
+
+        private void addQuestionElement(QuestionElement questionElement) {
             questionCollection.addQuestionToCategory(questionCategory, questionElement.question);
             questionElements.add(questionElement);
             questionsPanel.addLayoutable(questionElement);
@@ -278,6 +306,15 @@ public class LeftPanel extends CPanel {
             };
             questionsPanel.doLayout();
             updateGraphic();
+        }
+        public void addNewQuestion() {
+            QuestionElement questionElement = new QuestionElement();
+            addQuestionElement(questionElement);
+        }
+
+        public void addQuestion(Question question) {
+            QuestionElement questionElement = new QuestionElement(question);
+            addQuestionElement(questionElement);
         }
 
         public void removeIt() {
@@ -323,8 +360,7 @@ public class LeftPanel extends CPanel {
         return questionCollection;
     }
 
-    public CategoryPnl addNewCategory() {
-        CategoryPnl categoryPnl = new CategoryPnl();
+    private void addCategoryPnl(CategoryPnl categoryPnl){
         questionCollection.addCategory(categoryPnl.questionCategory);
         categories.add(categoryPnl);
         panel.addLayoutable(categoryPnl);
@@ -339,12 +375,15 @@ public class LeftPanel extends CPanel {
             return new Rectangle(STEP, y, panel.getWidth() - 2 * STEP, categoryPnl.getPreferredSize().height);
         };
         updateGraphic();
-        return categoryPnl;
+    }
+    public void addNewCategory() {
+        CategoryPnl categoryPnl = new CategoryPnl();
+        addCategoryPnl(categoryPnl);
     }
 
     public CategoryPnl addCategory(QuestionCategory category) {
-        CategoryPnl categoryPnl = addNewCategory();
-        categoryPnl.setNewName(category.getName());
+        CategoryPnl categoryPnl = new CategoryPnl(category);
+        addCategoryPnl(categoryPnl);
         return categoryPnl;
     }
 
