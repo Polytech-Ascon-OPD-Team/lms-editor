@@ -51,10 +51,21 @@ public class ImageFlow extends JPanel {
 
         this.add(scrollPanePanel, BorderLayout.CENTER);
 
+        // Костыль для удаления всех файлов, кроме картинок
+        List<ImageBase64> forRemove = new ArrayList<>();
         for(ImageBase64 imageBase64 : imageList.getImages()) {
+            if (!imageBase64.getName().contains(".jpg") && !imageBase64.getName().contains(".JPG") &&
+                    !imageBase64.getName().contains(".png") && !imageBase64.getName().contains(".PNG")) {
+                forRemove.add(imageBase64);
+                continue;
+            }
             BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
             addImageToMiniatures(image);
         }
+        for (ImageBase64 imageBase64 : forRemove) {
+            imageList.getImages().remove(imageBase64);
+        }
+
     }
 
     public ImageFlow(ImageList imageList) {

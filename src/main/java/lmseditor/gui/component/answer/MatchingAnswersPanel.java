@@ -9,6 +9,7 @@ import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
+import lmseditor.backend.question.text.Util;
 import lmseditor.gui.component.ImageFlow;
 
 import javax.swing.*;
@@ -29,8 +30,11 @@ public class MatchingAnswersPanel extends JPanel {
         private ImageFlow imageFlow;
         private ImageList imageList;
 
+        private Subquestion subquestion;
+
         public MatchingAnswerPanel(Subquestion subquestion) {
             this.setLayout(new GridBagLayout());
+            this.subquestion = subquestion;
 
             textFieldQuestion = new JTextField();
             textFieldAnswer = new JTextField();
@@ -41,24 +45,19 @@ public class MatchingAnswersPanel extends JPanel {
             textFieldAnswer.setText(subquestion.getAnswerText());
 
             imageList = subquestion.getTextWithImages().getImageList();
-            for(ImageBase64 imageBase64 : imageList.getImages()) {
-                BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
-                imageFlow.addImageToMiniatures(image);
-            }
+
+            JPanel textFieldsGrid = new JPanel(new GridLayout(1, 2));
+            textFieldsGrid.add(textFieldQuestion);
+            textFieldsGrid.add(textFieldAnswer);
 
             GridBagConstraints gbc = new GridBagConstraints();
 
             gbc.gridy = 0; gbc.gridx = 0;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1;
-            this.add(textFieldQuestion, gbc);
+            this.add(textFieldsGrid, gbc);
 
             gbc.gridy = 0; gbc.gridx = 1;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
-            this.add(textFieldAnswer, gbc);
-
-            gbc.gridy = 0; gbc.gridx = 2;
             gbc.fill = GridBagConstraints.NONE;
             gbc.weightx = 0;
             this.add(removeButton, gbc);
@@ -80,19 +79,17 @@ public class MatchingAnswersPanel extends JPanel {
         }
 
         public TextWithImages getQuestionText(){
-            TextWithImages textWithImages = new TextWithImages();
-            QuestionName name = new QuestionName();
-            QuestionText questionText = new QuestionText(name);
-            Text text = new Text();
-            text.setText(textFieldQuestion.getText());
-            questionText.setText(text);
-            textWithImages.setText(text);
-            textWithImages.setImageList(imageList);
+            TextWithImages textWithImages = subquestion.getTextWithImages();
+            String formattedText = Util.formatAnswerText(textFieldQuestion.getText());
+            textWithImages.getText().setText(formattedText);
+            textFieldQuestion.setText(formattedText);
             return textWithImages;
         }
 
         public String getAnswerText(){
-            return textFieldAnswer.getText();
+            String formattedText = Util.formatAnswerText(textFieldAnswer.getText());
+            textFieldAnswer.setText(formattedText);
+            return formattedText;
         }
 
     }
@@ -108,18 +105,14 @@ public class MatchingAnswersPanel extends JPanel {
         this.answersList = answersList;
         this.setLayout(new BorderLayout());
 
-        label = new JLabel("Enter correct answers");
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        labelPanel.add(label);
+        label = new JLabel("Ответы:");
 
-        addButton = new JButton("Add");
+        addButton = new JButton("+");
         addButton.addActionListener(new AddButtonEvent());
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonsPanel.add(addButton);
 
-        Box header = new Box(BoxLayout.Y_AXIS);
-        header.add(labelPanel);
-        header.add(buttonsPanel);
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        header.add(label);
+        header.add(addButton);
 
         answers = new Box(BoxLayout.Y_AXIS);
         JPanel northAlignPanel = new JPanel(new BorderLayout());

@@ -23,12 +23,17 @@ public class NumericalAnswersPanel extends JPanel {
         private JTextField toleranceField;
         private JButton removeButton;
 
-        public NumericalAnswerPanel() {
+        private NumericalAnswer numericalAnswer;
+
+        public NumericalAnswerPanel(NumericalAnswer numericalAnswer) {
             this.setLayout(new GridBagLayout());
+            this.numericalAnswer = numericalAnswer;
+
+            numericalAnswer.setFraction(100);
 
             label = new JLabel("+-");
-            textField = new JTextField();
-            toleranceField = new JTextField();
+            textField = new JTextField(Double.toString(numericalAnswer.getAnswer()));
+            toleranceField = new JTextField(Double.toString(numericalAnswer.getTolerance()));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
 
@@ -58,12 +63,10 @@ public class NumericalAnswersPanel extends JPanel {
             ((AbstractDocument) toleranceField.getDocument()).setDocumentFilter(new MyDocumentFilter());
         }
 
-        public double getAnswer() {
-            return Double.parseDouble(textField.getText());
-        }
-
-        public double getTolerance() {
-            return Double.parseDouble(toleranceField.getText());
+        public NumericalAnswer getNumericalAnswer() {
+            numericalAnswer.setAnswer(Double.parseDouble(textField.getText()));
+            numericalAnswer.setTolerance(Double.parseDouble(toleranceField.getText()));
+            return numericalAnswer;
         }
 
         private class RemoveButtonEvent implements ActionListener {
@@ -87,9 +90,9 @@ public class NumericalAnswersPanel extends JPanel {
 
         this.answerList = answerList;
 
-        label = new JLabel("Enter correct answers");
+        label = new JLabel("Правильные ответы:");
 
-        addButton = new JButton("Add");
+        addButton = new JButton("+");
         addButton.addActionListener(new AddButtonEvent());
 
         JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -102,6 +105,13 @@ public class NumericalAnswersPanel extends JPanel {
         northAlignPanel.add(answers, BorderLayout.NORTH);
         answersScrollPane = new JScrollPane(northAlignPanel);
 
+        for (int i = 0; i < answerList.size(); i++){
+            NumericalAnswer numericalAnswer = answerList.get(i);
+            NumericalAnswerPanel numericalAnswerPanel = new NumericalAnswerPanel(numericalAnswer);
+            answers.add(numericalAnswerPanel);
+            NumericalAnswersPanel.this.updateUI();
+        }
+
         this.add(header, BorderLayout.NORTH);
         this.add(answersScrollPane, BorderLayout.CENTER);
 
@@ -111,9 +121,7 @@ public class NumericalAnswersPanel extends JPanel {
         answerList.clear();
         for(int i = 0; i < answers.getComponentCount(); i++) {
             NumericalAnswerPanel numericalAnswerPanel = (NumericalAnswerPanel) answers.getComponent(i);
-            NumericalAnswer numericalAnswer = new NumericalAnswer();
-            numericalAnswer.setAnswer(numericalAnswerPanel.getAnswer());
-            numericalAnswer.setTolerance(numericalAnswerPanel.getTolerance());
+            NumericalAnswer numericalAnswer = numericalAnswerPanel.getNumericalAnswer();
             answerList.add(numericalAnswer);
         }
     }
@@ -121,7 +129,7 @@ public class NumericalAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            NumericalAnswerPanel numericalAnswerPanel = new NumericalAnswerPanel();
+            NumericalAnswerPanel numericalAnswerPanel = new NumericalAnswerPanel(new NumericalAnswer());
             answers.add(numericalAnswerPanel);
             NumericalAnswersPanel.this.updateUI();
         }
