@@ -37,7 +37,7 @@ public class LeftPanel extends CPanel {
         while (categories.size() > 0) {
             categories.get(0).removeIt();
         }
-
+        Main.mainFrame.clearWorkspace();
     }
 
     public void loadFromFile(String filePath) {
@@ -127,14 +127,13 @@ public class LeftPanel extends CPanel {
                 questionButton.setText(name);
                 question.getName().setId(name);
             }
-            void updateData(){
+
+            void updateData() {
                 workspace.loadData();
             }
 
             private void init() {
                 this.setLayout(new BorderLayout());
-                questionButton.setText(questionCategory.getName() + " " + NUMBER);
-
                 questionButton.addActionListener(e -> {
                     Main.mainFrame.getWorkspace().loadData();
                     Main.mainFrame.setWorkspace(workspace);
@@ -154,10 +153,12 @@ public class LeftPanel extends CPanel {
                 } else {
                     this.NUMBER = 1;
                 }
+                String name = questionCategory.getName() + " " + NUMBER;
                 QuestionTypeDialog dialog = new QuestionTypeDialog();
                 QuestionType type = dialog.getSelectedType();
                 question = Util.getQuestionForType(type);
                 workspace = Util.getWorkspaceForQuestionAndType(question, type);
+                setName(name);
                 init();
             }
 
@@ -169,11 +170,15 @@ public class LeftPanel extends CPanel {
                 }
 
                 this.question = question;
+                questionButton.setText(question.getName().getId());
                 workspace = Util.getWorkspaceForQuestionAndType(question, question.getType());
                 init();
             }
 
             private void remove() {
+                if (this.workspace == Main.mainFrame.getWorkspace()) {
+                    Main.mainFrame.clearWorkspace();
+                }
                 questionCollection.removeQuestion(this.question);
                 questionElements.remove(this);
                 questionsPanel.remove(this);
@@ -195,9 +200,10 @@ public class LeftPanel extends CPanel {
         public final int NUMBER;
         private JTextField textField;
 
-        private void updateData(){
+        private void updateData() {
             questionElements.forEach(QuestionElement::updateData);
         }
+
         private void updateName() {
             String text = textField.getText();
             questionCategory.setName(text);
@@ -313,6 +319,7 @@ public class LeftPanel extends CPanel {
             questionsPanel.doLayout();
             updateGraphic();
         }
+
         public void addNewQuestion() {
             QuestionElement questionElement = new QuestionElement();
             addQuestionElement(questionElement);
@@ -324,6 +331,12 @@ public class LeftPanel extends CPanel {
         }
 
         public void removeIt() {
+            for (QuestionElement questionElement : this.questionElements) {
+                if (questionElement.workspace == Main.mainFrame.getWorkspace()) {
+                    Main.mainFrame.clearWorkspace();
+                    break;
+                }
+            }
             questionCollection.removeCategory(this.questionCategory);
             categories.remove(this);
             this.getParent().remove(this);
@@ -366,7 +379,7 @@ public class LeftPanel extends CPanel {
         return questionCollection;
     }
 
-    private void addCategoryPnl(CategoryPnl categoryPnl){
+    private void addCategoryPnl(CategoryPnl categoryPnl) {
         questionCollection.addCategory(categoryPnl.questionCategory);
         categories.add(categoryPnl);
         panel.addLayoutable(categoryPnl);
@@ -382,6 +395,7 @@ public class LeftPanel extends CPanel {
         };
         updateGraphic();
     }
+
     public void addNewCategory() {
         CategoryPnl categoryPnl = new CategoryPnl();
         addCategoryPnl(categoryPnl);

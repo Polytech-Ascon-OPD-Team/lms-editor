@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 
         // parse test
         JPanel downPanel = new JPanel();
-        downPanel.setLayout(new GridLayout(1,3));
+        downPanel.setLayout(new GridLayout(1, 3));
         StandardButton parseButton = new StandardButton("Parse...");
         parseButton.setAction(() -> {
             workspace.loadData();
@@ -58,6 +58,10 @@ public class MainFrame extends JFrame {
         workspaceContainer.add(workspace, BorderLayout.CENTER);
         mainPanel.updateUI();
 
+    }
+
+    public void clearWorkspace() {
+        setWorkspace(new EmptyWorkspace());
     }
 
     public Workspace getWorkspace() {

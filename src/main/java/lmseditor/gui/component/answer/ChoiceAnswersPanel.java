@@ -133,8 +133,6 @@ public class ChoiceAnswersPanel extends JPanel {
         if (answersList.size() == 0) {
             for (int i = 0; i < 4; i++) {
                 ChoiceAnswer choiceAnswer = new ChoiceAnswer();
-                TextWithImages textWithImages = new TextWithImages();
-                choiceAnswer.setTextWithImages(textWithImages);
                 ChoiceAnswerPanel choiceAnswerPanel = new ChoiceAnswerPanel(choiceAnswer);
                 answers.add(choiceAnswerPanel);
             }

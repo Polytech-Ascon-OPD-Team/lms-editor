@@ -2,6 +2,7 @@ package lmseditor.gui.component.answer;
 
 import lmseditor.backend.image.ImageList;
 import lmseditor.backend.question.component.Subquestion;
+import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.text.Util;
 import lmseditor.gui.component.ImageFlow;
@@ -66,8 +67,10 @@ public class MatchingAnswersPanel extends JPanel {
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(MatchingAnswersPanel.MatchingAnswerPanel.this);
-                MatchingAnswersPanel.this.updateUI();
+                if (answers.getComponentCount() > 4) {
+                    answers.remove(MatchingAnswersPanel.MatchingAnswerPanel.this);
+                    MatchingAnswersPanel.this.updateUI();
+                }
             }
         }
 
@@ -124,6 +127,15 @@ public class MatchingAnswersPanel extends JPanel {
 
         this.add(header, BorderLayout.NORTH);
         this.add(answersScrollPanePanel, BorderLayout.CENTER);
+
+        if (answersList.size() == 0) {
+            for (int i = 0; i < 4; i++) {
+                Subquestion subquestion = new Subquestion();
+                MatchingAnswersPanel.MatchingAnswerPanel matchingAnswerPanel = new MatchingAnswersPanel.MatchingAnswerPanel(subquestion);
+                answers.add(matchingAnswerPanel);
+            }
+            MatchingAnswersPanel.this.updateUI();
+        }
     }
 
     public void loadData() {
@@ -141,13 +153,15 @@ public class MatchingAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Subquestion subquestion = new Subquestion();
-            TextWithImages textWithImages = new TextWithImages();
-            subquestion.setAnswerText("");
-            subquestion.setTextWithImages(textWithImages);
-            MatchingAnswerPanel matchingAnswerPanel = new MatchingAnswerPanel(subquestion);
-            answers.add(matchingAnswerPanel);
-            MatchingAnswersPanel.this.updateUI();
+            if(answers.getComponentCount() < 6) {
+                Subquestion subquestion = new Subquestion();
+                TextWithImages textWithImages = new TextWithImages();
+                subquestion.setAnswerText("");
+                subquestion.setTextWithImages(textWithImages);
+                MatchingAnswerPanel matchingAnswerPanel = new MatchingAnswerPanel(subquestion);
+                answers.add(matchingAnswerPanel);
+                MatchingAnswersPanel.this.updateUI();
+            }
         }
     }
 }
