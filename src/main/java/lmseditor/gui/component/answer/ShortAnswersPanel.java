@@ -11,18 +11,22 @@ import java.util.List;
 public class ShortAnswersPanel extends JPanel {
 
     private class ShortAnswerPanel extends JPanel {
-        private static final int TEXT_FIELD_COLUMNS = 60;
 
         private JTextField textField;
         private JButton removeButton;
 
-        public ShortAnswerPanel(String text) {
+        private ShortAnswer shortAnswer;
+
+        public ShortAnswerPanel(ShortAnswer shortAnswer) {
             this.setLayout(new GridBagLayout());
+            this.shortAnswer = shortAnswer;
+
+            shortAnswer.setFraction(100);
 
             textField = new JTextField();
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
-            textField.setText(text);
+            textField.setText(shortAnswer.getText());
 
             GridBagConstraints gbc = new GridBagConstraints();
 
@@ -45,8 +49,9 @@ public class ShortAnswersPanel extends JPanel {
             }
         }
 
-        public String getAnswerText(){
-            return textField.getText();
+        public ShortAnswer getShortAnswer(){
+            shortAnswer.setText(textField.getText());
+            return shortAnswer;
         }
 
     }
@@ -75,7 +80,7 @@ public class ShortAnswersPanel extends JPanel {
 
         for (int i = 0; i < answersList.size(); i++){
             ShortAnswer shortAnswer = answersList.get(i);
-            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel(shortAnswer.getText());
+            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel(shortAnswer);
             answers.add(shortAnswerPanel);
             ShortAnswersPanel.this.updateUI();
         }
@@ -93,8 +98,7 @@ public class ShortAnswersPanel extends JPanel {
         answersList.clear();
         for(int i = 0; i < answers.getComponentCount(); i++) {
             ShortAnswerPanel shortAnswerPanel = (ShortAnswerPanel) answers.getComponent(i);
-            ShortAnswer shortAnswer = new ShortAnswer();
-            shortAnswer.setText(shortAnswerPanel.getAnswerText());
+            ShortAnswer shortAnswer = shortAnswerPanel.getShortAnswer();
             answersList.add(shortAnswer);
         }
     }
@@ -102,7 +106,7 @@ public class ShortAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel("");
+            ShortAnswerPanel shortAnswerPanel = new ShortAnswerPanel(new ShortAnswer());
             answers.add(shortAnswerPanel);
             ShortAnswersPanel.this.updateUI();
         }

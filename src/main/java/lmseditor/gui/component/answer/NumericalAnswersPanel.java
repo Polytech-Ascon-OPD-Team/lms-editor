@@ -23,8 +23,13 @@ public class NumericalAnswersPanel extends JPanel {
         private JTextField toleranceField;
         private JButton removeButton;
 
+        private NumericalAnswer numericalAnswer;
+
         public NumericalAnswerPanel(NumericalAnswer numericalAnswer) {
             this.setLayout(new GridBagLayout());
+            this.numericalAnswer = numericalAnswer;
+
+            numericalAnswer.setFraction(100);
 
             label = new JLabel("+-");
             textField = new JTextField(Double.toString(numericalAnswer.getAnswer()));
@@ -58,12 +63,10 @@ public class NumericalAnswersPanel extends JPanel {
             ((AbstractDocument) toleranceField.getDocument()).setDocumentFilter(new MyDocumentFilter());
         }
 
-        public double getAnswer() {
-            return Double.parseDouble(textField.getText());
-        }
-
-        public double getTolerance() {
-            return Double.parseDouble(toleranceField.getText());
+        public NumericalAnswer getNumericalAnswer() {
+            numericalAnswer.setAnswer(Double.parseDouble(textField.getText()));
+            numericalAnswer.setTolerance(Double.parseDouble(toleranceField.getText()));
+            return numericalAnswer;
         }
 
         private class RemoveButtonEvent implements ActionListener {
@@ -118,9 +121,7 @@ public class NumericalAnswersPanel extends JPanel {
         answerList.clear();
         for(int i = 0; i < answers.getComponentCount(); i++) {
             NumericalAnswerPanel numericalAnswerPanel = (NumericalAnswerPanel) answers.getComponent(i);
-            NumericalAnswer numericalAnswer = new NumericalAnswer();
-            numericalAnswer.setAnswer(numericalAnswerPanel.getAnswer());
-            numericalAnswer.setTolerance(numericalAnswerPanel.getTolerance());
+            NumericalAnswer numericalAnswer = numericalAnswerPanel.getNumericalAnswer();
             answerList.add(numericalAnswer);
         }
     }
