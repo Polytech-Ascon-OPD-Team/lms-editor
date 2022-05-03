@@ -13,13 +13,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class QuestionText extends TextWithImages {
 
     @XmlTransient
-    private final QuestionName name;
+    private QuestionName name;
 
     private QuestionText() {
         name = new QuestionName();
     }
 
     public QuestionText(QuestionName name) {
+        this.name = name;
+    }
+
+    public void setName(QuestionName name) {
         this.name = name;
     }
 

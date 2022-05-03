@@ -163,7 +163,7 @@ public class ChoiceAnswersPanel extends JPanel {
             ChoiceAnswer choiceAnswer = choiceAnswerPanel.getChoiceAns();
             if (choiceAnswer.getFraction() > 0) {
                 choiceAnswer.setFraction(points);
-            } else {
+            } else if (correctAnswersCount != 1) {
                 choiceAnswer.setFraction(-points);
             }
             choiceAnswer.getTextWithImages().generateFormattedText();

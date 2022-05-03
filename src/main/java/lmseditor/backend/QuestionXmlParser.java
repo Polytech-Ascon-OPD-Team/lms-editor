@@ -51,6 +51,9 @@ public class QuestionXmlParser {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
+        if (questionCollection != null) {
+            questionCollection.connectTextWithName();
+        }
         return questionCollection;
     }
 
