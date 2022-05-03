@@ -1,15 +1,9 @@
 package lmseditor.gui.panel.workspace;
 
 import lmseditor.backend.question.QuestionNumerical;
-import lmseditor.backend.question.text.Text;
 import lmseditor.gui.component.Header;
-import lmseditor.gui.component.ImageFlow;
-import lmseditor.gui.component.QuestionNamePanel;
-import lmseditor.gui.component.QuestionTextPanel;
 import lmseditor.gui.component.answer.NumericalAnswersPanel;
-import lmseditor.gui.panel.properties.QuestionNumericalAnswerProperties;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class QuestionNumericalAnswerWorkspace extends Workspace {
