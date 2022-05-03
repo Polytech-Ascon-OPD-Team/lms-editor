@@ -20,8 +20,11 @@ public class QuestionCollection {
     }
 
     public void addQuestionToCategory(QuestionCategory questionCategory, Question question) {
-        int categoryIndex = questions.indexOf(questionCategory);
-        questions.add(categoryIndex + 1, question);
+        int index = questions.indexOf(questionCategory) + 1;
+        while ((index < questions.size()) && (questions.get(index) instanceof Question)) {
+            index++;
+        }
+        questions.add(index, question);
     }
 
     public void removeQuestion(Question question) {
