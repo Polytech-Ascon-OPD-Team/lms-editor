@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class LeftPanel extends CPanel {
     public void saveToFile(String filePath) {
         categories.forEach(CategoryPnl::updateData);
         parser.marshallToFile(questionCollection, new File(filePath));
+
     }
 
     public QuestionCollection load(String filePath) {
@@ -48,22 +50,19 @@ public class LeftPanel extends CPanel {
             CategoryPnl currCategoryPnl = addCategory(category);
             boolean check = false;
             for (Question question : localQuestionCollection.getQuestionsFromCategory(category)) {
-                if(!check){
+                if (!check) {
                     check = true;
                     currCategoryPnl.enableOpenButton();
                 }
                 currCategoryPnl.addQuestion(question);
             }
         });
+
     }
 
     class LoadPanel extends JPanel {
 
         public LoadPanel() {
-            StandardButton chooseButton = new StandardButton("...");
-            chooseButton.setAction(() -> {
-                System.out.println(Util.chooseXMLPathFilePath());
-            });
             this.setLayout(new GridLayout(1, 3));
             StandardButton newButton = new StandardButton("Новый");
             StandardButton load = new StandardButton("Загрузить");
@@ -72,8 +71,20 @@ public class LeftPanel extends CPanel {
             newButton.setAction(LeftPanel.this::clear);
             this.add(load);
             this.add(save);
-            load.setAction(() -> loadFromFile(Util.chooseXMLPathFilePath()));
-            save.setAction(() -> saveToFile(Util.saveXMLPathFilePath()));
+            load.setAction(() -> {
+                try {
+                    loadFromFile(Util.chooseXMLPathFilePath());
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+            save.setAction(() -> {
+                try {
+                    saveToFile(Util.saveXMLPathFilePath());
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
         }
     }
 
