@@ -53,6 +53,7 @@ public class ImageFlow extends JPanel {
 
         // Костыль для удаления всех файлов, кроме картинок
         List<ImageBase64> forRemove = new ArrayList<>();
+
         for(ImageBase64 imageBase64 : imageList.getImages()) {
             if (!imageBase64.getName().contains(".jpg") && !imageBase64.getName().contains(".JPG") &&
                     !imageBase64.getName().contains(".png") && !imageBase64.getName().contains(".PNG")) {
@@ -60,6 +61,7 @@ public class ImageFlow extends JPanel {
                 continue;
             }
             BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
+            imageBase64.setWidth(image.getWidth()); imageBase64.setHeight(image.getHeight());
             addImageToMiniatures(image);
         }
         for (ImageBase64 imageBase64 : forRemove) {
