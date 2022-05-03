@@ -36,7 +36,7 @@ public class QuestionChoiceAnswerWorkspace extends Workspace {
     public void loadData() {
         header.loadData();
         question.getQuestionText().generateFormattedText();
-        question.setSingleChoice(answers.getCountOfRightAnswers() == 1);
+        question.setSingleChoice(answers.getCorrectAnswersCount() == 1);
         answers.loadData();
     }
 
