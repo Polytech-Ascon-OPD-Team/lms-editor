@@ -21,7 +21,7 @@ public class Util {
 
     public static String removeFirstLineShorterThan(String str, int maxLength) {
         int brIndex = str.indexOf("<br>");
-        if (brIndex < maxLength) {
+        if ((brIndex != -1) && (brIndex < maxLength)) {
             str =  str.substring(brIndex + 4);
         }
         return str;
@@ -29,12 +29,12 @@ public class Util {
 
     public static String removeHtmlTags(String input) {
         StringBuilder stringBuilder = new StringBuilder(input);
-        int indexBegin = input.indexOf('<');
-        int indexEnd = input.indexOf('>');
+        int indexBegin = stringBuilder.indexOf("<");
+        int indexEnd = stringBuilder.indexOf(">");
         while((indexBegin >= 0) && (indexEnd >= 0)) {
-            stringBuilder.replace(indexBegin, indexEnd, "");
-            indexBegin = input.indexOf('<');
-            indexEnd = input.indexOf('>');
+            stringBuilder.replace(indexBegin, indexEnd + 1, "");
+            indexBegin = stringBuilder.indexOf("<");
+            indexEnd = stringBuilder.indexOf(">");
         }
         return stringBuilder.toString();
     }
