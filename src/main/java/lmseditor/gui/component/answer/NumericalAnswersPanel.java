@@ -90,9 +90,9 @@ public class NumericalAnswersPanel extends JPanel {
 
         this.answerList = answerList;
 
-        label = new JLabel("Enter correct answers");
+        label = new JLabel("Правильные ответы:");
 
-        addButton = new JButton("Add");
+        addButton = new JButton("+");
         addButton.addActionListener(new AddButtonEvent());
 
         JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));

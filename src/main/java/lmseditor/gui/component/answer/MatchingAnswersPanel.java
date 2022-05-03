@@ -103,18 +103,14 @@ public class MatchingAnswersPanel extends JPanel {
         this.answersList = answersList;
         this.setLayout(new BorderLayout());
 
-        label = new JLabel("Enter correct answers");
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        labelPanel.add(label);
+        label = new JLabel("Ответы:");
 
-        addButton = new JButton("Add");
+        addButton = new JButton("+");
         addButton.addActionListener(new AddButtonEvent());
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonsPanel.add(addButton);
 
-        Box header = new Box(BoxLayout.Y_AXIS);
-        header.add(labelPanel);
-        header.add(buttonsPanel);
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        header.add(label);
+        header.add(addButton);
 
         answers = new Box(BoxLayout.Y_AXIS);
         JPanel northAlignPanel = new JPanel(new BorderLayout());

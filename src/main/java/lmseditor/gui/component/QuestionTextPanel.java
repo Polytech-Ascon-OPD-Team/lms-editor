@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class QuestionTextPanel extends JPanel {
-    private static final String QUESTION_TEXT_LABEL_TEXT = "Текст вопроса:";
+    private static final String QUESTION_TEXT_LABEL_TEXT = "Текст:";
     private static final int TEXT_AREA_ROWS = 5;
 
     private JScrollPane textScrollPane;
@@ -23,11 +23,14 @@ public class QuestionTextPanel extends JPanel {
         textArea = new JTextArea(text.getText(), TEXT_AREA_ROWS ,0);
         textScrollPane = new JScrollPane(textArea);
 
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.add(label);
+
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridy = 0; gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.NORTHWEST;
-        this.add(label, gbc);
+        this.add(labelPanel, gbc);
 
         gbc.gridy = 1; gbc.gridx = 0;
         gbc.fill = GridBagConstraints.BOTH;
