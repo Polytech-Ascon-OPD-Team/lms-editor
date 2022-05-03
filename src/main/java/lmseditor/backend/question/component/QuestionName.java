@@ -1,11 +1,16 @@
 package lmseditor.backend.question.component;
 
+import lmseditor.backend.question.adapter.QuestionNameAdapter;
+import lmseditor.backend.question.adapter.TextWithImagesAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlJavaTypeAdapter(QuestionNameAdapter.class)
 public class QuestionName {
 
     @XmlTransient

@@ -1,6 +1,7 @@
 package lmseditor.backend.question.text;
 
 import lmseditor.backend.image.ImageList;
+import lmseditor.backend.question.adapter.TextWithImagesAdapter;
 import org.eclipse.persistence.oxm.annotations.XmlCDATA;
 import lmseditor.backend.question.text.format.Formatter;
 import lmseditor.backend.question.text.format.HtmlFormatter;

@@ -1,4 +1,6 @@
-package lmseditor.backend.question.text;
+package lmseditor.backend.question.adapter;
+
+import lmseditor.backend.question.text.TextWithImages;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
