@@ -46,7 +46,14 @@ public class LeftPanel extends CPanel {
         List<QuestionCategory> newCategories = localQuestionCollection.getCategoriesList();
         newCategories.forEach(category -> {
             CategoryPnl currCategoryPnl = addCategory(category);
-            localQuestionCollection.getQuestionsFromCategory(category).forEach(currCategoryPnl::addQuestion);
+            boolean check = false;
+            for (Question question : localQuestionCollection.getQuestionsFromCategory(category)) {
+                if(!check){
+                    check = true;
+                    currCategoryPnl.enableOpenButton();
+                }
+                currCategoryPnl.addQuestion(question);
+            }
         });
     }
 
@@ -211,6 +218,12 @@ public class LeftPanel extends CPanel {
             questionCategory.setName(text);
             questionElements.forEach(it -> it.setName(text + " " + it.NUMBER));
             updateUI();
+        }
+
+        public void enableOpenButton() {
+            isOpened = true;
+            openButton.setDirection(BasicArrowButton.NORTH);
+            openButton.setVisible(true);
         }
 
         private void init(String name) {
