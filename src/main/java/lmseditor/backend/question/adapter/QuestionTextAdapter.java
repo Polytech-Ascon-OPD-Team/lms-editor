@@ -1,19 +1,19 @@
 package lmseditor.backend.question.adapter;
 
-import lmseditor.backend.question.text.TextWithImages;
+import lmseditor.backend.question.text.QuestionText;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class TextWithImagesAdapter extends XmlAdapter<TextWithImages, TextWithImages> {
+public class QuestionTextAdapter extends XmlAdapter<QuestionText, QuestionText> {
 
     @Override
-    public TextWithImages marshal(TextWithImages v) throws Exception {
+    public QuestionText marshal(QuestionText v) throws Exception {
         v.generateFormattedText();
         return v;
     }
 
     @Override
-    public TextWithImages unmarshal(TextWithImages v) throws Exception {
+    public QuestionText unmarshal(QuestionText v) throws Exception {
         String text = Util.parseText(v.getXmlText());
         v.getText().setText(text);
         return v;
