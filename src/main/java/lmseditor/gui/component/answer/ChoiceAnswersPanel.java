@@ -1,6 +1,5 @@
 package lmseditor.gui.component.answer;
 
-import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.image.ImageList;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.text.TextWithImages;
@@ -11,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ChoiceAnswersPanel extends JPanel {
@@ -43,10 +41,6 @@ public class ChoiceAnswersPanel extends JPanel {
             }
 
             imageList = choiceAnswer.getTextWithImages().getImageList();
-            for(ImageBase64 imageBase64 : imageList.getImages()) {
-                BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
-                imageFlow.addImageToMiniatures(image);
-            }
 
             GridBagConstraints gbc = new GridBagConstraints();
 
@@ -75,8 +69,10 @@ public class ChoiceAnswersPanel extends JPanel {
         private class RemoveButtonEvent implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answers.remove(ChoiceAnswersPanel.ChoiceAnswerPanel.this);
-                ChoiceAnswersPanel.this.updateUI();
+                if (answers.getComponentCount() > 4) {
+                    answers.remove(ChoiceAnswersPanel.ChoiceAnswerPanel.this);
+                    ChoiceAnswersPanel.this.updateUI();
+                }
             }
         }
 
@@ -133,6 +129,17 @@ public class ChoiceAnswersPanel extends JPanel {
 
         this.add(header, BorderLayout.NORTH);
         this.add(answersScrollPanePanel, BorderLayout.CENTER);
+
+        if (answersList.size() == 0) {
+            for (int i = 0; i < 4; i++) {
+                ChoiceAnswer choiceAnswer = new ChoiceAnswer();
+                TextWithImages textWithImages = new TextWithImages();
+                choiceAnswer.setTextWithImages(textWithImages);
+                ChoiceAnswerPanel choiceAnswerPanel = new ChoiceAnswerPanel(choiceAnswer);
+                answers.add(choiceAnswerPanel);
+            }
+            ChoiceAnswersPanel.this.updateUI();
+        }
     }
 
     public int getCountOfRightAnswers() {
@@ -146,7 +153,6 @@ public class ChoiceAnswersPanel extends JPanel {
         }
         return count;
     }
-
 
     public void loadData() {
         answersList.clear();
@@ -168,13 +174,14 @@ public class ChoiceAnswersPanel extends JPanel {
     private class AddButtonEvent implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ChoiceAnswer choiceAnswer = new ChoiceAnswer();
-            TextWithImages textWithImages = new TextWithImages();
-            choiceAnswer.setTextWithImages(textWithImages);
-            ChoiceAnswerPanel choiceAnswerPanel = new ChoiceAnswerPanel(choiceAnswer);
-            answers.add(choiceAnswerPanel);
-            ChoiceAnswersPanel.this.updateUI();
+            if (answers.getComponentCount() < 6) {
+                ChoiceAnswer choiceAnswer = new ChoiceAnswer();
+                TextWithImages textWithImages = new TextWithImages();
+                choiceAnswer.setTextWithImages(textWithImages);
+                ChoiceAnswerPanel choiceAnswerPanel = new ChoiceAnswerPanel(choiceAnswer);
+                answers.add(choiceAnswerPanel);
+                ChoiceAnswersPanel.this.updateUI();
+            }
         }
     }
-
 }
