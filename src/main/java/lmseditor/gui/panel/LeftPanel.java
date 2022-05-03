@@ -1,6 +1,7 @@
 package lmseditor.gui.panel;
 
 import lmseditor.Main;
+import lmseditor.backend.QuestionXmlParser;
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;
@@ -12,12 +13,62 @@ import lmseditor.gui.panel.workspace.Workspace;
 import lmseditor.gui.util.Util;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeftPanel extends CPanel {
+    private QuestionXmlParser parser = new QuestionXmlParser();
+
+    public void saveToFile(String filePath) {
+        categories.forEach(CategoryPnl::updateData);
+        parser.marshallToFile(questionCollection, new File(filePath));
+    }
+
+    public QuestionCollection load(String filePath) {
+        return parser.unmarshallFromFile(new File(filePath));
+    }
+
+    private void clear() {
+        while (categories.size() > 0) {
+            categories.get(0).removeIt();
+        }
+
+    }
+
+    public void loadFromFile(String filePath) {
+        clear();
+        QuestionCollection localQuestionCollection = load(filePath);
+        List<QuestionCategory> newCategories = localQuestionCollection.getCategoriesList();
+        newCategories.forEach(category -> {
+            CategoryPnl currCategoryPnl = addCategory(category);
+            localQuestionCollection.getQuestionsFromCategory(category).forEach(currCategoryPnl::addQuestion);
+        });
+    }
+
+    class LoadPanel extends JPanel {
+
+        public LoadPanel() {
+            StandardButton chooseButton = new StandardButton("...");
+            chooseButton.setAction(() -> {
+                System.out.println(Util.chooseXMLPathFilePath());
+            });
+            this.setLayout(new GridLayout(1, 3));
+            StandardButton newButton = new StandardButton("Новый");
+            StandardButton load = new StandardButton("Загрузить");
+            StandardButton save = new StandardButton("Сохр.");
+            this.add(newButton);
+            newButton.setAction(LeftPanel.this::clear);
+            this.add(load);
+            this.add(save);
+            load.setAction(() -> loadFromFile(Util.chooseXMLPathFilePath()));
+            save.setAction(() -> saveToFile(Util.saveXMLPathFilePath()));
+        }
+    }
 
     private static final int STEP = 5;
     private static final Color LEFT_PANEL_COLOR = new Color(58, 58, 68);
@@ -67,22 +118,28 @@ public class LeftPanel extends CPanel {
         }
 
         private class QuestionElement extends CPanel {
+            public final int NUMBER;
             private Question question;
             private Workspace workspace;
             private JButton questionButton = new JButton();
 
-            public QuestionElement() {
-                QuestionTypeDialog dialog = new QuestionTypeDialog();
-                QuestionType type = dialog.getSelectedType();
-                question = Util.getQuestionForType(type);
-                workspace = Util.getWorkspaceForQuestionAndType(question, type);
+            public void setName(String name) {
+                questionButton.setText(name);
+                question.getName().setId(name);
+            }
+            void updateData(){
+                workspace.loadData();
+            }
 
+            private void init() {
                 this.setLayout(new BorderLayout());
-                questionButton.setText(" вопрос (" + String.valueOf(questionElements.size() + 1) + ") ");
+                questionButton.setText(questionCategory.getName() + " " + NUMBER);
+
                 questionButton.addActionListener(e -> {
                     Main.mainFrame.getWorkspace().loadData();
                     Main.mainFrame.setWorkspace(workspace);
                 });
+
                 questionButton.setFocusPainted(false);
                 this.add(questionButton, BorderLayout.CENTER);
                 XButton xButton = new XButton();
@@ -91,8 +148,33 @@ public class LeftPanel extends CPanel {
                 setPreferredSize(new Dimension(12, 12));
             }
 
+            public QuestionElement() {
+                if (questionElements.size() > 0) {
+                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
+                } else {
+                    this.NUMBER = 1;
+                }
+                QuestionTypeDialog dialog = new QuestionTypeDialog();
+                QuestionType type = dialog.getSelectedType();
+                question = Util.getQuestionForType(type);
+                workspace = Util.getWorkspaceForQuestionAndType(question, type);
+                init();
+            }
+
+            public QuestionElement(Question question) {
+                if (questionElements.size() > 0) {
+                    this.NUMBER = questionElements.get(questionElements.size() - 1).NUMBER + 1;
+                } else {
+                    this.NUMBER = 1;
+                }
+
+                this.question = question;
+                workspace = Util.getWorkspaceForQuestionAndType(question, question.getType());
+                init();
+            }
+
             private void remove() {
-                //TODO(): Remove question from question category
+                questionCollection.removeQuestion(this.question);
                 questionElements.remove(this);
                 questionsPanel.remove(this);
                 if (questionElements.size() == 0) {
@@ -104,31 +186,54 @@ public class LeftPanel extends CPanel {
 
         }
 
-        private QuestionCategory questionCategory = new QuestionCategory();
+        private QuestionCategory questionCategory;
         private List<QuestionElement> questionElements = new ArrayList<>();
         private BasicArrowButton openButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         private CategoryPnl categoryLink = this;
         private CPanel questionsPanel = new CPanel();
         private boolean isOpened = false;
+        public final int NUMBER;
+        private JTextField textField;
 
-        public CategoryPnl() {
+        private void updateData(){
+            questionElements.forEach(QuestionElement::updateData);
+        }
+        private void updateName() {
+            String text = textField.getText();
+            questionCategory.setName(text);
+            questionElements.forEach(it -> it.setName(text + " " + it.NUMBER));
+            updateUI();
+        }
+
+        private void init(String name) {
             this.setLayout(new BorderLayout());
             questionsPanel.setLayout(new AdvancedLayouter());
             CPanel upperPanel = new CPanel();
             upperPanel.setLayout(new BorderLayout());
             CPanel rightUpperPanel = new CPanel();
             rightUpperPanel.setLayout(new GridLayout(1, 4));
-            JTextField textField = new JTextField(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
-            upperPanel.add(textField, BorderLayout.CENTER);
 
-            /* TODO()
-            textField.addVetoableChangeListener(new VetoableChangeListener() {
+            textField = new JTextField();
+            textField.setText(name);
+            upperPanel.add(textField, BorderLayout.CENTER);
+            textField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
-                public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-                    System.out.println(evt);
+                public void insertUpdate(DocumentEvent e) {
+                    updateName();
                 }
-            });*/
-            questionCategory.setName(" Категория (" + String.valueOf(categories.size() + 1) + ") ");
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    updateName();
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    updateName();
+                }
+            });
+
+
             openButton.setVisible(false);
             openButton.addActionListener(event -> {
                 if (isOpened) {
@@ -155,7 +260,7 @@ public class LeftPanel extends CPanel {
                 if (!openButton.isVisible()) {
                     openButton.setVisible(true);
                 }
-                addQuestion();
+                addNewQuestion();
                 // updateUI();
             });
             rightUpperPanel.add(plusButton);
@@ -167,8 +272,29 @@ public class LeftPanel extends CPanel {
             this.add(questionsPanel, BorderLayout.SOUTH);
         }
 
-        public void addQuestion() {
-            QuestionElement questionElement = new QuestionElement();
+        public CategoryPnl() {
+            questionCategory = new QuestionCategory();
+            if (categories.size() > 0) {
+                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
+            } else {
+                this.NUMBER = 1;
+            }
+            String name = "Категория (" + NUMBER + ")";
+            questionCategory.setName(name);
+            init(name);
+        }
+
+        public CategoryPnl(QuestionCategory category) {
+            questionCategory = category;
+            if (categories.size() > 0) {
+                this.NUMBER = categories.get(categories.size() - 1).NUMBER + 1;
+            } else {
+                this.NUMBER = 1;
+            }
+            init(category.getName());
+        }
+
+        private void addQuestionElement(QuestionElement questionElement) {
             questionCollection.addQuestionToCategory(questionCategory, questionElement.question);
             questionElements.add(questionElement);
             questionsPanel.addLayoutable(questionElement);
@@ -187,9 +313,18 @@ public class LeftPanel extends CPanel {
             questionsPanel.doLayout();
             updateGraphic();
         }
+        public void addNewQuestion() {
+            QuestionElement questionElement = new QuestionElement();
+            addQuestionElement(questionElement);
+        }
+
+        public void addQuestion(Question question) {
+            QuestionElement questionElement = new QuestionElement(question);
+            addQuestionElement(questionElement);
+        }
 
         public void removeIt() {
-            //TODO: удаление категории из questionCollection
+            questionCollection.removeCategory(this.questionCategory);
             categories.remove(this);
             this.getParent().remove(this);
             updateGraphic();
@@ -218,7 +353,12 @@ public class LeftPanel extends CPanel {
         addCategoryButton.setAction(this::addNewCategory);
         JLabel label1 = new JLabel("Список вопросов: ");
         label1.setForeground(Color.white);
-        this.add(label1, BorderLayout.NORTH);
+        JPanel upperPanel = new JPanel();
+        upperPanel.setLayout(new BorderLayout());
+        upperPanel.add(new LoadPanel(), BorderLayout.CENTER);
+        label1.setForeground(Color.BLACK);
+        upperPanel.add(label1, BorderLayout.SOUTH);
+        this.add(upperPanel, BorderLayout.NORTH);
         this.add(downPanel, BorderLayout.SOUTH);
     }
 
@@ -226,8 +366,7 @@ public class LeftPanel extends CPanel {
         return questionCollection;
     }
 
-    public void addNewCategory() {
-        CategoryPnl categoryPnl = new CategoryPnl();
+    private void addCategoryPnl(CategoryPnl categoryPnl){
         questionCollection.addCategory(categoryPnl.questionCategory);
         categories.add(categoryPnl);
         panel.addLayoutable(categoryPnl);
@@ -242,6 +381,16 @@ public class LeftPanel extends CPanel {
             return new Rectangle(STEP, y, panel.getWidth() - 2 * STEP, categoryPnl.getPreferredSize().height);
         };
         updateGraphic();
+    }
+    public void addNewCategory() {
+        CategoryPnl categoryPnl = new CategoryPnl();
+        addCategoryPnl(categoryPnl);
+    }
+
+    public CategoryPnl addCategory(QuestionCategory category) {
+        CategoryPnl categoryPnl = new CategoryPnl(category);
+        addCategoryPnl(categoryPnl);
+        return categoryPnl;
     }
 
     private void updateGraphic() {

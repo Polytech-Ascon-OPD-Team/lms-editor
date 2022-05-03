@@ -37,4 +37,11 @@ public abstract class Question extends QuestionXml {
         return questionText;
     }
 
+    public QuestionType getType(){
+        if (this instanceof QuestionChoice) return QuestionType.CHOICE;
+        else if (this instanceof QuestionMatching) return QuestionType.MATCHING;
+        else if (this instanceof QuestionShortAnswer) return QuestionType.SHORT_ANSWER;
+        else if (this instanceof QuestionNumerical) return QuestionType.NUMERICAL;
+        else return null;
+    }
 }
