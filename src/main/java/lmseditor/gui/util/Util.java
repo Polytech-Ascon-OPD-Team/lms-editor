@@ -33,6 +33,7 @@ public class Util {
 
     public static String chooseXMLPathFilePath() {
         FileDialog chooser = new FileDialog(Main.mainFrame, "select XML file", FileDialog.LOAD);
+        chooser.setFile("*.xml");
         chooser.setVisible(true);
         File result = new File(chooser.getDirectory() + chooser.getFile());
         return result.getPath();
@@ -40,6 +41,7 @@ public class Util {
 
     public static String saveXMLPathFilePath() {
         FileDialog chooser = new FileDialog(Main.mainFrame, "select XML file", FileDialog.SAVE);
+        chooser.setFile("*.xml");
         chooser.setVisible(true);
         File result = new File(chooser.getDirectory() + chooser.getFile());
         return result.getPath();

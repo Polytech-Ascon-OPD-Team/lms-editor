@@ -25,6 +25,7 @@ public class LeftPanel extends CPanel {
     private QuestionXmlParser parser = new QuestionXmlParser();
 
     public void saveToFile(String filePath) {
+        categories.forEach(CategoryPnl::updateData);
         parser.marshallToFile(questionCollection, new File(filePath));
     }
 
@@ -41,11 +42,11 @@ public class LeftPanel extends CPanel {
 
     public void loadFromFile(String filePath) {
         clear();
-        questionCollection = load(filePath);
-        List<QuestionCategory> newCategories = questionCollection.getCategoriesList();
+        QuestionCollection localQuestionCollection = load(filePath);
+        List<QuestionCategory> newCategories = localQuestionCollection.getCategoriesList();
         newCategories.forEach(category -> {
             CategoryPnl currCategoryPnl = addCategory(category);
-            questionCollection.getQuestionsFromCategory(category).forEach(currCategoryPnl::addQuestion);
+            localQuestionCollection.getQuestionsFromCategory(category).forEach(currCategoryPnl::addQuestion);
         });
     }
 
@@ -126,6 +127,9 @@ public class LeftPanel extends CPanel {
                 questionButton.setText(name);
                 question.getName().setId(name);
             }
+            void updateData(){
+                workspace.loadData();
+            }
 
             private void init() {
                 this.setLayout(new BorderLayout());
@@ -191,7 +195,9 @@ public class LeftPanel extends CPanel {
         public final int NUMBER;
         private JTextField textField;
 
-
+        private void updateData(){
+            questionElements.forEach(QuestionElement::updateData);
+        }
         private void updateName() {
             String text = textField.getText();
             questionCategory.setName(text);
