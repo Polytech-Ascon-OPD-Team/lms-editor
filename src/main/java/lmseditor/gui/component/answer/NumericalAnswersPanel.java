@@ -1,7 +1,6 @@
 package lmseditor.gui.component.answer;
 
 import lmseditor.backend.question.component.answer.NumericalAnswer;
-import lmseditor.backend.question.component.answer.ShortAnswer;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -11,7 +10,6 @@ import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NumericalAnswersPanel extends JPanel {
@@ -148,5 +146,4 @@ public class NumericalAnswersPanel extends JPanel {
             super.replace(fb, offset, length, text, attrs);
         }
     }
-
 }

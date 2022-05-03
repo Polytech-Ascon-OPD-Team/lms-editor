@@ -8,21 +8,21 @@ import javax.xml.bind.annotation.XmlAttribute;
 public abstract class Answer {
 
     @XmlAttribute(name = "fraction")
-    private int fraction;
+    private double fraction;
 
     public Answer() {
         this.fraction = 0;
     }
 
-    public Answer(int fraction) {
+    public Answer(double fraction) {
         this.fraction = fraction;
     }
 
-    public int getFraction() {
+    public double getFraction() {
         return fraction;
     }
 
-    public void setFraction(int fraction) {
+    public void setFraction(double fraction) {
         this.fraction = fraction;
     }
 

@@ -22,7 +22,7 @@ public class Util {
 
     public static Workspace getWorkspaceForQuestionAndType(Question question, QuestionType type) {
         switch (type) {
-            case CHOICE: return new EmptyWorkspace(); // TODO
+            case CHOICE: return new QuestionChoiceAnswerWorkspace((QuestionChoice) question);
             case MATCHING: return new QuestionMatchingWorkspace((QuestionMatching) question);
             case NUMERICAL: return new QuestionNumericalAnswerWorkspace((QuestionNumerical) question);
             case SHORT_ANSWER: return new QuestionShortAnswerWorkspace((QuestionShortAnswer) question);

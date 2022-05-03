@@ -1,13 +1,7 @@
 package lmseditor.gui.component.answer;
 
-import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.image.ImageList;
-import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.Subquestion;
-//import lmseditor.backend.question.component.answer.MatchingAnswer;
-import lmseditor.backend.question.component.answer.ShortAnswer;
-import lmseditor.backend.question.text.QuestionText;
-import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.text.Util;
 import lmseditor.gui.component.ImageFlow;
@@ -16,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class MatchingAnswersPanel extends JPanel {
@@ -157,5 +150,4 @@ public class MatchingAnswersPanel extends JPanel {
             MatchingAnswersPanel.this.updateUI();
         }
     }
-
 }
