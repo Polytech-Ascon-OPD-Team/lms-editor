@@ -13,7 +13,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlDiscriminatorValue("shortanswer")
-public class QuestionShortAnswer extends Question{
+public class QuestionShortAnswer extends Question {
 
     @XmlPath("answer")
     private List<ShortAnswer> answers;
@@ -23,8 +23,8 @@ public class QuestionShortAnswer extends Question{
         this.answers = new ArrayList<>();
     }
 
-    public QuestionShortAnswer(QuestionName name, QuestionText textWithImages, List<ShortAnswer> answers) {
-        super(name, textWithImages);
+    public QuestionShortAnswer(QuestionName name, QuestionText questionText, List<ShortAnswer> answers) {
+        super(name, questionText);
         this.answers = answers;
     }
 
