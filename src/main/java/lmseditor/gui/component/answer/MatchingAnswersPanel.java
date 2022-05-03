@@ -42,19 +42,18 @@ public class MatchingAnswersPanel extends JPanel {
 
             imageList = subquestion.getTextWithImages().getImageList();
 
+            JPanel textFieldsGrid = new JPanel(new GridLayout(1, 2));
+            textFieldsGrid.add(textFieldQuestion);
+            textFieldsGrid.add(textFieldAnswer);
+
             GridBagConstraints gbc = new GridBagConstraints();
 
             gbc.gridy = 0; gbc.gridx = 0;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1;
-            this.add(textFieldQuestion, gbc);
+            this.add(textFieldsGrid, gbc);
 
             gbc.gridy = 0; gbc.gridx = 1;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
-            this.add(textFieldAnswer, gbc);
-
-            gbc.gridy = 0; gbc.gridx = 2;
             gbc.fill = GridBagConstraints.NONE;
             gbc.weightx = 0;
             this.add(removeButton, gbc);
