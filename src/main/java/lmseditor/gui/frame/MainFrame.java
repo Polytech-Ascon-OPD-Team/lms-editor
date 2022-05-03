@@ -28,20 +28,6 @@ public class MainFrame extends JFrame {
 
         mainPanel.add(leftPanel, BorderLayout.WEST);
 
-        // parse test
-        JPanel downPanel = new JPanel();
-        downPanel.setLayout(new GridLayout(1, 3));
-        StandardButton parseButton = new StandardButton("Parse...");
-        parseButton.setAction(() -> {
-            workspace.loadData();
-            String xml = parser.marshallToString(leftPanel.getQuestionCollection());
-            System.out.println(xml);
-            parser.marshallToFile(leftPanel.getQuestionCollection(), new File("D:\\file.xml"));
-        });
-        downPanel.add(new JPanel());
-        downPanel.add(parseButton);
-        downPanel.add(new JPanel());
-        mainPanel.add(downPanel, BorderLayout.SOUTH);
         mainPanel.add(workspaceContainer, BorderLayout.CENTER);
         workspaceContainer.setLayout(new BorderLayout());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
