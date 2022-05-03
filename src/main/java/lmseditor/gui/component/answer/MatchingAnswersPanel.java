@@ -41,10 +41,6 @@ public class MatchingAnswersPanel extends JPanel {
             textFieldAnswer.setText(subquestion.getAnswerText());
 
             imageList = subquestion.getTextWithImages().getImageList();
-            for(ImageBase64 imageBase64 : imageList.getImages()) {
-                BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
-                imageFlow.addImageToMiniatures(image);
-            }
 
             GridBagConstraints gbc = new GridBagConstraints();
 
