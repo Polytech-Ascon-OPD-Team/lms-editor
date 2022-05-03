@@ -9,6 +9,7 @@ import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
 import lmseditor.backend.question.text.Text;
 import lmseditor.backend.question.text.TextWithImages;
+import lmseditor.backend.question.text.Util;
 import lmseditor.gui.component.ImageFlow;
 
 import javax.swing.*;
@@ -29,8 +30,11 @@ public class MatchingAnswersPanel extends JPanel {
         private ImageFlow imageFlow;
         private ImageList imageList;
 
+        private Subquestion subquestion;
+
         public MatchingAnswerPanel(Subquestion subquestion) {
             this.setLayout(new GridBagLayout());
+            this.subquestion = subquestion;
 
             textFieldQuestion = new JTextField();
             textFieldAnswer = new JTextField();
@@ -75,19 +79,17 @@ public class MatchingAnswersPanel extends JPanel {
         }
 
         public TextWithImages getQuestionText(){
-            TextWithImages textWithImages = new TextWithImages();
-            QuestionName name = new QuestionName();
-            QuestionText questionText = new QuestionText(name);
-            Text text = new Text();
-            text.setText(textFieldQuestion.getText());
-            questionText.setText(text);
-            textWithImages.setText(text);
-            textWithImages.setImageList(imageList);
+            TextWithImages textWithImages = subquestion.getTextWithImages();
+            String formattedText = Util.formatAnswerText(textFieldQuestion.getText());
+            textWithImages.getText().setText(formattedText);
+            textFieldQuestion.setText(formattedText);
             return textWithImages;
         }
 
         public String getAnswerText(){
-            return textFieldAnswer.getText();
+            String formattedText = Util.formatAnswerText(textFieldAnswer.getText());
+            textFieldAnswer.setText(formattedText);
+            return formattedText;
         }
 
     }

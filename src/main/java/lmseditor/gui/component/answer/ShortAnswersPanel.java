@@ -1,6 +1,7 @@
 package lmseditor.gui.component.answer;
 
 import lmseditor.backend.question.component.answer.ShortAnswer;
+import lmseditor.backend.question.text.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +51,9 @@ public class ShortAnswersPanel extends JPanel {
         }
 
         public ShortAnswer getShortAnswer(){
-            shortAnswer.setText(textField.getText());
+            String formattedText = Util.formatAnswerText(textField.getText());
+            textField.setText(formattedText);
+            shortAnswer.setText(formattedText);
             return shortAnswer;
         }
 

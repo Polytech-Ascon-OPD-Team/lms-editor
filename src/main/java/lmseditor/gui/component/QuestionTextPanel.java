@@ -1,6 +1,7 @@
 package lmseditor.gui.component;
 
 import lmseditor.backend.question.text.Text;
+import lmseditor.backend.question.text.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,9 @@ public class QuestionTextPanel extends JPanel {
     }
 
     public void loadData() {
-        text.setText(textArea.getText());
+        String formattedText = Util.firstSymbolToUpperCase(textArea.getText());
+        textArea.setText(formattedText);
+        text.setText(formattedText);
     }
 
 }
