@@ -16,7 +16,7 @@ import java.util.List;
 public class MatchingAnswersPanel extends JPanel {
 
     private class MatchingAnswerPanel extends JPanel {
-        private static final int TEXT_FIELD_COLUMNS = 30;
+        private int TEXT_FIELD_MIN_COLUMNS = 30;
 
         private JTextField textFieldQuestion;
         private JTextField textFieldAnswer;
@@ -30,28 +30,27 @@ public class MatchingAnswersPanel extends JPanel {
             this.setLayout(new GridBagLayout());
             this.subquestion = subquestion;
 
-            textFieldQuestion = new JTextField();
-            textFieldAnswer = new JTextField();
             imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
-            textFieldQuestion.setText(subquestion.getTextWithImages().getText().getText());
-            textFieldAnswer.setText(subquestion.getAnswerText());
+            textFieldQuestion = new JTextField(subquestion.getTextWithImages().getText().getText(), TEXT_FIELD_MIN_COLUMNS);
+            textFieldAnswer = new JTextField(subquestion.getAnswerText(), TEXT_FIELD_MIN_COLUMNS);
 
             imageList = subquestion.getTextWithImages().getImageList();
-
-            JPanel textFieldsGrid = new JPanel(new GridLayout(1, 2));
-            textFieldsGrid.add(textFieldQuestion);
-            textFieldsGrid.add(textFieldAnswer);
 
             GridBagConstraints gbc = new GridBagConstraints();
 
             gbc.gridy = 0; gbc.gridx = 0;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1;
-            this.add(textFieldsGrid, gbc);
+            this.add(textFieldQuestion, gbc);
 
             gbc.gridy = 0; gbc.gridx = 1;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1;
+            this.add(textFieldAnswer, gbc);
+
+            gbc.gridy = 0; gbc.gridx = 2;
             gbc.fill = GridBagConstraints.NONE;
             gbc.weightx = 0;
             this.add(removeButton, gbc);

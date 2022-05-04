@@ -14,13 +14,17 @@ public class Util {
         while (stringBuilder.length() > 0) {
             int lastIndex = stringBuilder.length() - 1;
             char sym = stringBuilder.charAt(lastIndex);
-            if (!Character.isLetterOrDigit(sym)) {
+            if (isPunctuationMark(sym)) {
                 stringBuilder.deleteCharAt(lastIndex);
             } else {
                 break;
             }
         }
         return stringBuilder.toString();
+    }
+
+    public static boolean isPunctuationMark(char sym) {
+        return (sym == '.' || sym == ',' || sym == ':' || sym == ';' || sym == '!' || sym == '?');
     }
 
 }
