@@ -1,6 +1,7 @@
 package lmseditor.gui.component;
 
 import lmseditor.backend.question.component.QuestionName;
+import lmseditor.backend.question.text.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +31,9 @@ public class QuestionNamePanel extends JPanel {
     }
 
     public void loadData() {
-        name.setName(nameTextField.getText());
+        String formattedText = Util.formatAnswerText(nameTextField.getText());
+        nameTextField.setText(formattedText);
+        name.setName(formattedText);
     }
 
 }
