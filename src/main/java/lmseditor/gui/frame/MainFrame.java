@@ -31,9 +31,9 @@ public class MainFrame extends JFrame {
         mainPanel.add(workspaceContainer, BorderLayout.CENTER);
         workspaceContainer.setLayout(new BorderLayout());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
-        this.pack();
         this.setVisible(true);
     }
 

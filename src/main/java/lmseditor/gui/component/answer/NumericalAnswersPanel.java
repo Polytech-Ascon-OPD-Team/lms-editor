@@ -15,6 +15,7 @@ import java.util.List;
 public class NumericalAnswersPanel extends JPanel {
 
     private class NumericalAnswerPanel extends JPanel {
+        private int TEXT_FIELD_MIN_COLUMNS = 10;
 
         private JTextField textField;
         private JLabel label;
@@ -29,9 +30,9 @@ public class NumericalAnswersPanel extends JPanel {
 
             numericalAnswer.setFraction(100);
 
-            label = new JLabel("+-");
-            textField = new JTextField(Double.toString(numericalAnswer.getAnswer()));
-            toleranceField = new JTextField(Double.toString(numericalAnswer.getTolerance()));
+            label = new JLabel("\u00B1");
+            textField = new JTextField(Double.toString(numericalAnswer.getAnswer()), TEXT_FIELD_MIN_COLUMNS);
+            toleranceField = new JTextField(Double.toString(numericalAnswer.getTolerance()), TEXT_FIELD_MIN_COLUMNS);
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
 
