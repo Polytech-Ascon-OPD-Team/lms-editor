@@ -64,6 +64,10 @@ public class ChoiceAnswersPanel extends JPanel {
 
         }
 
+        private boolean isSelected() {
+            return checkbox.isSelected();
+        }
+
         private class CheckBoxEvent implements ActionListener {
 
             private ChoiceAnswerPanel choiceAnswerPanel;
@@ -199,10 +203,12 @@ public class ChoiceAnswersPanel extends JPanel {
         for(int i = 0; i < answers.getComponentCount(); i++) {
             ChoiceAnswerPanel choiceAnswerPanel = (ChoiceAnswerPanel) answers.getComponent(i);
             ChoiceAnswer choiceAnswer = choiceAnswerPanel.getChoiceAns();
-            if (choiceAnswer.getFraction() > 0) {
+            if (choiceAnswerPanel.isSelected()) {
                 choiceAnswer.setFraction(points);
             } else if (correctAnswersCount != 1) {
                 choiceAnswer.setFraction(-points);
+            } else {
+                choiceAnswer.setFraction(0);
             }
             choiceAnswer.getTextWithImages().generateFormattedText();
             answersList.add(choiceAnswer);
