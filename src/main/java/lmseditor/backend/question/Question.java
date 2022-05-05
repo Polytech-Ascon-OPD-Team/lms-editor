@@ -9,6 +9,9 @@ import lmseditor.backend.question.text.TextWithImages;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Question extends QuestionXml {
 
+    @XmlElement(name = "penalty")
+    private double penalty = 0.0;
+
     @XmlElement(name = "name")
     private QuestionName name;
 
@@ -44,4 +47,5 @@ public abstract class Question extends QuestionXml {
         else if (this instanceof QuestionNumerical) return QuestionType.NUMERICAL;
         else return null;
     }
+
 }
