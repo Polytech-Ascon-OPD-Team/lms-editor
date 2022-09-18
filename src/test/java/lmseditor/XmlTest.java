@@ -1,13 +1,10 @@
 package lmseditor;
 
 import lmseditor.backend.image.ImageBase64;
-import lmseditor.backend.image.ImageList;
 import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.component.answer.NumericalAnswer;
 import lmseditor.backend.question.component.answer.ShortAnswer;
 import lmseditor.backend.question.text.QuestionText;
-import lmseditor.backend.question.text.Text;
-import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,10 +27,10 @@ public class XmlTest {
     public void marshalAndUnmarshal() {
         QuestionName shortAnswerName = new QuestionName("shortAnswer-1", "name");
         QuestionText questionShortAnswerText = new QuestionText(shortAnswerName);
-        questionShortAnswerText.setText(new Text("Question short answer 1 text"));
-        ImageList imageList = new ImageList();
-        imageList.getImages().add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
-        imageList.getImages().add(new ImageBase64("img-2.png", "/", 200, 200, "base64code-2"));
+        questionShortAnswerText.setText("Question short answer 1 text");
+        List<ImageBase64> imageList = new ArrayList<ImageBase64>();
+        imageList.add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
+        imageList.add(new ImageBase64("img-2.png", "/", 200, 200, "base64code-2"));
         questionShortAnswerText.setImageList(imageList);
         questionShortAnswerText.generateFormattedText();
         List<ShortAnswer> shortAnswers = new ArrayList<>();
@@ -46,21 +43,21 @@ public class XmlTest {
 
         QuestionName choiceName = new QuestionName("choice-1", "name");
         QuestionText questionChoiceText = new QuestionText(choiceName);
-        questionChoiceText.setText(new Text("Question choice 1 text"));
+        questionChoiceText.setText("Question choice 1 text");
         questionChoiceText.generateFormattedText();
         List<ChoiceAnswer> choiceAnswers = new ArrayList<>();
         ChoiceAnswer choiceAnswer1 = new ChoiceAnswer();
-        choiceAnswer1.getTextWithImages().setText(new Text("Correct answer 1"));
+        choiceAnswer1.getTextWithImages().setText("Correct answer 1");
         choiceAnswer1.setFraction(100);
         choiceAnswer1.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer1);
         ChoiceAnswer choiceAnswer2 = new ChoiceAnswer();
-        choiceAnswer2.getTextWithImages().setText(new Text("Incorrect answer 1"));
+        choiceAnswer2.getTextWithImages().setText("Incorrect answer 1");
         choiceAnswer2.setFraction(0);
         choiceAnswer2.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer2);
         ChoiceAnswer choiceAnswer3 = new ChoiceAnswer();
-        choiceAnswer3.getTextWithImages().setText(new Text("Incorrect answer 2"));
+        choiceAnswer3.getTextWithImages().setText("Incorrect answer 2");
         choiceAnswer3.setFraction(0);
         choiceAnswer3.getTextWithImages().generateFormattedText();
         choiceAnswers.add(choiceAnswer3);
@@ -69,18 +66,18 @@ public class XmlTest {
 
         List<Subquestion> subquestions = new ArrayList<>();
         Subquestion subquestion1 = new Subquestion();
-        subquestion1.getTextWithImages().setText(new Text("Subquestion 1 text"));
+        subquestion1.getTextWithImages().setText("Subquestion 1 text");
         subquestion1.setAnswerText("Subquestion 1 answer");
         subquestion1.getTextWithImages().generateFormattedText();
         subquestions.add(subquestion1);
         Subquestion subquestion2 = new Subquestion();
-        subquestion2.getTextWithImages().setText(new Text("Subquestion 2 text"));
+        subquestion2.getTextWithImages().setText("Subquestion 2 text");
         subquestion2.setAnswerText("Subquestion 2 answer");
         subquestion2.getTextWithImages().generateFormattedText();
         subquestions.add(subquestion2);
         QuestionName matchingName = new QuestionName("matching-1", "name");
         QuestionText questionMatchingText = new QuestionText(matchingName);
-        questionMatchingText.setText(new Text("Question Matching 1 text"));
+        questionMatchingText.setText("Question Matching 1 text");
         questionMatchingText.generateFormattedText();
         QuestionMatching questionMatching = new QuestionMatching(matchingName,
                 questionMatchingText, subquestions);
@@ -90,7 +87,7 @@ public class XmlTest {
         numericalAnswers.add(new NumericalAnswer(-3.0, 100, 0.0));
         QuestionName numericalName = new QuestionName("numerical-1", "name");
         QuestionText questionNumericalText = new QuestionText(numericalName);
-        questionNumericalText.setText(new Text("Question Numerical 1 text"));
+        questionNumericalText.setText("Question Numerical 1 text");
         questionNumericalText.generateFormattedText();
 
         QuestionNumerical questionNumerical = new QuestionNumerical(numericalName,

@@ -2,11 +2,9 @@ package lmseditor.gui.component;
 
 import lmseditor.Main;
 import lmseditor.backend.image.ImageBase64;
-import lmseditor.backend.image.ImageList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,17 +20,17 @@ public class ImageFlow extends JPanel {
     private Dimension miniatureSize;
 
     private List<JButton> imageMiniatures;
-    private ImageList imageList;
+    private List<ImageBase64> images;
 
     private JPanel imagePanel;
     private JButton addImageButton;
     private JScrollPane scrollPane;
 
-    public ImageFlow(ImageList imageList, Dimension miniatureSize) {
+    public ImageFlow(List<ImageBase64> imageList, Dimension miniatureSize) {
         this.setLayout(new BorderLayout());
 
         this.miniatureSize = miniatureSize;
-        this.imageList = imageList;
+        this.images = imageList;
         imageMiniatures = new ArrayList<>();
 
         addImageButton = new JButton("+");
@@ -54,7 +52,7 @@ public class ImageFlow extends JPanel {
         // Костыль для удаления всех файлов, кроме картинок
         List<ImageBase64> forRemove = new ArrayList<>();
 
-        for(ImageBase64 imageBase64 : imageList.getImages()) {
+        for(ImageBase64 imageBase64 : imageList) {
             if (!imageBase64.getName().contains(".jpg") && !imageBase64.getName().contains(".JPG") &&
                     !imageBase64.getName().contains(".png") && !imageBase64.getName().contains(".PNG")) {
                 forRemove.add(imageBase64);
@@ -65,13 +63,13 @@ public class ImageFlow extends JPanel {
             addImageToMiniatures(image);
         }
         for (ImageBase64 imageBase64 : forRemove) {
-            imageList.getImages().remove(imageBase64);
+            imageList.remove(imageBase64);
         }
 
     }
 
-    public ImageFlow(ImageList imageList) {
-        this(imageList, new Dimension(120, 120));
+    public ImageFlow(List<ImageBase64> images) {
+        this(images, new Dimension(120, 120));
     }
 
     public void addImageToMiniatures(BufferedImage image) {
@@ -115,8 +113,7 @@ public class ImageFlow extends JPanel {
                     BufferedImage image = ImageIO.read(file);
                     addImageToMiniatures(image);
                     String base64 = ImageBase64.encodeFileToBase64(file);
-                    imageList.getImages().add(
-                            new ImageBase64(file.getName(), "/", image.getWidth(), image.getHeight(), base64));
+                    images.add(new ImageBase64(file.getName(), "/", image.getWidth(), image.getHeight(), base64));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -134,7 +131,7 @@ public class ImageFlow extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             int index = imageMiniatures.indexOf(imageButton);
-            imageList.getImages().remove(index);
+            images.remove(index);
             imageMiniatures.remove(imageButton);
             imagePanel.remove(imageButton);
             ImageFlow.this.updateUI();

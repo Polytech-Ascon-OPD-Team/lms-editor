@@ -15,7 +15,7 @@ public class Header extends JPanel {
         this.setLayout(new BorderLayout());
 
         name = new QuestionNamePanel(question.getName());
-        questionText = new QuestionTextPanel(question.getQuestionText().getText());
+        questionText = new QuestionTextPanel(question.getQuestionText().getTextStringBuilder());
         imageFlow = new ImageFlow(question.getQuestionText().getImageList());
 
         this.add(name, BorderLayout.NORTH);

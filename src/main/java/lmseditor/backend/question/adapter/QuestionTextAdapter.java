@@ -15,7 +15,7 @@ public class QuestionTextAdapter extends XmlAdapter<QuestionText, QuestionText> 
     @Override
     public QuestionText unmarshal(QuestionText v) throws Exception {
         String text = Util.parseText(v.getXmlText());
-        v.getText().setText(text);
+        v.setText(text);
         return v;
     }
 

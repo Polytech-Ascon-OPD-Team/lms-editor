@@ -30,7 +30,7 @@ public class ChoiceAnswersPanel extends JPanel {
             imageFlow = new ImageFlow(choiceAnswer.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent(this));
-            textField.setText(choiceAnswer.getTextWithImages().getText().getText());
+            textField.setText(choiceAnswer.getTextWithImages().getText());
             choiceAns = choiceAnswer;
             checkbox = new JCheckBox();
 
@@ -123,7 +123,7 @@ public class ChoiceAnswersPanel extends JPanel {
             if (checkbox.isSelected()) {
                 choiceAns.setFraction(100);
             }
-            choiceAns.getTextWithImages().getText().setText(getAnswerText());
+            choiceAns.getTextWithImages().setText(getAnswerText());
             return choiceAns;
         }
 
