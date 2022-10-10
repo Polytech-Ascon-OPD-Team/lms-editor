@@ -2,7 +2,7 @@
 
 ## Участники проекта (группа 3530904/00101):
 - [Вяземский Артём](https://github.com/artem-vyazemskiy)
-
+- [Булатов Дмитрий](https://github.com/debugggger)
 ---
 
 Редактор работает с форматом Moodle XML.
