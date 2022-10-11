@@ -4,6 +4,7 @@
 - [Вяземский Артём](https://github.com/artem-vyazemskiy)
 - [Булатов Дмитрий](https://github.com/debugggger)
 - [Шожат Артас](https://github.com/ByZeWay)
+- [Песков Александр](https://github.com/aosandy)
 
 ---
 
