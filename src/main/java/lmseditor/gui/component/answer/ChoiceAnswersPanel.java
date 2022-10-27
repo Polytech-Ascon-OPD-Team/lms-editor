@@ -109,6 +109,9 @@ public class ChoiceAnswersPanel extends JPanel {
                     if ((correctAnswersCount + 1 == answersCount) && !isSelected) {
                         return;
                     }
+                    if ((correctAnswersCount == 1) && isSelected) {
+                        return;
+                    }
                     answers.remove(ChoiceAnswersPanel.ChoiceAnswerPanel.this);
                     ChoiceAnswersPanel.this.updateUI();
                     answersCount--;
