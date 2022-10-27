@@ -59,7 +59,6 @@ public class ImageFlow extends JPanel {
                 continue;
             }
             BufferedImage image = ImageBase64.decodeBase64ToImage(imageBase64.getBase64());
-            imageBase64.setWidth(image.getWidth()); imageBase64.setHeight(image.getHeight());
             addImageToMiniatures(image);
         }
         for (ImageBase64 imageBase64 : forRemove) {
@@ -113,7 +112,7 @@ public class ImageFlow extends JPanel {
                     BufferedImage image = ImageIO.read(file);
                     addImageToMiniatures(image);
                     String base64 = ImageBase64.encodeFileToBase64(file);
-                    images.add(new ImageBase64(file.getName(), "/", image.getWidth(), image.getHeight(), base64));
+                    images.add(new ImageBase64(file.getName(), "/",  base64));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

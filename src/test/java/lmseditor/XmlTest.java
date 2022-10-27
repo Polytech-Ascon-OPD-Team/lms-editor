@@ -22,8 +22,8 @@ public class XmlTest {
         QuestionHeader questionShortAnswerHeader = new QuestionHeader(shortAnswerName);
         questionShortAnswerHeader.getTextWithImages().setText("Question short answer 1 text");
         List<ImageBase64> imageList = new ArrayList<ImageBase64>();
-        imageList.add(new ImageBase64("img-1.png", "/", 100, 100, "base64code-1"));
-        imageList.add(new ImageBase64("img-2.png", "/", 200, 200, "base64code-2"));
+        imageList.add(new ImageBase64("img-1.png", "/", "base64code-1"));
+        imageList.add(new ImageBase64("img-2.png", "/", "base64code-2"));
         questionShortAnswerHeader.getTextWithImages().setImageList(imageList);
         List<ShortAnswer> shortAnswers = new ArrayList<>();
         shortAnswers.add(new ShortAnswer("Correct answer 1", 100));

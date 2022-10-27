@@ -18,28 +18,18 @@ public class ImageBase64 {
     @XmlAttribute(name = "path")
     private String path;
 
-    @XmlTransient
-    private int width;
-
-    @XmlTransient
-    private int height;
-
     @XmlValue
     private String base64;
 
     public ImageBase64() {
         this.name = "";
         this.path = "";
-        this.width = 0;
-        this.height = 0;
         this.base64 = "";
     }
 
-    public ImageBase64(String name, String path, int width, int height, String base64) {
+    public ImageBase64(String name, String path, String base64) {
         this.name = name;
         this.path = path;
-        this.width = width;
-        this.height = height;
         this.base64 = base64;
     }
 
@@ -57,27 +47,6 @@ public class ImageBase64 {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
     }
 
     public String getBase64() {

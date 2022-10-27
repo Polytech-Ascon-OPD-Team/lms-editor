@@ -16,8 +16,6 @@ public class HtmlFormatter extends Formatter {
         imageCode.append(image.getPath());
         imageCode.append(image.getName());
         imageCode.append("\" ");
-        imageCode.append("height=\"" + image.getHeight() + "\" ");
-        imageCode.append("width=\"" + image.getWidth() + "\" ");
         imageCode.append(">");
         return imageCode.toString();
     }
