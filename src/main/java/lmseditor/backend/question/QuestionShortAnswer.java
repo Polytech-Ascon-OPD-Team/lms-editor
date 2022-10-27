@@ -4,10 +4,9 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lmseditor.backend.question.component.QuestionHeader;
 import lmseditor.backend.question.component.QuestionName;
 import lmseditor.backend.question.component.answer.ShortAnswer;
-import lmseditor.backend.question.text.QuestionText;
-import lmseditor.backend.question.text.TextWithImages;
 import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
@@ -23,8 +22,8 @@ public class QuestionShortAnswer extends Question {
         this.answers = new ArrayList<>();
     }
 
-    public QuestionShortAnswer(QuestionName name, QuestionText questionText, List<ShortAnswer> answers) {
-        super(name, questionText);
+    public QuestionShortAnswer(QuestionHeader questionHeader, List<ShortAnswer> answers) {
+        super(questionHeader);
         this.answers = answers;
     }
 

@@ -1,6 +1,7 @@
 package lmseditor.gui.component;
 
 import lmseditor.backend.question.Question;
+import lmseditor.backend.question.component.QuestionHeader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,12 +12,12 @@ public class Header extends JPanel {
     private QuestionTextPanel questionText;
     private ImageFlow imageFlow;
 
-    public Header(Question question) {
+    public Header(QuestionHeader questionHeader) {
         this.setLayout(new BorderLayout());
 
-        name = new QuestionNamePanel(question.getName());
-        questionText = new QuestionTextPanel(question.getQuestionText().getTextStringBuilder());
-        imageFlow = new ImageFlow(question.getQuestionText().getImageList());
+        name = new QuestionNamePanel(questionHeader.getName());
+        questionText = new QuestionTextPanel(questionHeader.getTextWithImages().getTextStringBuilder());
+        imageFlow = new ImageFlow(questionHeader.getTextWithImages().getImageList());
 
         this.add(name, BorderLayout.NORTH);
         this.add(questionText, BorderLayout.CENTER);

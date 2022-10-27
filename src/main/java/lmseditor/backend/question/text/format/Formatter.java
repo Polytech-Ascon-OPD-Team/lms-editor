@@ -1,17 +1,10 @@
 package lmseditor.backend.question.text.format;
 
 import lmseditor.backend.image.ImageBase64;
-
-import java.util.List;
+import lmseditor.backend.question.text.TextWithImages;
 
 public abstract class Formatter {
-
     public abstract String getFormatOption();
-
-    public abstract void setText(String text);
-    public abstract void setImageList(List<ImageBase64> imageList);
-
-    public abstract String getFormattedString();
-
-
+    public abstract String format(ImageBase64 imageBase64);
+    public abstract String format(TextWithImages textWithImages);
 }

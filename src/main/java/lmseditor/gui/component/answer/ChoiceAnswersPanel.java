@@ -210,7 +210,7 @@ public class ChoiceAnswersPanel extends JPanel {
             } else {
                 choiceAnswer.setFraction(0);
             }
-            choiceAnswer.getTextWithImages().generateFormattedText();
+            // choiceAnswer.getTextWithImages().generateFormattedText();
             answersList.add(choiceAnswer);
         }
     }

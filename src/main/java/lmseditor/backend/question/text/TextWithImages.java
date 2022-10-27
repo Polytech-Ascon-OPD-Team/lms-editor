@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlJavaTypeAdapter(TextWithImagesAdapter.class)
+//@XmlJavaTypeAdapter(TextWithImagesAdapter.class)
 public class TextWithImages {
 
     @XmlAttribute
@@ -20,7 +20,7 @@ public class TextWithImages {
 
     @XmlElement(name = "text")
     @XmlCDATA
-    protected String xmlText;
+    private String xmlText;
 
     @XmlElement(name = "file")
     private List<ImageBase64> images;
@@ -59,14 +59,20 @@ public class TextWithImages {
         return text;
     }
 
+    public Formatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(Formatter formatter) {
+        this.formatter = formatter;
+    }
+
     public String getXmlText() {
         return xmlText;
     }
 
     public void generateFormattedText() {
-        formatter.setText(text.toString());
-        formatter.setImageList(images);
-        xmlText = formatter.getFormattedString();
+        xmlText = formatter.format(this);
     }
 
 }

@@ -143,7 +143,7 @@ public class MatchingAnswersPanel extends JPanel {
             Subquestion subquestion = new Subquestion();
             subquestion.setTextWithImages(matchingAnswerPanel.getQuestionText());
             subquestion.setAnswerText(matchingAnswerPanel.getAnswerText());
-            subquestion.getTextWithImages().generateFormattedText();
+            // subquestion.getTextWithImages().generateFormattedText();
             answersList.add(subquestion);
         }
     }
