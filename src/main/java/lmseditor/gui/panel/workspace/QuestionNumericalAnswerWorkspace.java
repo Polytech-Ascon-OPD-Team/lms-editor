@@ -18,7 +18,7 @@ public class QuestionNumericalAnswerWorkspace extends Workspace {
 
         this.question = question;
 
-        header = new Header(question);
+        header = new Header(question.getQuestionHeader());
         answers = new NumericalAnswersPanel(question.getAnswers());
 
         this.add(header, BorderLayout.NORTH);
@@ -29,7 +29,7 @@ public class QuestionNumericalAnswerWorkspace extends Workspace {
     @Override
     public void loadData() {
         header.loadData();
-        question.getQuestionText().generateFormattedText();
+        // question.getQuestionHeader().getTextWithImages().generateFormattedText();
         answers.loadData();
     }
 }

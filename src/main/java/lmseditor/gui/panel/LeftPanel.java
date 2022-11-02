@@ -143,7 +143,7 @@ public class LeftPanel extends CPanel {
 
             public void setName(String name) {
                 questionButton.setText(name);
-                question.getName().setId(name);
+                question.getQuestionHeader().getName().setId(name);
             }
 
             void updateData() {
@@ -176,7 +176,7 @@ public class LeftPanel extends CPanel {
                 QuestionType type = dialog.getSelectedType();
                 question = Util.getQuestionForType(type);
                 assert question != null;
-                question.getName().setId(name);
+                question.getQuestionHeader().getName().setId(name);
                 workspace = Util.getWorkspaceForQuestionAndType(question, type);
                 questionButton.setText(name);
                 init();
@@ -190,7 +190,7 @@ public class LeftPanel extends CPanel {
                 }
 
                 this.question = question;
-                questionButton.setText(question.getName().getId());
+                questionButton.setText(question.getQuestionHeader().getName().getId());
                 workspace = Util.getWorkspaceForQuestionAndType(question, question.getType());
                 init();
             }

@@ -1,8 +1,7 @@
 package lmseditor.gui.component.answer;
 
-import lmseditor.backend.image.ImageList;
+import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.question.component.Subquestion;
-import lmseditor.backend.question.component.answer.ChoiceAnswer;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.text.Util;
 import lmseditor.gui.component.ImageFlow;
@@ -22,7 +21,7 @@ public class MatchingAnswersPanel extends JPanel {
         private JTextField textFieldAnswer;
         private JButton removeButton;
         private ImageFlow imageFlow;
-        private ImageList imageList;
+        private List<ImageBase64> images;
 
         private Subquestion subquestion;
 
@@ -33,10 +32,10 @@ public class MatchingAnswersPanel extends JPanel {
             imageFlow = new ImageFlow(subquestion.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent());
-            textFieldQuestion = new JTextField(subquestion.getTextWithImages().getText().getText(), TEXT_FIELD_MIN_COLUMNS);
+            textFieldQuestion = new JTextField(subquestion.getTextWithImages().getText(), TEXT_FIELD_MIN_COLUMNS);
             textFieldAnswer = new JTextField(subquestion.getAnswerText(), TEXT_FIELD_MIN_COLUMNS);
 
-            imageList = subquestion.getTextWithImages().getImageList();
+            images = subquestion.getTextWithImages().getImageList();
 
             GridBagConstraints gbc = new GridBagConstraints();
 
@@ -76,7 +75,7 @@ public class MatchingAnswersPanel extends JPanel {
         public TextWithImages getQuestionText(){
             TextWithImages textWithImages = subquestion.getTextWithImages();
             String formattedText = Util.formatAnswerText(textFieldQuestion.getText());
-            textWithImages.getText().setText(formattedText);
+            textWithImages.setText(formattedText);
             textFieldQuestion.setText(formattedText);
             return textWithImages;
         }
@@ -144,7 +143,7 @@ public class MatchingAnswersPanel extends JPanel {
             Subquestion subquestion = new Subquestion();
             subquestion.setTextWithImages(matchingAnswerPanel.getQuestionText());
             subquestion.setAnswerText(matchingAnswerPanel.getAnswerText());
-            subquestion.getTextWithImages().generateFormattedText();
+            // subquestion.getTextWithImages().generateFormattedText();
             answersList.add(subquestion);
         }
     }

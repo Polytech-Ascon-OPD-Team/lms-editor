@@ -25,7 +25,7 @@ public class QuestionChoiceAnswerWorkspace extends Workspace {
 
         this.question = question;
 
-        header = new Header(question);
+        header = new Header(question.getQuestionHeader());
         answers = new ChoiceAnswersPanel(question.getAnswers());
 
         this.add(header, BorderLayout.NORTH);
@@ -35,7 +35,7 @@ public class QuestionChoiceAnswerWorkspace extends Workspace {
     @Override
     public void loadData() {
         header.loadData();
-        question.getQuestionText().generateFormattedText();
+        // question.getQuestionHeader().getTextWithImages().generateFormattedText();
         question.setSingleChoice(answers.getCorrectAnswersCount() == 1);
         answers.loadData();
     }

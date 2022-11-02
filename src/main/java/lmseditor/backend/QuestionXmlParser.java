@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 public class QuestionXmlParser {
@@ -51,8 +52,15 @@ public class QuestionXmlParser {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        if (questionCollection != null) {
-            questionCollection.connectTextWithName();
+        return questionCollection;
+    }
+
+    public QuestionCollection unmarshallFromString(String string) {
+        QuestionCollection questionCollection = null;
+        try {
+            questionCollection = (QuestionCollection) unmarshaller.unmarshal(new StringReader(string));
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
         return questionCollection;
     }
