@@ -1,11 +1,20 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+def mainClass = 'lmseditor.Main'
+
+
+application {
+    mainClassName = mainClass
+}
 
 repositories {
     mavenCentral()
@@ -17,9 +26,23 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
     implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'
-
 }
 
 test {
     useJUnitPlatform()
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes (
+                'Manifest-Version': '1.0',
+                'Main-Class': "$mainClass"
+        )
+    }
+    archiveBaseName = "${rootProject.name}"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }
