@@ -20,6 +20,23 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    unitTest {
+        java.srcDir file("src/test/java/lmseditor/unit")
+        compileClasspath += sourceSets.test.runtimeClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+    integrationTest {
+        java.srcDir file("src/test/java/lmseditor/integration")
+        compileClasspath += sourceSets.test.runtimeClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
@@ -28,8 +45,32 @@ dependencies {
     implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'
 }
 
-test {
+task unitTest(type: Test) {
+    description = 'Runs the unit tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.unitTest.output.classesDirs
+    classpath = sourceSets.unitTest.runtimeClasspath
+
     useJUnitPlatform()
+
+    reports {
+        html.enabled true
+        junitXml.enabled = true
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    useJUnitPlatform()
+
+    reports {
+        html.enabled true
+        junitXml.enabled = true
+    }
 }
 
 task fatJar(type: Jar) {
@@ -39,6 +80,7 @@ task fatJar(type: Jar) {
                 'Main-Class': "$mainClass"
         )
     }
+    group = 'build'
     archiveBaseName = "${rootProject.name}"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {

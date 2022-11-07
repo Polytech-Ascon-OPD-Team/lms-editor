@@ -1,4 +1,4 @@
-package lmseditor;
+package lmseditor.integration;
 
 import lmseditor.backend.QuestionXmlParser;
 import lmseditor.backend.image.ImageBase64;
