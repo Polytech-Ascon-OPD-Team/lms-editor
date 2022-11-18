@@ -1,5 +1,3 @@
-package lmseditor.unit;
-
 import lmseditor.backend.question.text.Util;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

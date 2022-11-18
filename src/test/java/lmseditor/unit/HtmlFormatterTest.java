@@ -1,5 +1,3 @@
-package lmseditor.unit;
-
 import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.question.text.TextWithImages;
 import lmseditor.backend.question.text.format.Formatter;

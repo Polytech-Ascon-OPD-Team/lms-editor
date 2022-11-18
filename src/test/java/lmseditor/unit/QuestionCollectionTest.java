@@ -1,5 +1,3 @@
-package lmseditor.unit;
-
 import lmseditor.backend.question.Question;
 import lmseditor.backend.question.QuestionCategory;
 import lmseditor.backend.question.QuestionCollection;

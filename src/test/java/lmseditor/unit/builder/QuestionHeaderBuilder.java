@@ -1,4 +1,4 @@
-package lmseditor.builder;
+package builder;
 
 import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.question.component.QuestionHeader;

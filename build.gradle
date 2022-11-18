@@ -27,13 +27,15 @@ test {
 sourceSets {
     unitTest {
         java.srcDir file("src/test/java/lmseditor/unit")
-        compileClasspath += sourceSets.test.runtimeClasspath
+        compileClasspath += sourceSets.test.compileClasspath
         runtimeClasspath += sourceSets.test.runtimeClasspath
+        annotationProcessorPath +=  sourceSets.test.annotationProcessorPath
     }
     integrationTest {
         java.srcDir file("src/test/java/lmseditor/integration")
-        compileClasspath += sourceSets.test.runtimeClasspath
+        compileClasspath += sourceSets.test.compileClasspath
         runtimeClasspath += sourceSets.test.runtimeClasspath
+        annotationProcessorPath +=  sourceSets.test.annotationProcessorPath
     }
 }
 
@@ -43,7 +45,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-
 
     // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
     implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'

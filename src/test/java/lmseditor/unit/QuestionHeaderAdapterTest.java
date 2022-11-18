@@ -1,5 +1,3 @@
-package lmseditor.unit;
-
 import lmseditor.backend.image.ImageBase64;
 import lmseditor.backend.question.adapter.QuestionHeaderAdapter;
 import lmseditor.backend.question.component.QuestionHeader;
@@ -12,7 +10,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static lmseditor.builder.QuestionHeaderBuilder.buildQuestionHeader;
+import static builder.QuestionHeaderBuilder.buildQuestionHeader;
+
 
 public class QuestionHeaderAdapterTest {
 
