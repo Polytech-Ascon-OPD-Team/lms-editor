@@ -63,13 +63,4 @@ public class QuestionCollection {
         return questionList;
     }
 
-    public void connectTextWithName() {
-        for (QuestionXml questionXml : questions) {
-            if (questionXml instanceof Question) {
-                Question question = (Question) questionXml;
-                question.getQuestionText().setName(question.getName());
-            }
-        }
-    }
-
 }

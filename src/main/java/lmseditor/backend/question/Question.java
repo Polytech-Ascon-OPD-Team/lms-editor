@@ -1,10 +1,8 @@
 package lmseditor.backend.question;
 
 import javax.xml.bind.annotation.*;
-
-import lmseditor.backend.question.component.QuestionName;
-import lmseditor.backend.question.text.QuestionText;
-import lmseditor.backend.question.text.TextWithImages;
+import lmseditor.backend.question.component.QuestionHeader;
+import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Question extends QuestionXml {
@@ -12,32 +10,19 @@ public abstract class Question extends QuestionXml {
     @XmlElement(name = "penalty")
     private double penalty = 0.0;
 
-    @XmlElement(name = "name")
-    private QuestionName name;
-
-    @XmlElement(name = "questiontext")
-    private QuestionText questionText;
+    @XmlPath(".")
+    private QuestionHeader questionHeader;
 
     public Question() {
-        this.name = new QuestionName();
-        this.questionText = new QuestionText(name);
+        this.questionHeader = new QuestionHeader();
     }
 
-    public Question(QuestionName name, QuestionText questionText) {
-        this.name = name;
-        this.questionText = questionText;
+    public Question(QuestionHeader questionHeader) {
+        this.questionHeader = questionHeader;
     }
 
-    public QuestionName getName() {
-        return name;
-    }
-
-    public void setName(QuestionName name) {
-        this.name = name;
-    }
-
-    public QuestionText getQuestionText() {
-        return questionText;
+    public QuestionHeader getQuestionHeader() {
+        return questionHeader;
     }
 
     public QuestionType getType(){
