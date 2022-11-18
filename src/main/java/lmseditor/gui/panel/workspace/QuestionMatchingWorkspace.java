@@ -18,7 +18,7 @@ public class QuestionMatchingWorkspace extends Workspace {
 
         this.question = question;
 
-        header = new Header(question);
+        header = new Header(question.getQuestionHeader());
         answers = new MatchingAnswersPanel(question.getSubquestions());
 
         this.add(header, BorderLayout.NORTH);
@@ -28,7 +28,7 @@ public class QuestionMatchingWorkspace extends Workspace {
     @Override
     public void loadData() {
         header.loadData();
-        question.getQuestionText().generateFormattedText();
+        // question.getQuestionHeader().getTextWithImages().generateFormattedText();
         answers.loadData();
     }
 

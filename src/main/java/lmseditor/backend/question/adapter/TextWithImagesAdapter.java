@@ -15,7 +15,7 @@ public class TextWithImagesAdapter extends XmlAdapter<TextWithImages, TextWithIm
     @Override
     public TextWithImages unmarshal(TextWithImages v) throws Exception {
         String text = Util.parseText(v.getXmlText());
-        v.getText().setText(text);
+        v.setText(text);
         return v;
     }
 

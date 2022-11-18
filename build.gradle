@@ -1,25 +1,95 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+def mainClass = 'lmseditor.Main'
+
+
+application {
+    mainClassName = mainClass
+}
 
 repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    unitTest {
+        java.srcDir file("src/test/java/lmseditor/unit")
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+        annotationProcessorPath +=  sourceSets.test.annotationProcessorPath
+    }
+    integrationTest {
+        java.srcDir file("src/test/java/lmseditor/integration")
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+        annotationProcessorPath +=  sourceSets.test.annotationProcessorPath
+    }
+}
+
 dependencies {
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
     // https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink
     implementation group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.7.7'
-
 }
 
-test {
+task unitTest(type: Test) {
+    description = 'Runs the unit tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.unitTest.output.classesDirs
+    classpath = sourceSets.unitTest.runtimeClasspath
+
     useJUnitPlatform()
+
+    reports {
+        html.enabled true
+        junitXml.enabled = true
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    useJUnitPlatform()
+
+    reports {
+        html.enabled true
+        junitXml.enabled = true
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes (
+                'Manifest-Version': '1.0',
+                'Main-Class': "$mainClass"
+        )
+    }
+    group = 'build'
+    archiveBaseName = "${rootProject.name}"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }

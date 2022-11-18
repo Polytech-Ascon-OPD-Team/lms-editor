@@ -30,7 +30,7 @@ public class ChoiceAnswersPanel extends JPanel {
             imageFlow = new ImageFlow(choiceAnswer.getTextWithImages().getImageList(), new Dimension(60, 60));
             removeButton = new JButton("-");
             removeButton.addActionListener(new RemoveButtonEvent(this));
-            textField.setText(choiceAnswer.getTextWithImages().getText().getText());
+            textField.setText(choiceAnswer.getTextWithImages().getText());
             choiceAns = choiceAnswer;
             checkbox = new JCheckBox();
 
@@ -109,6 +109,9 @@ public class ChoiceAnswersPanel extends JPanel {
                     if ((correctAnswersCount + 1 == answersCount) && !isSelected) {
                         return;
                     }
+                    if ((correctAnswersCount == 1) && isSelected) {
+                        return;
+                    }
                     answers.remove(ChoiceAnswersPanel.ChoiceAnswerPanel.this);
                     ChoiceAnswersPanel.this.updateUI();
                     answersCount--;
@@ -123,7 +126,7 @@ public class ChoiceAnswersPanel extends JPanel {
             if (checkbox.isSelected()) {
                 choiceAns.setFraction(100);
             }
-            choiceAns.getTextWithImages().getText().setText(getAnswerText());
+            choiceAns.getTextWithImages().setText(getAnswerText());
             return choiceAns;
         }
 
@@ -210,7 +213,7 @@ public class ChoiceAnswersPanel extends JPanel {
             } else {
                 choiceAnswer.setFraction(0);
             }
-            choiceAnswer.getTextWithImages().generateFormattedText();
+            // choiceAnswer.getTextWithImages().generateFormattedText();
             answersList.add(choiceAnswer);
         }
     }

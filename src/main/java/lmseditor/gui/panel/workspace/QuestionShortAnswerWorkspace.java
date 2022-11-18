@@ -18,7 +18,7 @@ public class QuestionShortAnswerWorkspace extends Workspace {
         this.question = question;
 
         answers = new ShortAnswersPanel(question.getAnswers());
-        header = new Header(question);
+        header = new Header(question.getQuestionHeader());
 
         this.add(header, BorderLayout.NORTH);
         this.add(answers, BorderLayout.CENTER);
@@ -27,7 +27,7 @@ public class QuestionShortAnswerWorkspace extends Workspace {
     @Override
     public void loadData() {
         header.loadData();
-        question.getQuestionText().generateFormattedText();
+        // question.getQuestionHeader().getTextWithImages().generateFormattedText();
         answers.loadData();
     }
 

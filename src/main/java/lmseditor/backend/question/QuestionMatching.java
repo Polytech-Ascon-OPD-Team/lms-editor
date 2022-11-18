@@ -4,9 +4,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lmseditor.backend.question.component.QuestionName;
-import lmseditor.backend.question.text.QuestionText;
-import lmseditor.backend.question.text.TextWithImages;
+import lmseditor.backend.question.component.QuestionHeader;
 import lmseditor.backend.question.component.Subquestion;
 import org.eclipse.persistence.oxm.annotations.XmlDiscriminatorValue;
 
@@ -26,8 +24,8 @@ public class QuestionMatching extends Question {
         this.shuffleAnswers = true;
     }
 
-    public QuestionMatching(QuestionName name, QuestionText textWithImages, List<Subquestion> subquestions) {
-        super(name, textWithImages);
+    public QuestionMatching(QuestionHeader questionHeader, List<Subquestion> subquestions) {
+        super(questionHeader);
         this.subquestions = subquestions;
         this.shuffleAnswers = true;
     }
